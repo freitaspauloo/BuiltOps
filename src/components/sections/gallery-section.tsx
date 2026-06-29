@@ -6,7 +6,7 @@ import type { MicrositeVersionId } from "@/lib/site-versions";
 import { SectionHeaderSplit, SectionShell } from "@/components/ui/section";
 import { cn } from "@/lib/utils/cn";
 import { AppIcon, UI_ICONS } from "@/lib/icons";
-import { useCarouselA11y, wrapIndex } from "@/lib/hooks/use-carousel-a11y";
+import { getSlideRole, useCarouselA11y } from "@/lib/hooks/use-carousel-a11y";
 
 export function GallerySection({
   images,
@@ -16,19 +16,14 @@ export function GallerySection({
   siteVersion?: MicrositeVersionId;
 }) {
   const count = images.length;
-  const { active, goPrev, goNext, goTo, regionProps, announcement } = useCarouselA11y(
+  const { active, direction, goPrev, goNext, goTo, regionProps, announcement } = useCarouselA11y(
     count,
     "Gallery slide",
   );
 
   if (count === 0) return null;
 
-  const visible =
-    count === 1
-      ? [0]
-      : count === 2
-        ? [wrapIndex(active - 1, count), active]
-        : [wrapIndex(active - 1, count), active, wrapIndex(active + 1, count)];
+  const directionAttr = direction === 1 ? "next" : direction === -1 ? "prev" : "none";
 
   return (
     <SectionShell id="gallery" siteVersion={siteVersion}>
@@ -43,32 +38,64 @@ export function GallerySection({
         {announcement}
       </p>
 
-      <div {...regionProps} className="relative mx-auto w-full max-w-[1200px] overflow-hidden outline-none">
+      <div
+        {...regionProps}
+        className="relative mx-auto w-full max-w-[1200px] overflow-hidden outline-none"
+      >
         <div
-          className={cn(
-            "flex items-end justify-center gap-3 sm:gap-4 md:gap-5",
-            count === 1 && "justify-center",
-          )}
+          className="gallery-strip flex items-end justify-center"
+          data-direction={directionAttr}
+          data-count={count}
         >
-          {visible.map((imageIndex, position) => {
-            const isCenter = count === 1 || position === 1;
-            const image = images[imageIndex];
+          {images.map((image, index) => {
+            const role = getSlideRole(index, active, count);
+            const isActive = role === "active";
+            const isHidden = role === "hidden";
 
-            if (isCenter) {
+            if (isHidden) {
               return (
                 <div
-                  key={`${image.url}-${imageIndex}`}
-                  className="gallery-slide-center relative z-10 aspect-[3/4] w-full max-w-[420px] shrink-0 overflow-hidden bg-card sm:w-[42%]"
+                  key={image.url}
+                  className="gallery-slide gallery-slide--hidden"
+                  aria-hidden
+                />
+              );
+            }
+
+            const slideInner = (
+              <>
+                <Image
+                  src={image.url}
+                  alt={image.alt}
+                  fill
+                  className={cn(
+                    "object-cover",
+                    isActive ? "gallery-slide-image--active" : "gallery-slide-image--adjacent",
+                  )}
+                  sizes={
+                    isActive
+                      ? "(max-width: 640px) 100vw, 420px"
+                      : "(max-width: 1024px) 28vw, 260px"
+                  }
+                  priority={index === 0}
+                />
+
+                {isActive && image.caption && (
+                  <p className="gallery-slide-caption absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/55 to-transparent px-5 pb-5 pt-12 text-sm font-medium text-white">
+                    {image.caption}
+                  </p>
+                )}
+              </>
+            );
+
+            if (isActive) {
+              return (
+                <div
+                  key={image.url}
+                  className="gallery-slide gallery-slide--active relative z-10 aspect-[3/4] shrink-0 overflow-hidden bg-card"
                   aria-hidden={false}
                 >
-                  <Image
-                    src={image.url}
-                    alt={image.alt}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 640px) 100vw, 420px"
-                    priority={active === 0}
-                  />
+                  {slideInner}
 
                   {count > 1 && (
                     <>
@@ -90,36 +117,22 @@ export function GallerySection({
                       </button>
                     </>
                   )}
-
-                  {image.caption && (
-                    <p className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/55 to-transparent px-5 pb-5 pt-12 text-sm font-medium text-white">
-                      {image.caption}
-                    </p>
-                  )}
                 </div>
               );
             }
 
             return (
               <button
-                key={`${image.url}-${imageIndex}`}
+                key={image.url}
                 type="button"
-                onClick={() => goTo(imageIndex)}
+                onClick={() => goTo(index)}
                 aria-label={`View ${image.alt}`}
                 className={cn(
-                  "carousel-control group relative aspect-[3/4] shrink-0 overflow-hidden bg-card opacity-80 transition-opacity duration-500 ease-[var(--ease-out-soft)] hover:opacity-100",
-                  count === 2
-                    ? "w-[34%] max-w-[260px]"
-                    : "w-[28%] max-w-[260px] max-sm:hidden",
+                  "gallery-slide gallery-slide--adjacent group relative aspect-[3/4] shrink-0 overflow-hidden bg-card",
+                  role === "prev" ? "gallery-slide--prev" : "gallery-slide--next",
                 )}
               >
-                <Image
-                  src={image.url}
-                  alt={image.alt}
-                  fill
-                  className="carousel-slide-hover object-cover transition-transform duration-700 group-hover:scale-[1.02]"
-                  sizes="(max-width: 1024px) 28vw, 260px"
-                />
+                {slideInner}
               </button>
             );
           })}

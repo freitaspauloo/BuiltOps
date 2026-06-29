@@ -3,12 +3,7 @@ import Link from "next/link";
 import type { SimilarCommunity } from "@/lib/types/community";
 import type { MicrositeVersionId } from "@/lib/site-versions";
 import { SectionHeaderSplit, SectionShell, cardSurfaceClass } from "@/components/ui/section";
-
-const stageTags: Record<SimilarCommunity["stage"], string> = {
-  future: "Future community",
-  coming_soon: "Coming soon",
-  available: "Now selling",
-};
+import { communityStageLabels } from "@/components/ui/status-badge";
 
 export function SimilarCommunitiesSection({
   communities,
@@ -32,7 +27,7 @@ export function SimilarCommunitiesSection({
               />
             </div>
             <div className="p-5">
-              <span className="card-label mb-3 block">{stageTags[c.stage]}</span>
+              <span className="card-label mb-3 block">{communityStageLabels[c.stage]}</span>
               <h3 className="text-lg font-bold text-foreground transition-colors group-hover:text-primary">
                 {c.name}
               </h3>

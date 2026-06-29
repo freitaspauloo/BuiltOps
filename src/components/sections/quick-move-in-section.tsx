@@ -23,7 +23,7 @@ export function QuickMoveInSection({
         description="Available for immediate or near-term occupancy."
         siteVersion={siteVersion}
       />
-      <div className="grid gap-8 sm:grid-cols-2">
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {homes.map((home) => (
           <article key={home.id} className={`${cardSurfaceClass(siteVersion)} group overflow-hidden`}>
             <div className="relative aspect-[16/10] overflow-hidden">
@@ -34,18 +34,18 @@ export function QuickMoveInSection({
                 className="carousel-slide-hover object-cover transition-transform duration-500 group-hover:scale-[1.02]"
               />
             </div>
-            <div className="p-6">
-              <h3 className="text-xl font-bold text-foreground">{home.address}</h3>
-              <PillGroup className="mt-4">
-                <Pill icon={spec.moveIn}>Quick move-in</Pill>
-                <Pill icon={spec.beds}>{home.beds} beds</Pill>
-                <Pill icon={spec.baths}>{home.baths} baths</Pill>
-                <Pill icon={spec.sqft}>{home.sqft.toLocaleString()} sqft</Pill>
-                <Pill icon={spec.possession}>{home.possessionDate}</Pill>
+            <div className="p-5">
+              <h3 className="text-lg font-bold text-foreground">{home.address}</h3>
+              <PillGroup size="sm" className="mt-3">
+                <Pill size="sm" icon={spec.moveIn}>Quick move-in</Pill>
+                <Pill size="sm" icon={spec.beds}>{home.beds} beds</Pill>
+                <Pill size="sm" icon={spec.baths}>{home.baths} baths</Pill>
+                <Pill size="sm" icon={spec.sqft}>{home.sqft.toLocaleString()} sqft</Pill>
+                <Pill size="sm" icon={spec.possession}>{home.possessionDate}</Pill>
               </PillGroup>
-              <p className="mt-4 text-lg font-bold text-foreground">{home.price}</p>
+              <p className="mt-3 text-lg font-bold text-foreground">{home.price}</p>
               <p className="mt-1 text-sm text-muted">Lot {home.lot}</p>
-              <Button href="#registration" size="sm" className="mt-5">
+              <Button href="#registration" size="sm" className="mt-4">
                 Book showing
               </Button>
             </div>

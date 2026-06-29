@@ -1,10 +1,10 @@
 import { cn } from "@/lib/utils/cn";
 import type { CommunityStage } from "@/lib/types/community";
 
-const stageLabels: Record<CommunityStage, string> = {
+export const communityStageLabels: Record<CommunityStage, string> = {
   future: "Future community",
   coming_soon: "Coming soon",
-  available: "Now selling",
+  available: "Available now",
 };
 
 /** Plain text status — no pill chrome */
@@ -28,7 +28,7 @@ export function StatusLabel({
         className,
       )}
     >
-      {stageLabels[stage]}
+      {communityStageLabels[stage]}
     </span>
   );
 }
