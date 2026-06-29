@@ -1,0 +1,21 @@
+Task,Phase,Priority,Status,Impact,Area,Files,Notes
+Hero upgrade — status city price CTA on image,Phase 1,P0,Not started,Very High,Hero,"hero-section.tsx, seed-benchmark.ts",Use existing CommunityHero seed fields currently ignored
+Restore framed canvas — top + side gutter on hero only,Phase 1,P0,Not started,High,Hero,"hero-section.tsx, section-renderer.tsx, globals.css",Nav stays flush; hero gets ARCHUN frame inset
+Mobile nav — hamburger or scrollable center cluster,Phase 1,P0,Not started,Very High,Nav,sticky-nav.tsx,Logo left and Register right; center links must not clip on 375px
+Nav polish — active underline/teal text optional sticky after hero,Phase 1,P1,Not started,High,Nav,sticky-nav.tsx,Text-only nav; no icons per design direction
+Overview card typography — serif titles match SectionHeading,Phase 1,P1,Not started,Medium,Overview,overview-section.tsx,Fix Description / At a Glance sans-bold drift
+FAQ accordion — expand/collapse with aria-expanded,Phase 2,P0,Not started,Very High,FAQ,faq-section.tsx,Replace horizontal scroll cards; better SEO and mobile
+Carousel a11y — keyboard focus aria-live reduced motion,Phase 2,P0,Not started,High,Gallery / Testimonials,"gallery-section.tsx, testimonials-section.tsx",Arrow keys focus rings no scale when reduced motion
+Registration form — labels validation submit success/error,Phase 2,P0,Not started,Very High,Forms,registration-section.tsx,Primary CTA destination must work; wire CRM/API stub
+card-interactive hover/focus on listing cards,Phase 2,P1,Not started,Medium,Components,"globals.css, floorplans, quick-move-in, downloads",Utility exists but has no behavior yet
+Site plan — keyboard lots mobile width fix,Phase 2,P1,Not started,Medium,Site plan,site-plan-section.tsx,Remove min-w trap; focusable lot rects
+Unified section headers — split-column or SectionHeading everywhere,Phase 3,P1,Not started,High,Layout,"section.tsx, all sections",Kill spacing/title drift; rename gallery copy
+Motion in SectionShell — optional reveal all sections,Phase 3,P1,Not started,Medium,Motion,"section.tsx, scroll-reveal.tsx",~25% of sections animate today; feels uneven on long scroll
+Content pass — real video amenities dedupe contact photo,Phase 3,P1,Not started,Medium,Content,"seed-benchmark.ts, amenities, overview",Remove template smell and placeholder URLs
+Area map — real map or SVG instead of placeholder pins,Phase 3,P2,Not started,Medium,Location,area-map-section.tsx,Credibility-critical for real estate
+Design hub sync — typography docs stage toggle live preview,Phase 3,P2,Not started,Medium,Design hub,"design/page.tsx, stage-toggle.tsx",Hub must match production Benchmark v1
+Bump microsite to v2 in seed and preview widget,Phase 4,P2,Not started,Low,Meta,"seed-benchmark.ts, preview-nav.tsx",After Phase 1–3 sign-off
+Sanity fields for hero meta and nav labels,Phase 4,P2,Not started,Medium,CMS,sanity/schemas,Move off hardcoded seed where ready
+Remove or adopt framer-motion dependency,Phase 4,P3,Not started,Low,Deps,package.json,Currently installed but unused in src
+Preview widget dev-only via env flag on production,Phase 4,P2,Not started,Low,Dev,layout.tsx,Hide draggable icon on Vercel prod
+Performance pass — image sizes lazy boundaries CWV,Phase 4,P3,Not started,Medium,Perf,global + sections,Before client handoff
