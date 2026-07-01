@@ -13,7 +13,7 @@ export const benchmarkCommunity: Community = {
     priceFrom: "From $534,900",
     homeTypes: "Townhomes",
     heroImage:
-      "https://www.losanihomes.com/wp-content/uploads/2025/06/Benchmark-feature-communities_desktop-1-768x620.webp",
+      "https://www.losanihomes.com/wp-content/uploads/2025/06/Benchmark-feature-communities_desktop-1.webp",
     primaryCta: { label: "Book Appointment", href: "#registration" },
     secondaryCta: { label: "View Brochure", href: "#downloads" },
   },
@@ -40,11 +40,16 @@ export const benchmarkCommunity: Community = {
       { label: "Bedrooms", value: "3" },
       { label: "Bathrooms", value: "2.5 – 3.5" },
       { label: "Starting Price", value: "$534,900" },
-      { label: "Collections", value: "Phase 1 & Phase 2" },
+      { label: "Collections", value: "Available now" },
     ],
   },
   videoUrl: "https://www.youtube.com/embed/jiaI3HbDuGI?rel=0&modestbranding=1",
   gallery: [
+    {
+      url: "https://www.losanihomes.com/wp-content/uploads/2025/06/Benchmark-feature-communities_desktop-1.webp",
+      alt: "Benchmark Towns streetscape",
+      caption: "Benchmark Towns — Beamsville",
+    },
     {
       url: "https://www.losanihomes.com/wp-content/uploads/2025/10/CE1806FE-WALDORF-ENH-END-768x757.webp",
       alt: "Waldorf Enhanced End elevation",
@@ -61,6 +66,11 @@ export const benchmarkCommunity: Community = {
       caption: "Whitehaven End — Phase 2",
     },
     {
+      url: "https://www.losanihomes.com/wp-content/uploads/2025/12/1502EF-ESPRIT-GRANDE-END-WIDE-1-768x477.webp",
+      alt: "16' Esprit Enhanced End elevation",
+      caption: "16' Esprit Enhanced End — Phase 2",
+    },
+    {
       url: "https://www.losanihomes.com/wp-content/uploads/2025/10/1802F-KNIGHTON-FARMHOUSE-768x425.webp",
       alt: "Knighton Interior F2 elevation",
       caption: "Knighton Interior F2 — Phase 1",
@@ -74,6 +84,21 @@ export const benchmarkCommunity: Community = {
       url: "https://www.losanihomes.com/wp-content/uploads/2025/12/1501EF-ESPRIT-F1-768x477.webp",
       alt: "Esprit Interior F1 elevation",
       caption: "Esprit Interior F1 — Phase 2",
+    },
+    {
+      url: "https://www.losanihomes.com/wp-content/uploads/2025/12/1501EF-ESPRIT-F2-768x477.webp",
+      alt: "Esprit Interior F2 elevation",
+      caption: "Esprit Interior F2 — Phase 2",
+    },
+    {
+      url: "https://www.losanihomes.com/wp-content/uploads/2026/01/1803F2-WHITEHAVEN-INT-768x477.webp",
+      alt: "Whitehaven interior elevation",
+      caption: "Whitehaven Interior F2 — Phase 2",
+    },
+    {
+      url: "https://www.losanihomes.com/wp-content/uploads/2026/01/1803F3-WHITEHAVEN-INT-768x477.webp",
+      alt: "Whitehaven interior alternate elevation",
+      caption: "Whitehaven Interior F3 — Phase 2",
     },
   ],
   areaMap: {
@@ -373,7 +398,42 @@ export const benchmarkCommunity: Community = {
         "The location on the Beamsville Bench sold us immediately. Benchmark feels like a hidden gem in wine country.",
       author: "Registered buyer",
       role: "Benchmark Towns",
-      image: "https://www.losanihomes.com/wp-content/uploads/2025/06/Benchmark-feature-communities_desktop-1-768x620.webp",
+      image: "https://www.losanihomes.com/wp-content/uploads/2025/06/Benchmark-feature-communities_desktop-1.webp",
+    },
+    {
+      quote:
+        "Losani's design centre made choosing finishes straightforward. We walked out knowing exactly how our kitchen and flooring would look on move-in day.",
+      author: "Sarah & Mark T.",
+      role: "Esprit Interior F1 — Phase 2",
+      image: "https://www.losanihomes.com/wp-content/uploads/2025/12/1501EF-ESPRIT-F1-768x477.webp",
+    },
+    {
+      quote:
+        "The sales team never rushed us. They walked every floorplan, explained phase timing, and helped us compare layouts for our family of four.",
+      author: "James L.",
+      role: "Registered buyer",
+      image: "https://www.losanihomes.com/wp-content/uploads/2025/10/1802F-KNIGHTON-FARMHOUSE-768x425.webp",
+    },
+    {
+      quote:
+        "We wanted modern townhome living without giving up green space. Benchmark delivers both — trails, wineries, and the QEW minutes away.",
+      author: "Priya & Daniel K.",
+      role: "Whitehaven End — Phase 2",
+      image: "https://www.losanihomes.com/wp-content/uploads/2026/01/1803EF-WHITEHAVEN-END-768x477.webp",
+    },
+    {
+      quote:
+        "The 3-storey layout gives us room to work from home upstairs while keeping main-floor living open and bright. It feels much larger than we expected.",
+      author: "Homeowner",
+      role: "Waldorf Enhanced End — Phase 1",
+      image: "https://www.losanihomes.com/wp-content/uploads/2025/10/CE1806FE-WALDORF-ENH-END-768x757.webp",
+    },
+    {
+      quote:
+        "From first visit to keys, the process was transparent. Tarion warranty coverage and Losani's build quality gave us confidence throughout.",
+      author: "Michael R.",
+      role: "Benchmark Towns",
+      image: "https://www.losanihomes.com/wp-content/uploads/2025/12/CE1501FE-37-RENDERING-WIDE-768x477.webp",
     },
   ],
   faq: [

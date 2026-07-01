@@ -5,9 +5,8 @@ import Link from "next/link";
 import type { CommunityOverview, QuickFacts } from "@/lib/types/community";
 import { ScrollReveal } from "@/components/motion/scroll-reveal";
 import { Pill, PillGroup } from "@/components/ui/pill";
-import { AppIcon, getSnapshotIcon } from "@/lib/icons";
+import { AppIcon, getSnapshotIcon, UI_ICONS } from "@/lib/icons";
 import { cn } from "@/lib/utils/cn";
-import { RiPlayFill } from "react-icons/ri";
 
 type OverviewSectionProps = {
   data: CommunityOverview;
@@ -98,7 +97,11 @@ export function OverviewSectionV1({
                       />
                     )}
                     <span className="absolute inset-0 flex items-center justify-center bg-foreground/20 transition-colors group-hover:bg-foreground/30">
-                      <AppIcon icon={RiPlayFill} size={28} className="text-white drop-shadow-sm" />
+                      <AppIcon
+                        icon={UI_ICONS.play}
+                        size={28}
+                        className="fill-white text-white drop-shadow-sm"
+                      />
                     </span>
                   </Link>
                 )}

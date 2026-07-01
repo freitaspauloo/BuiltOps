@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import Image from "next/image";
 import type { Floorplan } from "@/lib/types/community";
 import type { MicrositeVersionId } from "@/lib/site-versions";
@@ -6,6 +9,8 @@ import { Button } from "@/components/ui/button";
 import { Pill, PillGroup } from "@/components/ui/pill";
 import { getSpecPillIcons } from "@/lib/icons";
 
+const INITIAL_VISIBLE = 6;
+
 export function FloorplansSection({
   floorplans,
   siteVersion = "v2",
@@ -13,7 +18,10 @@ export function FloorplansSection({
   floorplans: Floorplan[];
   siteVersion?: MicrositeVersionId;
 }) {
+  const [expanded, setExpanded] = useState(false);
   const spec = getSpecPillIcons();
+  const hasMore = floorplans.length > INITIAL_VISIBLE;
+  const visiblePlans = expanded ? floorplans : floorplans.slice(0, INITIAL_VISIBLE);
 
   return (
     <SectionShell id="floorplans" siteVersion={siteVersion}>
@@ -24,7 +32,7 @@ export function FloorplansSection({
         siteVersion={siteVersion}
       />
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {floorplans.map((plan) => (
+        {visiblePlans.map((plan) => (
           <article key={plan.id} className={`${cardSurfaceClass(siteVersion)} group overflow-hidden`}>
             <div className="relative aspect-[4/3] overflow-hidden">
               <Image
@@ -67,6 +75,13 @@ export function FloorplansSection({
           </article>
         ))}
       </div>
+      {hasMore && (
+        <div className="mt-10 flex justify-center">
+          <Button variant="secondary" onClick={() => setExpanded((value) => !value)}>
+            {expanded ? "See less" : "See all"}
+          </Button>
+        </div>
+      )}
     </SectionShell>
   );
 }

@@ -5,6 +5,7 @@ import { createPortal } from "react-dom";
 import { cn } from "@/lib/utils/cn";
 import type { Community } from "@/lib/types/community";
 import { getNavStructure, type NavStructureItem } from "@/lib/sections/nav-groups";
+import { CommunityCtaButtons } from "@/components/ui/community-cta-buttons";
 import { LosaniLogo } from "@/components/ui/losani-logo";
 
 type OpenMenu = {
@@ -144,12 +145,12 @@ export function StickyNavV1({ community }: { community: Community }) {
           </div>
 
           <div className="flex shrink-0 items-center justify-end">
-            <a
-              href="#registration"
-              className="bg-primary px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-primary-hover lg:px-5"
-            >
-              Register
-            </a>
+            <CommunityCtaButtons
+              primaryCta={community.hero.primaryCta}
+              secondaryCta={community.hero.secondaryCta}
+              size="sm"
+              secondaryClassName="hidden lg:inline-flex"
+            />
           </div>
         </nav>
       </header>

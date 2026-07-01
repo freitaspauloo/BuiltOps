@@ -2,9 +2,8 @@
 
 import { useState } from "react";
 import type { RegistrationForm } from "@/lib/types/community";
-import { SectionShell } from "@/components/ui/section";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils/cn";
+import { SectionShell } from "@/components/ui/section";
 
 type FormState = {
   firstName: string;
@@ -73,10 +72,10 @@ export function RegistrationSection({ data }: { data: RegistrationForm }) {
   };
 
   return (
-    <SectionShell id="registration" reveal={false}>
-      <div className="archun-card grid gap-12 p-8 md:p-12 lg:grid-cols-2 lg:gap-20 lg:p-16">
+    <SectionShell id="registration">
+      <div className="archun-card grid w-full gap-12 p-8 md:p-12 lg:grid-cols-2 lg:gap-20 lg:p-16">
         <div>
-          <p className="card-label mb-3 block">Register</p>
+          <p className="card-label block">Register</p>
           <h2 className="headline-section">{data.title}</h2>
           {data.description && (
             <p className="mt-5 max-w-md text-base leading-relaxed text-muted">{data.description}</p>

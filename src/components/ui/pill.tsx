@@ -1,4 +1,4 @@
-import type { IconType } from "react-icons";
+import type { AppIconType } from "@/lib/icons";
 import { cn } from "@/lib/utils/cn";
 import { AppIcon } from "@/lib/icons";
 
@@ -9,7 +9,7 @@ export function Pill({
   className,
 }: {
   children: React.ReactNode;
-  icon?: IconType;
+  icon?: AppIconType;
   size?: "default" | "sm";
   className?: string;
 }) {
@@ -50,7 +50,7 @@ export function Tag({
   className,
 }: {
   children: React.ReactNode;
-  icon?: IconType;
+  icon?: AppIconType;
   className?: string;
 }) {
   return (

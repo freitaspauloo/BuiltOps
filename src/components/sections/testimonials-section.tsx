@@ -1,90 +1,71 @@
 "use client";
 
 import Image from "next/image";
+import { useCallback, useEffect, useRef, useState } from "react";
 import type { Testimonial } from "@/lib/types/community";
 import type { MicrositeVersionId } from "@/lib/site-versions";
 import { SectionHeaderSplit, SectionShell } from "@/components/ui/section";
 import { cn } from "@/lib/utils/cn";
 import { AppIcon, UI_ICONS } from "@/lib/icons";
-import { RiStarFill } from "react-icons/ri";
-import { useCarouselA11y, wrapIndex } from "@/lib/hooks/use-carousel-a11y";
+import { useCarouselA11y } from "@/lib/hooks/use-carousel-a11y";
+
+const SLIDE_GAP = 24;
 
 function TestimonialCard({
   testimonial,
-  variant,
+  isActive,
   onSelect,
 }: {
   testimonial: Testimonial;
-  variant: "center" | "side";
+  isActive: boolean;
   onSelect?: () => void;
 }) {
-  const isCenter = variant === "center";
-
   const content = (
     <>
       {testimonial.image && (
-        <div
-          className={cn(
-            "relative shrink-0 overflow-hidden bg-card",
-            isCenter
-              ? "aspect-[4/5] w-full sm:w-[220px] lg:w-[260px]"
-              : "aspect-[4/5] w-full",
-          )}
-        >
+        <div className="relative aspect-[4/5] w-full shrink-0 overflow-hidden bg-card sm:w-[220px] lg:w-[260px]">
           <Image
             src={testimonial.image}
             alt={testimonial.author}
             fill
-            className="object-cover"
-            sizes={isCenter ? "260px" : "200px"}
+            className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
+            sizes="260px"
           />
         </div>
       )}
-      <div
-        className={cn(
-          "flex flex-1 flex-col justify-between bg-card",
-          isCenter ? "p-6 sm:p-7 lg:p-8" : "p-5",
-        )}
-      >
+      <div className="flex flex-1 flex-col justify-between bg-card p-6 sm:p-7 lg:p-8">
         <div>
-          {isCenter && (
-            <div className="mb-4 flex gap-0.5 text-primary">
-              {Array.from({ length: 5 }).map((_, i) => (
-                <AppIcon key={i} icon={RiStarFill} size={14} />
-              ))}
-            </div>
-          )}
-          <blockquote
-            className={cn(
-              "leading-snug text-foreground",
-              isCenter
-                ? "text-base font-medium sm:text-lg lg:text-xl"
-                : "line-clamp-4 text-sm font-medium",
-            )}
-          >
+          <div className="mb-4 flex gap-0.5 text-primary">
+            {Array.from({ length: 5 }).map((_, i) => (
+              <AppIcon
+                key={i}
+                icon={UI_ICONS.star}
+                size={14}
+                className="fill-primary text-primary"
+              />
+            ))}
+          </div>
+          <blockquote className="text-base font-medium leading-snug text-foreground sm:text-lg lg:text-xl">
             &ldquo;{testimonial.quote}&rdquo;
           </blockquote>
         </div>
-        <figcaption className={cn(isCenter ? "mt-6" : "mt-4")}>
-          <p className={cn("font-semibold text-foreground", isCenter ? "text-sm" : "text-xs")}>
-            {testimonial.author}
-          </p>
+        <figcaption className="mt-6">
+          <p className="text-sm font-semibold text-foreground">{testimonial.author}</p>
           {testimonial.role && (
-            <p className={cn("text-muted", isCenter ? "mt-0.5 text-sm" : "mt-0.5 text-xs")}>
-              {testimonial.role}
-            </p>
+            <p className="mt-0.5 text-sm text-muted">{testimonial.role}</p>
           )}
         </figcaption>
       </div>
     </>
   );
 
-  if (isCenter) {
-    return (
-      <figure className="flex w-[min(100%,720px)] shrink-0 flex-col overflow-hidden sm:flex-row">
-        {content}
-      </figure>
-    );
+  const className = cn(
+    "group flex w-[min(100%,720px)] shrink-0 flex-col overflow-hidden transition-opacity duration-500 sm:flex-row",
+    isActive ? "opacity-100" : "opacity-40 hover:opacity-65",
+  );
+
+  if (isActive) {
+    return <figure className={className}>{content}</figure>;
   }
 
   return (
@@ -92,7 +73,7 @@ function TestimonialCard({
       type="button"
       onClick={onSelect}
       aria-label={`View testimonial from ${testimonial.author}`}
-      className="carousel-control flex w-[min(72%,240px)] shrink-0 flex-col overflow-hidden text-left opacity-75 transition-opacity hover:opacity-100 sm:w-[28%] sm:max-w-[240px]"
+      className={cn("carousel-control text-left", className)}
     >
       {content}
     </button>
@@ -107,19 +88,40 @@ export function TestimonialsSection({
   siteVersion?: MicrositeVersionId;
 }) {
   const count = items.length;
+  const trackRef = useRef<HTMLDivElement>(null);
+  const slideRef = useRef<HTMLDivElement>(null);
+  const [offset, setOffset] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
+
   const { active, goPrev, goNext, goTo, regionProps, announcement } = useCarouselA11y(
     count,
     "Testimonial",
   );
 
-  if (count === 0) return null;
+  const measure = useCallback(() => {
+    const slide = slideRef.current;
+    const track = trackRef.current;
+    if (!slide || !track) return;
 
-  const visible =
-    count === 1
-      ? [0]
-      : count === 2
-        ? [wrapIndex(active - 1, count), active]
-        : [wrapIndex(active - 1, count), active, wrapIndex(active + 1, count)];
+    const slideWidth = slide.offsetWidth;
+    setOffset(track.offsetWidth / 2 - slideWidth / 2 - active * (slideWidth + SLIDE_GAP));
+  }, [active]);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 639px)");
+    const updateMobile = () => setIsMobile(mq.matches);
+    updateMobile();
+    mq.addEventListener("change", updateMobile);
+    return () => mq.removeEventListener("change", updateMobile);
+  }, []);
+
+  useEffect(() => {
+    measure();
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
+  }, [measure]);
+
+  if (count === 0) return null;
 
   const navButtons =
     count > 1 ? (
@@ -157,37 +159,35 @@ export function TestimonialsSection({
         {announcement}
       </p>
 
-      <div {...regionProps} className="relative mx-auto w-full max-w-[1200px] overflow-hidden outline-none">
-        <div
-          className={cn(
-            "flex items-stretch justify-center gap-3 sm:gap-4 md:gap-5",
-            count === 1 && "justify-center",
-          )}
-        >
-          {visible.map((itemIndex, position) => {
-            const isCenter = count === 1 || position === 1;
-            const testimonial = items[itemIndex];
-
-            if (isCenter) {
-              return (
-                <TestimonialCard
-                  key={`${testimonial.author}-${itemIndex}-center`}
-                  testimonial={testimonial}
-                  variant="center"
-                />
-              );
-            }
-
-            return (
-              <div key={`${testimonial.author}-${itemIndex}-side`} className="max-sm:hidden">
+      <div
+        {...regionProps}
+        className="relative mx-auto w-full max-w-[1200px] overflow-hidden outline-none"
+      >
+        <div ref={trackRef} className="overflow-hidden py-2">
+          <div
+            className={cn(
+              "flex items-stretch transition-transform duration-700 ease-[var(--ease-out-soft)]",
+              isMobile && "justify-center",
+            )}
+            style={{
+              gap: SLIDE_GAP,
+              transform: count > 1 && !isMobile ? `translateX(${offset}px)` : undefined,
+            }}
+          >
+            {items.map((testimonial, index) => (
+              <div
+                key={`${testimonial.author}-${index}`}
+                ref={index === 0 ? slideRef : undefined}
+                className={cn("shrink-0", index !== active && "max-sm:hidden")}
+              >
                 <TestimonialCard
                   testimonial={testimonial}
-                  variant="side"
-                  onSelect={() => goTo(itemIndex)}
+                  isActive={index === active}
+                  onSelect={index === active ? undefined : () => goTo(index)}
                 />
               </div>
-            );
-          })}
+            ))}
+          </div>
         </div>
 
         {count > 1 && (

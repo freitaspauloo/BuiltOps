@@ -1,11 +1,5 @@
-import type { IconType } from "react-icons";
-import {
-  RiGalleryFill,
-  RiMapPinFill,
-  RiQuestionFill,
-  RiShoppingBagFill,
-  RiStackFill,
-} from "react-icons/ri";
+import type { AppIconType } from "@/lib/icons";
+import { HelpCircle, Images, Layers, MapPin, ShoppingBag } from "lucide-react";
 import type { Community, CommunityStage, SectionId } from "@/lib/types/community";
 import { getNavSections } from "@/lib/sections/visibility";
 
@@ -19,7 +13,7 @@ export type NavGroupItem = {
   type: "group";
   id: string;
   label: string;
-  icon: IconType;
+  icon: AppIconType;
   items: { id: SectionId; label: string }[];
 };
 
@@ -29,7 +23,7 @@ type GroupTemplate = {
   type: "group";
   id: string;
   label: string;
-  icon: IconType;
+  icon: AppIconType;
   sectionIds: SectionId[];
 };
 
@@ -43,14 +37,14 @@ const STAGE_NAV_TEMPLATES: Record<CommunityStage, NavTemplate[]> = {
       type: "group",
       id: "community",
       label: "Community",
-      icon: RiMapPinFill,
+      icon: MapPin,
       sectionIds: ["areaMap", "amenities", "features"],
     },
     {
       type: "group",
       id: "help",
       label: "Help",
-      icon: RiQuestionFill,
+      icon: HelpCircle,
       sectionIds: ["faq"],
     },
   ],
@@ -60,23 +54,24 @@ const STAGE_NAV_TEMPLATES: Record<CommunityStage, NavTemplate[]> = {
       type: "group",
       id: "homes",
       label: "Homes",
-      icon: RiStackFill,
+      icon: Layers,
       sectionIds: ["gallery", "floorplans", "sitePlan"],
     },
     {
       type: "group",
       id: "plan",
       label: "Plan",
-      icon: RiMapPinFill,
+      icon: MapPin,
       sectionIds: ["areaMap", "timeline", "downloads"],
     },
     {
       type: "group",
       id: "help",
       label: "Help",
-      icon: RiQuestionFill,
+      icon: HelpCircle,
       sectionIds: ["faq"],
     },
+    { type: "link", id: "salesOffice" },
   ],
   available: [
     { type: "link", id: "overview" },
@@ -84,30 +79,31 @@ const STAGE_NAV_TEMPLATES: Record<CommunityStage, NavTemplate[]> = {
       type: "group",
       id: "buy",
       label: "Buy",
-      icon: RiShoppingBagFill,
-      sectionIds: ["salesOffice", "promotions", "quickMoveIn"],
+      icon: ShoppingBag,
+      sectionIds: ["promotions", "quickMoveIn"],
     },
     {
       type: "group",
       id: "homes",
       label: "Homes",
-      icon: RiStackFill,
+      icon: Layers,
       sectionIds: ["floorplans", "sitePlan"],
     },
     {
       type: "group",
       id: "explore",
       label: "Explore",
-      icon: RiGalleryFill,
+      icon: Images,
       sectionIds: ["video", "gallery", "areaMap", "amenities", "features", "designCentre", "downloads"],
     },
     {
       type: "group",
       id: "help",
       label: "Help",
-      icon: RiQuestionFill,
+      icon: HelpCircle,
       sectionIds: ["events", "faq"],
     },
+    { type: "link", id: "salesOffice" },
   ],
 };
 

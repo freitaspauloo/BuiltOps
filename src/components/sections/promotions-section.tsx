@@ -16,7 +16,7 @@ export function PromotionsSection({
         {promotions.map((promo) => (
           <div key={promo.title} className="card-surface p-8">
             {promo.badge && (
-              <span className="card-label mb-4 block">{promo.badge}</span>
+              <span className="card-label block">{promo.badge}</span>
             )}
             <h3 className="text-xl font-bold">{promo.title}</h3>
             <p className="mt-3 text-sm leading-relaxed text-body">{promo.description}</p>

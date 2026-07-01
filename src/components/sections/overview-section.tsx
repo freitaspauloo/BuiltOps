@@ -2,15 +2,16 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import type { CommunityOverview, QuickFacts } from "@/lib/types/community";
-import { Pill, PillGroup } from "@/components/ui/pill";
-import { AppIcon, getSnapshotIcon } from "@/lib/icons";
+import type { CommunityOverview, QuickFacts, SalesOffice } from "@/lib/types/community";
+import { AppIcon, UI_ICONS } from "@/lib/icons";
 import { cn } from "@/lib/utils/cn";
-import { RiPlayFill } from "react-icons/ri";
+import { Button } from "@/components/ui/button";
+import { SalesOfficeVisitDetails } from "./sales-office-section";
 
 type OverviewSectionProps = {
   data: CommunityOverview;
   quickFacts?: QuickFacts;
+  salesOffice?: SalesOffice;
   videoUrl?: string;
   videoPoster?: string;
   contact?: { name: string; role: string; image?: string };
@@ -22,6 +23,7 @@ const shellClass =
 export function OverviewSection({
   data,
   quickFacts,
+  salesOffice,
   videoUrl,
   videoPoster,
   contact,
@@ -92,7 +94,11 @@ export function OverviewSection({
                     />
                   )}
                   <span className="absolute inset-0 flex items-center justify-center bg-foreground/20 transition-colors group-hover:bg-foreground/30">
-                    <AppIcon icon={RiPlayFill} size={28} className="text-white drop-shadow-sm" />
+                    <AppIcon
+                      icon={UI_ICONS.play}
+                      size={28}
+                      className="fill-white text-white drop-shadow-sm"
+                    />
                   </span>
                 </Link>
               )}
@@ -101,21 +107,24 @@ export function OverviewSection({
         </article>
 
         <article
-          id="quickFacts"
+          id="salesOffice"
           className="card-surface flex h-full min-h-[22rem] flex-col p-6 md:min-h-[26rem] md:p-8 lg:p-10"
         >
           <p className="card-label">Details</p>
           <h2 className="headline-section text-2xl md:text-3xl lg:text-4xl">
             {quickFacts!.title ?? "At a Glance"}
           </h2>
-          <div className="flex-1" />
-          <PillGroup className="mt-6">
-            {quickFacts!.facts.map((fact) => (
-              <Pill key={fact.label} icon={getSnapshotIcon(fact.label)}>
-                {fact.value}
-              </Pill>
-            ))}
-          </PillGroup>
+
+          {salesOffice && (
+            <>
+              <div className="mt-6 flex-1 md:mt-8">
+                <SalesOfficeVisitDetails data={salesOffice} includeCta={false} />
+              </div>
+              <div className="mt-auto flex items-end pt-8 md:pt-10">
+                <Button href="#registration">Book appointment</Button>
+              </div>
+            </>
+          )}
         </article>
       </div>
     </section>

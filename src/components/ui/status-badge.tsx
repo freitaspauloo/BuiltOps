@@ -7,7 +7,7 @@ export const communityStageLabels: Record<CommunityStage, string> = {
   available: "Available now",
 };
 
-/** Plain text status — no pill chrome */
+/** Plain text status — use card-label / eyebrow for badge chrome on light surfaces */
 export function StatusLabel({
   stage,
   className,

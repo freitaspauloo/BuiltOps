@@ -5,6 +5,7 @@ import { createPortal } from "react-dom";
 import { cn } from "@/lib/utils/cn";
 import type { Community } from "@/lib/types/community";
 import { getNavStructure, type NavStructureItem } from "@/lib/sections/nav-groups";
+import { CommunityCtaButtons } from "@/components/ui/community-cta-buttons";
 import { LosaniLogo } from "@/components/ui/losani-logo";
 
 type OpenMenu = {
@@ -13,27 +14,39 @@ type OpenMenu = {
   anchor: DOMRect;
 };
 
+function navItemClasses(isActive: boolean, inverse: boolean, isOpen = false) {
+  const highlighted = isActive || isOpen;
+
+  return cn(
+    "inline-flex items-center justify-center gap-1 px-4 py-2.5 text-sm font-medium transition-[color,background-color] duration-200",
+    inverse
+      ? highlighted
+        ? "bg-white/14 text-white"
+        : "text-white/72 hover:bg-white/8 hover:text-white"
+      : highlighted
+        ? "bg-primary-muted font-semibold text-primary"
+        : "text-body hover:bg-mist hover:text-foreground",
+  );
+}
+
 function NavLink({
   href,
   label,
   isActive,
   onClick,
+  inverse,
 }: {
   href: string;
   label: string;
   isActive: boolean;
   onClick?: () => void;
+  inverse?: boolean;
 }) {
   return (
     <a
       href={href}
       onClick={onClick}
-      className={cn(
-        "relative whitespace-nowrap px-3 py-4 text-sm font-medium transition-colors",
-        isActive
-          ? "text-primary after:absolute after:inset-x-2 after:bottom-2 after:h-0.5 after:bg-primary"
-          : "text-body hover:text-foreground",
-      )}
+      className={cn("relative whitespace-nowrap", navItemClasses(isActive, Boolean(inverse)))}
     >
       {label}
     </a>
@@ -57,7 +70,10 @@ export function StickyNav({ community }: { community: Community }) {
 
   useEffect(() => {
     const hero = document.getElementById("hero");
-    if (!hero) return;
+    if (!hero) {
+      setStuck(true);
+      return;
+    }
     const observer = new IntersectionObserver(
       ([entry]) => setStuck(!entry.isIntersecting),
       { threshold: 0, rootMargin: "0px 0px 0px 0px" },
@@ -67,7 +83,7 @@ export function StickyNav({ community }: { community: Community }) {
   }, []);
 
   useEffect(() => {
-    document.documentElement.style.setProperty("--nav-height", "4.25rem");
+    document.documentElement.style.setProperty("--nav-height", "5.5rem");
     return () => {
       document.documentElement.style.removeProperty("--nav-height");
     };
@@ -151,15 +167,22 @@ export function StickyNav({ community }: { community: Community }) {
   const isGroupActive = (groupId: string, ids: string[]) =>
     ids.includes(active) || openMenu?.id === groupId;
 
-  const linkState = (isActive: boolean) =>
+  const linkState = (isActive: boolean, inverse: boolean, isOpen = false) =>
+    cn("relative whitespace-nowrap text-left lg:text-center", navItemClasses(isActive, inverse, isOpen));
+
+  const mobileItemClasses = (isActive: boolean, inverse: boolean) =>
     cn(
-      "relative whitespace-nowrap px-3 py-4 text-left text-sm font-medium transition-colors lg:py-4 lg:text-center",
-      isActive
-        ? "text-primary after:absolute after:inset-x-2 after:bottom-2 after:h-0.5 after:bg-primary lg:after:bottom-2"
-        : "text-body hover:text-foreground",
+      "block w-full px-4 py-3.5 text-left text-sm font-medium transition-[color,background-color] duration-200",
+      inverse
+        ? isActive
+          ? "bg-white/14 text-white"
+          : "text-white/72 hover:bg-white/8 hover:text-white"
+        : isActive
+          ? "bg-primary-muted font-semibold text-primary"
+          : "text-body hover:bg-mist hover:text-foreground",
     );
 
-  const renderMobileLinks = () => (
+  const renderMobileLinks = (inverse: boolean) => (
     <div className="flex flex-col py-2">
       {structure.map((item) => {
         if (item.type === "link") {
@@ -169,13 +192,19 @@ export function StickyNav({ community }: { community: Community }) {
               href={`#${item.id}`}
               label={item.label}
               isActive={active === item.id}
+              inverse={inverse}
               onClick={() => setMobileOpen(false)}
             />
           );
         }
         return (
-          <div key={item.id} className="border-t border-border">
-            <p className="px-3 pt-4 pb-1 text-xs font-semibold uppercase tracking-wider text-muted">
+          <div key={item.id} className={cn("border-t", inverse ? "border-white/15" : "border-border")}>
+            <p
+              className={cn(
+                "px-3 pt-4 pb-1 text-xs font-semibold uppercase tracking-wider",
+                inverse ? "text-white/50" : "text-muted",
+              )}
+            >
               {item.label}
             </p>
             {item.items.map((child) => (
@@ -183,10 +212,7 @@ export function StickyNav({ community }: { community: Community }) {
                 key={child.id}
                 type="button"
                 onClick={() => navigate(child.id)}
-                className={cn(
-                  "block w-full px-3 py-3 text-left text-sm font-medium transition-colors",
-                  active === child.id ? "text-primary" : "text-body hover:text-foreground",
-                )}
+                className={mobileItemClasses(active === child.id, inverse)}
               >
                 {child.label}
               </button>
@@ -197,21 +223,28 @@ export function StickyNav({ community }: { community: Community }) {
     </div>
   );
 
+  const overHero = !stuck;
+
   return (
     <>
       <header
         ref={navRef}
         className={cn(
-          "relative z-50 mb-3 w-full bg-background transition-[box-shadow,background] duration-300",
-          stuck && "sticky top-0 mb-0 border-b border-border/80 bg-background/95 backdrop-blur-md",
+          "fixed inset-x-0 top-0 z-50 w-full transition-[box-shadow,background-color,border-color] duration-300",
+          overHero
+            ? "border-b border-transparent bg-transparent"
+            : "border-b border-border/80 bg-background/95 backdrop-blur-md",
         )}
       >
-        <nav aria-label="Community sections" className="grid grid-cols-[auto_1fr_auto] items-center gap-2 lg:gap-4">
-          <div className="flex shrink-0 items-center py-2">
-            <LosaniLogo />
+        <nav
+          aria-label="Community sections"
+          className="hero-frame-sides grid min-h-[5.5rem] grid-cols-[auto_1fr_auto] items-center gap-3 lg:gap-5"
+        >
+          <div className="flex shrink-0 items-center py-3">
+            <LosaniLogo inverse={overHero} />
           </div>
 
-          <div className="hidden min-w-0 items-center justify-center lg:flex">
+          <div className="hidden min-w-0 items-center justify-center gap-0.5 lg:flex">
             {structure.map((item) => {
               if (item.type === "link") {
                 return (
@@ -220,6 +253,7 @@ export function StickyNav({ community }: { community: Community }) {
                     href={`#${item.id}`}
                     label={item.label}
                     isActive={active === item.id}
+                    inverse={overHero}
                     onClick={() => setOpenMenu(null)}
                   />
                 );
@@ -236,12 +270,13 @@ export function StickyNav({ community }: { community: Community }) {
                   aria-expanded={isOpen}
                   aria-haspopup="menu"
                   onClick={(e) => toggleGroup(item, e.currentTarget)}
-                  className={linkState(isActive)}
+                  className={linkState(isActive, overHero, isOpen)}
                 >
                   {item.label}
                   <span
                     className={cn(
-                      "ml-0.5 inline-block text-[0.65em] text-muted transition-transform",
+                      "ml-0.5 inline-block text-[0.65em] transition-transform",
+                      overHero ? "text-white/60" : "text-muted",
                       isOpen && "rotate-180",
                     )}
                     aria-hidden
@@ -253,35 +288,51 @@ export function StickyNav({ community }: { community: Community }) {
             })}
           </div>
 
-          <div className="flex shrink-0 items-center justify-end gap-2">
+          <div className="flex shrink-0 items-center justify-end gap-3 py-1">
             <button
               type="button"
-              className="px-2 py-2 text-sm font-medium text-body lg:hidden"
+              className={cn(
+                "px-3 py-2.5 text-sm font-medium lg:hidden",
+                overHero ? "text-white/80 hover:text-white" : "text-body hover:text-foreground",
+              )}
               aria-expanded={mobileOpen}
               aria-controls="mobile-nav-panel"
               onClick={() => setMobileOpen((v) => !v)}
             >
               {mobileOpen ? "Close" : "Menu"}
             </button>
-            <a
-              href="#registration"
-              onClick={() => {
+            <CommunityCtaButtons
+              primaryCta={community.hero.primaryCta}
+              secondaryCta={community.hero.secondaryCta}
+              size="sm"
+              tone={overHero ? "onImage" : "light"}
+              secondaryClassName="hidden lg:inline-flex"
+              onNavigate={() => {
                 setOpenMenu(null);
                 setMobileOpen(false);
               }}
-              className="bg-primary px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-primary-hover lg:px-5"
-            >
-              Register
-            </a>
+            />
           </div>
         </nav>
 
         {mobileOpen && (
           <div
             id="mobile-nav-panel"
-            className="border-t border-border bg-background lg:hidden"
+            className={cn(
+              "border-t lg:hidden",
+              overHero ? "border-white/15 bg-black/40 backdrop-blur-md" : "border-border bg-background",
+            )}
           >
-            {renderMobileLinks()}
+            {renderMobileLinks(overHero)}
+            <div className={cn("border-t px-3 py-4", overHero ? "border-white/15" : "border-border")}>
+              <CommunityCtaButtons
+                primaryCta={community.hero.primaryCta}
+                secondaryCta={community.hero.secondaryCta}
+                size="sm"
+                tone={overHero ? "onImage" : "light"}
+                onNavigate={() => setMobileOpen(false)}
+              />
+            </div>
           </div>
         )}
       </header>
@@ -292,9 +343,9 @@ export function StickyNav({ community }: { community: Community }) {
           <div
             ref={menuRef}
             role="menu"
-            className="fixed z-[300] hidden w-max min-w-[11rem] max-w-[min(16rem,calc(100vw-2rem))] border border-border bg-background py-1 shadow-[var(--shadow-card-hover)] lg:block"
+            className="fixed z-[300] hidden w-max min-w-[11rem] max-w-[min(16rem,calc(100vw-2rem))] border border-border bg-background py-2 shadow-[var(--shadow-card-hover)] lg:block"
             style={{
-              top: openMenu.anchor.bottom + 4,
+              top: openMenu.anchor.bottom + 8,
               left: openMenu.anchor.left + openMenu.anchor.width / 2,
               transform: "translateX(-50%)",
             }}
@@ -306,8 +357,10 @@ export function StickyNav({ community }: { community: Community }) {
                 role="menuitem"
                 onClick={() => navigate(child.id)}
                 className={cn(
-                  "block w-full px-4 py-2.5 text-left text-sm font-medium transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-primary",
-                  active === child.id ? "text-primary" : "text-body hover:text-foreground",
+                  "block w-full px-4 py-3 text-left text-sm font-medium transition-[color,background-color] duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-primary",
+                  active === child.id
+                    ? "bg-primary-muted font-semibold text-primary"
+                    : "text-body hover:bg-mist hover:text-foreground",
                 )}
               >
                 {child.label}

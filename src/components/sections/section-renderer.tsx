@@ -6,6 +6,7 @@ import { StickyNav } from "./sticky-nav";
 import { OverviewSection } from "./overview-section";
 import { VisionSection } from "./vision-section";
 import { QuickFactsSection } from "./quick-facts-section";
+import { QuickFactsBentoSection } from "./quick-facts-bento-section";
 import { VideoSection } from "./video-section";
 import { GallerySection } from "./gallery-section";
 import { AreaMapSection } from "./area-map-section";
@@ -55,6 +56,7 @@ function renderSection(
           <OverviewSection
             data={community.overview}
             quickFacts={community.quickFacts}
+            salesOffice={community.salesOffice}
             videoUrl={community.videoUrl}
             videoPoster={community.gallery?.[0]?.url ?? community.hero.heroImage}
             contact={community.salesOffice?.team?.[0]}
@@ -62,15 +64,21 @@ function renderSection(
         )
       ) : null;
     case "quickFacts":
-      return community.overview && community.quickFacts?.facts.length
-        ? null
-        : community.quickFacts
-          ? <QuickFactsSection data={community.quickFacts} siteVersion={siteVersion} />
-          : null;
+      return community.quickFacts?.facts.length
+        ? siteVersion === "v2"
+          ? <QuickFactsBentoSection data={community.quickFacts} siteVersion={siteVersion} />
+          : community.overview
+            ? null
+            : <QuickFactsSection data={community.quickFacts} siteVersion={siteVersion} />
+        : null;
     case "salesOffice":
-      return community.salesOffice ? (
-        <SalesOfficeSection data={community.salesOffice} siteVersion={siteVersion} />
-      ) : null;
+      return community.overview &&
+        community.quickFacts?.facts.length &&
+        community.salesOffice
+        ? null
+        : community.salesOffice
+          ? <SalesOfficeSection data={community.salesOffice} siteVersion={siteVersion} />
+          : null;
     case "promotions":
       return community.promotions ? (
         <PromotionsSection promotions={community.promotions} siteVersion={siteVersion} />
@@ -161,20 +169,24 @@ export function SectionRenderer({ community }: { community: Community }) {
   const siteVersion = parseMicrositeVersion(community.micrositeVersion);
   const ordered = getOrderedSections(community);
   const isV1 = siteVersion === "v1";
+  const showHero = isSectionVisible(community, "hero");
 
   return (
     <>
-      <div className="hero-frame-sides min-w-0 max-w-full">
-        {isV1 ? <StickyNavV1 community={community} /> : <StickyNav community={community} />}
+      {isV1 ? <StickyNavV1 community={community} /> : <StickyNav community={community} />}
+
+      {showHero &&
+        (isV1 ? (
+          <HeroSectionV1 data={community.hero} />
+        ) : (
+          <HeroSection data={community.hero} quickFacts={community.quickFacts} />
+        ))}
+
+      <div className="relative z-10 bg-background">
+        {ordered.map((id) => (
+          <div key={id}>{renderSection(community, id, siteVersion)}</div>
+        ))}
       </div>
-      {isSectionVisible(community, "hero") && (
-        <div className="hero-frame-inset min-w-0 max-w-full pt-0">
-          {isV1 ? <HeroSectionV1 data={community.hero} /> : <HeroSection data={community.hero} />}
-        </div>
-      )}
-      {ordered.map((id) => (
-        <div key={id}>{renderSection(community, id, siteVersion)}</div>
-      ))}
     </>
   );
 }

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { RiHotelBedFill, RiRulerFill, RiShieldCheckFill, RiWifiFill } from "react-icons/ri";
+import { Bed, Ruler, ShieldCheck, Wifi } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Pill, PillGroup } from "@/components/ui/pill";
 import { StatusLabel } from "@/components/ui/status-badge";
@@ -23,8 +23,9 @@ const colors = [
   { name: "Body", value: "#5A5250", var: "--color-body" },
   { name: "Emphasis", value: "#486268", var: "--color-emphasis" },
   { name: "Muted", value: "#A1B2B4", var: "--color-muted" },
-  { name: "Teal (Primary)", value: "#0E5B72", var: "--color-primary" },
-  { name: "Teal Light", value: "#1A6D88", var: "--color-primary-light" },
+  { name: "Tide Blue (Primary)", value: "#002934", var: "--color-primary" },
+  { name: "Tide Blue Light", value: "#004556", var: "--color-primary-light" },
+  { name: "Tide Blue Muted", value: "#E8EEF0", var: "--color-primary-muted" },
   { name: "Teal Mid", value: "#4895A2", var: "--color-teal-mid" },
   { name: "Nav Cyan", value: "#1BA1B7", var: "--color-nav" },
   { name: "Ambient Top", value: "#58BBCA", var: "--color-ambient-top" },
@@ -233,10 +234,10 @@ export default function DesignHubPage() {
               <div className="card-surface p-8">
                 <p className="eyebrow mb-6">Pills</p>
                 <PillGroup>
-                  <Pill icon={RiHotelBedFill}>3 beds</Pill>
-                  <Pill icon={RiRulerFill}>2,115 sqft</Pill>
-                  <Pill icon={RiWifiFill}>Smart home ready</Pill>
-                  <Pill icon={RiShieldCheckFill}>Tarion warranty</Pill>
+                  <Pill icon={Bed}>3 beds</Pill>
+                  <Pill icon={Ruler}>2,115 sqft</Pill>
+                  <Pill icon={Wifi}>Smart home ready</Pill>
+                  <Pill icon={ShieldCheck}>Tarion warranty</Pill>
                 </PillGroup>
               </div>
               <div className="card-surface p-8">

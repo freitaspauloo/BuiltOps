@@ -36,6 +36,7 @@ const STAGE_SECTION_ORDER: Record<CommunityStage, SectionId[]> = {
   coming_soon: [
     "overview",
     "gallery",
+    "quickFacts",
     "floorplans",
     "sitePlan",
     "areaMap",
@@ -43,18 +44,18 @@ const STAGE_SECTION_ORDER: Record<CommunityStage, SectionId[]> = {
     "downloads",
     "timeline",
     "designCentre",
-    "salesOffice",
     "features",
     "testimonials",
     "faq",
     "registration",
     "similarCommunities",
+    "salesOffice",
   ],
   available: [
     "overview",
-    "salesOffice",
     "promotions",
     "quickMoveIn",
+    "quickFacts",
     "floorplans",
     "sitePlan",
     "video",
@@ -69,6 +70,7 @@ const STAGE_SECTION_ORDER: Record<CommunityStage, SectionId[]> = {
     "faq",
     "registration",
     "similarCommunities",
+    "salesOffice",
   ],
 };
 
@@ -168,10 +170,9 @@ const NAV_LABELS: Record<SectionId, string> = {
 /** Sticky nav — doc labels per stage, filtered to visible sections */
 const STAGE_NAV_ORDER: Record<CommunityStage, SectionId[]> = {
   future: ["vision", "overview", "areaMap", "amenities", "features", "faq", "registration"],
-  coming_soon: ["overview", "gallery", "floorplans", "sitePlan", "areaMap", "timeline", "downloads", "faq", "registration"],
+  coming_soon: ["overview", "gallery", "floorplans", "sitePlan", "areaMap", "timeline", "downloads", "faq", "registration", "salesOffice"],
   available: [
     "overview",
-    "salesOffice",
     "promotions",
     "quickMoveIn",
     "floorplans",
@@ -186,6 +187,7 @@ const STAGE_NAV_ORDER: Record<CommunityStage, SectionId[]> = {
     "events",
     "faq",
     "registration",
+    "salesOffice",
   ],
 };
 

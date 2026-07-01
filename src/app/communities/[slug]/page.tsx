@@ -3,6 +3,7 @@ import { fetchCommunity } from "@/lib/data/get-community";
 import { getAllCommunitySlugs } from "@/lib/data/seed-benchmark";
 import { SectionRenderer } from "@/components/sections/section-renderer";
 import { CommunityFooter } from "@/components/layout/community-chrome";
+import { ScrollToHeroOnLoad } from "@/components/layout/scroll-to-hero-on-load";
 import { parseMicrositeVersion } from "@/lib/site-versions";
 
 export async function generateStaticParams() {
@@ -25,11 +26,14 @@ export default async function CommunityPage({
   const micrositeVersion = parseMicrositeVersion(versionParam ?? community.micrositeVersion);
 
   return (
-    <div className="relative min-w-0 overflow-x-clip">
-      <main>
+    <div className="relative isolate min-w-0 overflow-x-clip">
+      <ScrollToHeroOnLoad />
+      <main className="relative">
         <SectionRenderer community={{ ...community, micrositeVersion }} />
       </main>
-      <CommunityFooter />
+      <div className="relative z-10">
+        <CommunityFooter hero={community.hero} />
+      </div>
     </div>
   );
 }

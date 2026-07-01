@@ -1,57 +1,78 @@
-import type { IconType } from "react-icons";
+import type { LucideIcon } from "lucide-react";
 import {
-  RiArrowDownSFill,
-  RiArrowLeftFill,
-  RiArrowRightFill,
-  RiBusFill,
-  RiCalendarCheckFill,
-  RiCalendarFill,
-  RiCheckboxCircleFill,
-  RiDownloadFill,
-  RiDropFill,
-  RiFileTextFill,
-  RiGalleryFill,
-  RiGobletFill,
-  RiGraduationCapFill,
-  RiHome4Fill,
-  RiHotelBedFill,
-  RiInformationFill,
-  RiLayoutGridFill,
-  RiLeafFill,
-  RiMapPinFill,
-  RiMapFill,
-  RiMailFill,
-  RiMovieFill,
-  RiPaletteFill,
-  RiPercentFill,
-  RiPhoneFill,
-  RiPlantFill,
-  RiPriceTag3Fill,
-  RiQuestionFill,
-  RiRestaurantFill,
-  RiRulerFill,
-  RiShieldCheckFill,
-  RiShoppingBagFill,
-  RiSparklingFill,
-  RiStackFill,
-  RiStarFill,
-  RiStoreFill,
-  RiTimeFill,
-  RiWifiFill,
-} from "react-icons/ri";
+  Bed,
+  Bus,
+  Calendar,
+  CalendarCheck,
+  CheckCircle2,
+  ChevronDown,
+  ChevronLeft,
+  ChevronRight,
+  Clock,
+  Download,
+  Droplet,
+  Facebook,
+  FileText,
+  GraduationCap,
+  HelpCircle,
+  Home,
+  Images,
+  Info,
+  Instagram,
+  Layers,
+  LayoutGrid,
+  Leaf,
+  Linkedin,
+  Mail,
+  Map,
+  MapPin,
+  Palette,
+  Percent,
+  Phone,
+  Play,
+  Ruler,
+  ShieldCheck,
+  ShoppingBag,
+  Sparkles,
+  Sprout,
+  Star,
+  Store,
+  Tag,
+  Trees,
+  UtensilsCrossed,
+  Video,
+  Wifi,
+  Wine,
+} from "lucide-react";
 import { cn } from "@/lib/utils/cn";
 import type { SectionId } from "@/lib/types/community";
 
-/** Sharp solid icons — Remix Fill only (angular glyphs, no outlines) */
+/** Thin-stroke Lucide icons — luxury line weight across the product */
+export type AppIconType = LucideIcon;
+
+export const ICON_STROKE = 1.25;
 
 export type AppIconProps = {
-  icon: IconType;
+  icon: AppIconType;
   className?: string;
   size?: number;
+  strokeWidth?: number;
 };
 
-export function AppIcon({ icon: Icon, className, size = 20 }: AppIconProps) {
-  return <Icon className={cn("shrink-0", className)} size={size} aria-hidden />;
+export function AppIcon({
+  icon: Icon,
+  className,
+  size = 20,
+  strokeWidth = ICON_STROKE,
+}: AppIconProps) {
+  return (
+    <Icon
+      className={cn("shrink-0", className)}
+      size={size}
+      strokeWidth={strokeWidth}
+      aria-hidden
+    />
+  );
 }
 
 function normalizeKey(label: string) {
@@ -61,123 +82,132 @@ function normalizeKey(label: string) {
     .replace(/^_|_$/g, "");
 }
 
-const SNAPSHOT_ICONS: Record<string, IconType> = {
-  price_from: RiPriceTag3Fill,
-  starting_price: RiPriceTag3Fill,
-  home_types: RiHome4Fill,
-  homes: RiHome4Fill,
-  bedrooms: RiHotelBedFill,
-  beds: RiHotelBedFill,
-  bathrooms: RiHotelBedFill,
-  area: RiRulerFill,
-  size: RiRulerFill,
-  status: RiCheckboxCircleFill,
-  sales_hours: RiTimeFill,
-  opening: RiCalendarFill,
-  estimated_opening: RiCalendarFill,
-  location: RiMapPinFill,
-  occupancy: RiCalendarFill,
-  price_range: RiPriceTag3Fill,
+const SNAPSHOT_ICONS: Record<string, AppIconType> = {
+  price_from: Tag,
+  starting_price: Tag,
+  home_types: Home,
+  homes: Home,
+  bedrooms: Bed,
+  beds: Bed,
+  collections: Layers,
+  bathrooms: Droplet,
+  area: Ruler,
+  size: Ruler,
+  status: CheckCircle2,
+  sales_hours: Clock,
+  opening: Calendar,
+  estimated_opening: Calendar,
+  location: MapPin,
+  occupancy: Calendar,
+  price_range: Tag,
 };
 
-export function getSnapshotIcon(label: string): IconType {
-  return SNAPSHOT_ICONS[normalizeKey(label)] ?? RiInformationFill;
+export function getSnapshotIcon(label: string): AppIconType {
+  return SNAPSHOT_ICONS[normalizeKey(label)] ?? Info;
 }
 
-export const SECTION_ICONS: Record<SectionId, IconType> = {
-  hero: RiHome4Fill,
-  snapshot: RiLayoutGridFill,
-  vision: RiSparklingFill,
-  overview: RiHome4Fill,
-  quickFacts: RiLayoutGridFill,
-  salesOffice: RiMapPinFill,
-  promotions: RiPercentFill,
-  quickMoveIn: RiCalendarCheckFill,
-  floorplans: RiStackFill,
-  sitePlan: RiMapFill,
-  video: RiMovieFill,
-  gallery: RiGalleryFill,
-  areaMap: RiMapPinFill,
-  amenities: RiPlantFill,
-  features: RiStarFill,
-  downloads: RiDownloadFill,
-  timeline: RiCalendarFill,
-  designCentre: RiPaletteFill,
-  testimonials: RiStarFill,
-  events: RiCalendarFill,
-  faq: RiQuestionFill,
-  registration: RiCalendarCheckFill,
-  similarCommunities: RiHome4Fill,
+export const SECTION_ICONS: Record<SectionId, AppIconType> = {
+  hero: Home,
+  snapshot: LayoutGrid,
+  vision: Sparkles,
+  overview: Home,
+  quickFacts: LayoutGrid,
+  salesOffice: MapPin,
+  promotions: Percent,
+  quickMoveIn: CalendarCheck,
+  floorplans: Layers,
+  sitePlan: Map,
+  video: Video,
+  gallery: Images,
+  areaMap: MapPin,
+  amenities: Sprout,
+  features: Star,
+  downloads: Download,
+  timeline: Calendar,
+  designCentre: Palette,
+  testimonials: Star,
+  events: Calendar,
+  faq: HelpCircle,
+  registration: CalendarCheck,
+  similarCommunities: Home,
 };
 
-export function getSectionIcon(id: SectionId): IconType {
-  return SECTION_ICONS[id] ?? RiInformationFill;
+export function getSectionIcon(id: SectionId): AppIconType {
+  return SECTION_ICONS[id] ?? Info;
 }
 
-const AMENITY_ICONS: Record<string, IconType> = {
-  wine: RiGobletFill,
-  trees: RiPlantFill,
-  school: RiGraduationCapFill,
-  utensils: RiRestaurantFill,
+const AMENITY_ICONS: Record<string, AppIconType> = {
+  wine: Wine,
+  trees: Trees,
+  school: GraduationCap,
+  utensils: UtensilsCrossed,
 };
 
-export function getAmenityIcon(key?: string): IconType {
-  return (key && AMENITY_ICONS[key]) || RiPlantFill;
+export function getAmenityIcon(key?: string): AppIconType {
+  return (key && AMENITY_ICONS[key]) || Sprout;
 }
 
 /** @deprecated use getAmenityIcon — kept for import compatibility */
-export function getAmenityPillIcon(key?: string): IconType {
+export function getAmenityPillIcon(key?: string): AppIconType {
   return getAmenityIcon(key);
 }
 
-const AREA_CATEGORY_ICONS: Record<string, IconType> = {
-  community: RiHome4Fill,
-  sales: RiStoreFill,
-  school: RiGraduationCapFill,
-  park: RiPlantFill,
-  shopping: RiShoppingBagFill,
-  transit: RiBusFill,
+const AREA_CATEGORY_ICONS: Record<string, AppIconType> = {
+  community: Home,
+  sales: Store,
+  school: GraduationCap,
+  park: Trees,
+  shopping: ShoppingBag,
+  transit: Bus,
 };
 
-export function getAreaCategoryPillIcon(category: string): IconType {
-  return AREA_CATEGORY_ICONS[category.toLowerCase()] ?? RiMapPinFill;
+export function getAreaCategoryPillIcon(category: string): AppIconType {
+  return AREA_CATEGORY_ICONS[category.toLowerCase()] ?? MapPin;
 }
 
-const FEATURE_ICONS: Record<string, IconType> = {
-  energy_efficiency: RiLeafFill,
-  smart_home_ready: RiWifiFill,
-  construction_quality: RiStackFill,
-  tarion_warranty: RiShieldCheckFill,
+const FEATURE_ICONS: Record<string, AppIconType> = {
+  energy_efficiency: Leaf,
+  smart_home_ready: Wifi,
+  construction_quality: Layers,
+  tarion_warranty: ShieldCheck,
 };
 
-export function getFeaturePillIcon(title: string): IconType {
-  return FEATURE_ICONS[normalizeKey(title)] ?? RiStarFill;
+export function getFeaturePillIcon(title: string): AppIconType {
+  return FEATURE_ICONS[normalizeKey(title)] ?? Star;
 }
 
 export function getSpecPillIcons() {
   return {
-    beds: RiHotelBedFill,
-    baths: RiDropFill,
-    sqft: RiRulerFill,
-    phase: RiStackFill,
-    moveIn: RiCalendarCheckFill,
-    possession: RiCalendarFill,
-    price: RiPriceTag3Fill,
-    file: RiFileTextFill,
-    offer: RiPriceTag3Fill,
+    beds: Bed,
+    baths: Droplet,
+    sqft: Ruler,
+    phase: Layers,
+    moveIn: CalendarCheck,
+    possession: Calendar,
+    price: Tag,
+    file: FileText,
+    offer: Tag,
   } as const;
 }
 
 export const UI_ICONS = {
-  chevronDown: RiArrowDownSFill,
-  chevronLeft: RiArrowLeftFill,
-  chevronRight: RiArrowRightFill,
-  grid: RiLayoutGridFill,
-  download: RiDownloadFill,
-  phone: RiPhoneFill,
-  mail: RiMailFill,
-  clock: RiTimeFill,
-  mapPin: RiMapPinFill,
-  file: RiFileTextFill,
-  calendarCheck: RiCalendarCheckFill,
+  chevronDown: ChevronDown,
+  chevronLeft: ChevronLeft,
+  chevronRight: ChevronRight,
+  grid: LayoutGrid,
+  download: Download,
+  phone: Phone,
+  mail: Mail,
+  clock: Clock,
+  mapPin: MapPin,
+  file: FileText,
+  calendarCheck: CalendarCheck,
+  play: Play,
+  star: Star,
+} as const;
+
+export const SOCIAL_ICONS = {
+  facebook: Facebook,
+  instagram: Instagram,
+  linkedin: Linkedin,
 } as const;

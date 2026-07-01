@@ -33,6 +33,12 @@ export function boundsAroundPoint(
   };
 }
 
+export function centerFromPoints(points: MapPoint[]): { lat: number; lng: number } {
+  const lat = points.reduce((sum, point) => sum + point.lat, 0) / points.length;
+  const lng = points.reduce((sum, point) => sum + point.lng, 0) / points.length;
+  return { lat, lng };
+}
+
 export function buildOsmEmbedUrl(
   bounds: MapBounds,
   marker?: { lat: number; lng: number },
@@ -47,7 +53,33 @@ export function buildOsmEmbedUrl(
   return `https://www.openstreetmap.org/export/embed.html?${params.toString()}`;
 }
 
+export function zoomFromBounds(bounds: MapBounds): number {
+  const span = Math.max(bounds.maxLat - bounds.minLat, bounds.maxLng - bounds.minLng);
+  if (span > 0.15) return 10;
+  if (span > 0.08) return 11;
+  if (span > 0.04) return 12;
+  if (span > 0.02) return 13;
+  if (span > 0.01) return 14;
+  return 15;
+}
+
+export function buildGoogleMapsEmbedUrl(
+  center: { lat: number; lng: number },
+  zoom: number,
+  label?: string,
+): string {
+  const query = label
+    ? encodeURIComponent(`${center.lat},${center.lng} (${label})`)
+    : `${center.lat},${center.lng}`;
+  return `https://maps.google.com/maps?q=${query}&hl=en&z=${zoom}&output=embed`;
+}
+
 export function googleMapsUrl(point: MapPoint): string {
   const query = encodeURIComponent(`${point.lat},${point.lng} (${point.label})`);
   return `https://www.google.com/maps/search/?api=1&query=${query}`;
+}
+
+export function googleMapsDirectionsUrl(point: MapPoint): string {
+  const destination = encodeURIComponent(`${point.lat},${point.lng}`);
+  return `https://www.google.com/maps/dir/?api=1&destination=${destination}`;
 }
