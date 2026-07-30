@@ -1,0 +1,15 @@
+{
+  "name": "builtops",
+  "install": "npm install",
+  "terminals": [
+    {
+      "name": "dev",
+      "command": "npm run dev",
+      "description": "Next.js (Turbopack) on http://localhost:3000 — seed data works without Sanity"
+    }
+  ],
+  "ports": [
+    { "name": "web", "port": 3000 },
+    { "name": "sanity", "port": 3333 }
+  ]
+}
