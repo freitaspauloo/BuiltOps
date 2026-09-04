@@ -28,7 +28,7 @@ export function SimilarCommunitiesSection({
             </div>
             <div className="p-5">
               <span className="card-label block">{communityStageLabels[c.stage]}</span>
-              <h3 className="text-lg font-bold text-foreground transition-colors group-hover:text-primary">
+              <h3 className="card-title transition-colors group-hover:text-primary">
                 {c.name}
               </h3>
               <p className="mt-0.5 text-sm text-muted">

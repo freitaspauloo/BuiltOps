@@ -3,6 +3,32 @@ import { HelpCircle, Images, Layers, MapPin, ShoppingBag } from "lucide-react";
 import type { Community, CommunityStage, SectionId } from "@/lib/types/community";
 import { getNavSections } from "@/lib/sections/visibility";
 
+/** One line of orientation per section, shown beside the label in the nav panel. */
+const SECTION_BLURBS: Partial<Record<SectionId, string>> = {
+  overview: "What the community is and where it sits",
+  promotions: "Current incentives and limited-time offers",
+  quickMoveIn: "Homes you can close on in weeks, not years",
+  floorplans: "Every model, size and price in this release",
+  sitePlan: "Lot-by-lot availability across the site",
+  video: "A three-minute walk through the community",
+  gallery: "Elevations, interiors and the streetscape",
+  areaMap: "Schools, parks, transit and shopping nearby",
+  amenities: "The lifestyle around your front door",
+  features: "How these homes are specified and built",
+  downloads: "Brochures, price lists and site plans",
+  designCentre: "Personalise finishes with our designers",
+  testimonials: "What buyers and homeowners tell us",
+  events: "Upcoming openings and sales events",
+  faq: "Answers to the questions we hear most",
+  timeline: "Milestones from announcement to move-in",
+  salesOffice: "Address, hours and how to reach the team",
+  vision: "The plan for this community",
+};
+
+export function getSectionBlurb(id: SectionId): string | undefined {
+  return SECTION_BLURBS[id];
+}
+
 export type NavLinkItem = {
   type: "link";
   id: SectionId;

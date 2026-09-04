@@ -73,7 +73,7 @@ export function RegistrationSection({ data }: { data: RegistrationForm }) {
 
   return (
     <SectionShell id="registration">
-      <div className="archun-card grid w-full gap-12 p-8 md:p-12 lg:grid-cols-2 lg:gap-20 lg:p-16">
+      <div className="card-surface grid w-full gap-12 p-8 md:p-12 lg:grid-cols-2 lg:gap-20 lg:p-16">
         <div>
           <p className="card-label block">Register</p>
           <h2 className="headline-section">{data.title}</h2>

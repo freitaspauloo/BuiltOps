@@ -5,7 +5,7 @@ import type { CommunityHero } from "@/lib/types/community";
 export function HeroSectionV1({ data }: { data: CommunityHero }) {
   return (
     <section id="hero" className="bg-transparent">
-      <div className="hero-frame relative min-h-[min(82svh,880px)]">
+      <div className="relative min-h-[min(82svh,880px)]">
         <div className="absolute inset-0 overflow-hidden">
           <Image
             src={data.heroImage}

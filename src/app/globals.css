@@ -32,6 +32,7 @@
   --color-ambient-bottom: #b8e2e8;
   --color-accent: #db6a1d;
   --color-accent-hover: #c25e18;
+  --color-forest: #2d6a4f;
 
   /* ── Legacy aliases (kept for import compatibility) ── */
   --color-babu: #4895a2;
@@ -58,9 +59,26 @@
 
   --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
   --transition-base: 250ms ease;
+}
 
-  /* Framed hero — white/ambient canvas visible on top + sides */
-  --hero-frame-inset: 30px;
+/* ── Page rhythm ───────────────────────────────────────
+   One gutter + one max width for every band on the page —
+   nav, hero, sections and footer share the same left edge. */
+:root {
+  --page-max: 1320px;
+  --page-gutter: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  :root {
+    --page-gutter: 2.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --page-gutter: 4rem;
+  }
 }
 
 html {
@@ -91,16 +109,18 @@ body {
 }
 
 /* ── Layout ───────────────────────────────────────────── */
+
+/* The single horizontal frame. Content lands on the same left/right
+   edge at every breakpoint, whatever band it belongs to. */
+.page-bounds {
+  width: 100%;
+  margin-inline: auto;
+  max-width: calc(var(--page-max) + var(--page-gutter) * 2);
+  padding-inline: var(--page-gutter);
+}
+
 .section-padding {
-  @apply px-6 py-20 md:px-10 md:py-24 lg:px-16 lg:py-28;
-}
-
-.container-wide {
-  @apply mx-auto max-w-[1320px];
-}
-
-.container-narrow {
-  @apply mx-auto max-w-3xl;
+  @apply py-20 md:py-24 lg:py-28;
 }
 
 /* ── Eyebrow: light teal section label pill ───────────── */
@@ -113,24 +133,14 @@ body {
   @apply mb-4 inline-flex w-fit items-center rounded-none bg-primary-muted px-3.5 py-1.5 text-sm font-medium text-primary;
 }
 
+/* Overline for sub-groups inside a panel or column, where a teal pill would
+   compete with the section eyebrow above it. */
+.label-overline {
+  @apply text-xs font-semibold uppercase tracking-wider text-muted;
+}
+
 .prose-editorial {
   @apply text-base leading-relaxed text-body md:text-lg;
-}
-
-/* ── Hero frame ───────────────────────────────────────── */
-.hero-frame-inset {
-  padding-top: var(--hero-frame-inset);
-  padding-left: var(--hero-frame-inset);
-  padding-right: var(--hero-frame-inset);
-}
-
-.hero-frame-sides {
-  padding-left: var(--hero-frame-inset);
-  padding-right: var(--hero-frame-inset);
-}
-
-.hero-frame {
-  border-radius: 0;
 }
 
 /* Fixed hero backdrop — house image pinned under scrolling content */
@@ -210,31 +220,27 @@ body {
   @apply text-primary;
 }
 
-/* ── Editorial metrics grid — exaggerated key-numbers layout ─ */
-.metrics-editorial-grid {
-  @apply grid grid-cols-1 border-t border-l border-foreground/10 md:grid-cols-2;
+/* ── Metrics band — key numbers read across one row of hairline cells ─ */
+.metrics-band {
+  @apply grid grid-cols-2 border-t border-l border-foreground/10 md:grid-cols-3 lg:grid-cols-6;
 }
 
-.metrics-editorial-cell {
-  @apply flex min-h-[12rem] flex-col justify-between border-r border-b border-foreground/10 p-6 md:min-h-[14rem] md:p-8 lg:min-h-[16rem] lg:p-10 xl:min-h-[18rem];
+.metrics-band-cell {
+  @apply flex min-w-0 flex-col justify-between gap-4 border-r border-b border-foreground/10 px-5 py-6 md:px-6 md:py-8 lg:px-6 lg:py-10;
 }
 
-.metrics-editorial-header {
-  @apply md:row-span-2 md:min-h-[28rem] lg:min-h-[32rem] xl:min-h-[36rem];
+.metrics-band-value {
+  @apply font-display text-pretty font-medium leading-[1.05] tracking-tight text-foreground;
+  font-size: clamp(1.375rem, 2vw, 2rem);
+  overflow-wrap: break-word;
 }
 
-.metrics-editorial-value {
-  @apply font-display max-w-[16ch] text-pretty font-extralight leading-[0.95] tracking-tight text-foreground;
-  font-size: clamp(2.5rem, 5.5vw, 4.75rem);
+.metrics-band-value--long {
+  font-size: clamp(1.125rem, 1.5vw, 1.5rem);
 }
 
-.metrics-editorial-value--long {
-  font-size: clamp(1.875rem, 3.75vw, 3.5rem);
-  line-height: 1;
-}
-
-.metrics-editorial-label {
-  @apply max-w-[20ch] text-sm leading-relaxed text-muted;
+.metrics-band-label {
+  @apply text-xs leading-snug text-muted md:text-sm;
 }
 
 /* Legacy overlay — used by v1 hero */
@@ -258,10 +264,6 @@ body {
 }
 
 /* ── Type scale ───────────────────────────────────────── */
-.headline-editorial {
-  @apply text-2xl font-semibold leading-snug tracking-tight text-foreground md:text-3xl lg:text-[2.5rem] lg:leading-[1.15];
-}
-
 .headline-hero {
   @apply font-display max-w-none text-pretty font-medium leading-[1.02] tracking-tight text-white;
   font-size: clamp(2.75rem, 7vw, 5.5rem);
@@ -271,31 +273,15 @@ body {
   @apply font-display text-3xl font-medium tracking-tight text-foreground md:text-4xl lg:text-5xl lg:leading-[1.05];
 }
 
-.stat-value {
-  @apply text-4xl font-bold tracking-tight text-foreground md:text-5xl;
+/* Headline inside a card or grid cell — one step down from a section headline
+   so cards stop hand-rolling text-2xl/3xl/4xl overrides. */
+.headline-card {
+  @apply font-display text-2xl font-medium tracking-tight text-foreground md:text-3xl lg:text-4xl lg:leading-[1.1];
 }
 
-.stat-label {
-  @apply mt-2 text-sm text-muted;
-}
-
-/* ── Snapshot band — compact stat tiles ───────────────── */
-.snapshot-value {
-  font-family: var(--font-sans), system-ui, sans-serif;
-  font-size: clamp(1.0625rem, 1.35vw, 1.375rem);
-  font-weight: 700;
-  line-height: 1.25;
-  letter-spacing: -0.02em;
-  color: var(--color-foreground);
-  overflow-wrap: break-word;
-}
-
-.snapshot-label {
-  margin-top: 0.25rem;
-  font-family: var(--font-sans), system-ui, sans-serif;
-  font-size: 0.75rem;
-  line-height: 1.35;
-  color: var(--color-muted);
+/* Title of a listing card — sans, one weight and one size everywhere. */
+.card-title {
+  @apply text-lg font-bold leading-snug text-foreground;
 }
 
 /* ── Pills — sharp tags with icon + label ─────────────── */
@@ -307,16 +293,7 @@ body {
   @apply gap-1.5 px-3 py-1.5 text-xs;
 }
 
-/* Legacy alias */
-.tag {
-  @apply inline-flex items-center gap-2 rounded-none border border-foreground/10 bg-transparent px-5 py-2.5 text-sm font-medium text-foreground;
-}
-
 /* ── Cards: flat #F6F6F6 on white — no border, no shadow ─ */
-.archun-card {
-  @apply bg-card;
-}
-
 .card-surface {
   @apply bg-card;
 }
@@ -387,9 +364,35 @@ body {
     box-shadow 0.35s var(--ease-out-soft);
 }
 
+/* Selected thumbnail — white highlighter frame drawn over the image, a tide
+   ring around it and a lift, so the selection reads instantly instead of as a
+   faint brightness pop. */
 .gallery-thumb--active {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(0, 41, 52, 0.18);
+  box-shadow:
+    0 0 0 2px var(--color-primary),
+    0 10px 26px rgba(0, 41, 52, 0.22);
+}
+
+/* Sits above the image, so it dims unselected thumbs and draws the
+   highlighter on the selected one. */
+.gallery-thumb-veil {
+  @apply pointer-events-none absolute inset-0 transition-[background-color,box-shadow] duration-300;
+  background-color: rgba(12, 20, 23, 0.42);
+}
+
+.gallery-thumb:hover .gallery-thumb-veil,
+.gallery-thumb:focus-visible .gallery-thumb-veil {
+  background-color: rgba(12, 20, 23, 0.12);
+}
+
+.gallery-thumb--active .gallery-thumb-veil,
+.gallery-thumb--active:hover .gallery-thumb-veil {
+  background-color: transparent;
+  box-shadow: inset 0 0 0 3px #ffffff;
+}
+
+.gallery-thumb:focus-visible {
+  @apply outline outline-2 outline-offset-2 outline-primary;
 }
 
 .gallery-slide-caption {
@@ -453,8 +456,53 @@ body {
   }
 }
 
-.card-media {
-  @apply overflow-hidden;
+/* ── Accordion — hairline rows, no horizontal scroll rail ── */
+.accordion-list {
+  @apply border-t border-foreground/10;
+}
+
+.accordion-row {
+  @apply border-b border-foreground/10;
+}
+
+.accordion-trigger {
+  @apply flex w-full items-start justify-between gap-6 py-6 text-left transition-colors md:py-7;
+  @apply focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-primary;
+}
+
+.accordion-trigger:hover .accordion-question {
+  @apply text-primary;
+}
+
+.accordion-question {
+  @apply text-base font-bold leading-snug text-foreground transition-colors md:text-lg;
+}
+
+.accordion-marker {
+  @apply flex h-9 w-9 shrink-0 items-center justify-center border border-foreground/15 text-primary transition-colors;
+}
+
+.accordion-trigger:hover .accordion-marker,
+.accordion-trigger[aria-expanded="true"] .accordion-marker {
+  @apply border-primary bg-primary-muted;
+}
+
+.accordion-marker svg {
+  transition: transform 0.25s var(--ease-out-soft);
+}
+
+.accordion-trigger[aria-expanded="true"] .accordion-marker svg {
+  transform: rotate(180deg);
+}
+
+.accordion-answer {
+  @apply max-w-2xl pb-7 pr-12 text-sm leading-relaxed text-body md:text-base;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .accordion-marker svg {
+    transition: none;
+  }
 }
 
 /* ── Form ─────────────────────────────────────────────── */

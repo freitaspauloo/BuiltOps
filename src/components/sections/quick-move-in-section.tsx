@@ -35,7 +35,7 @@ export function QuickMoveInSection({
               />
             </div>
             <div className="p-5">
-              <h3 className="text-lg font-bold text-foreground">{home.address}</h3>
+              <h3 className="card-title">{home.address}</h3>
               <PillGroup size="sm" className="mt-3">
                 <Pill size="sm" icon={spec.moveIn}>Quick move-in</Pill>
                 <Pill size="sm" icon={spec.beds}>{home.beds} beds</Pill>

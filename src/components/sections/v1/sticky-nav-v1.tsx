@@ -95,7 +95,7 @@ export function StickyNavV1({ community }: { community: Community }) {
       <header ref={navRef} className="relative z-50 mb-3 w-full bg-background">
         <nav
           aria-label="Community sections"
-          className="grid grid-cols-[auto_1fr_auto] items-center gap-2 lg:gap-4"
+          className="page-bounds grid grid-cols-[auto_1fr_auto] items-center gap-2 lg:gap-4"
         >
           <div className="flex shrink-0 items-center py-2">
             <LosaniLogo />

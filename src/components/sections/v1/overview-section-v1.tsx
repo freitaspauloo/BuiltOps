@@ -17,7 +17,7 @@ type OverviewSectionProps = {
 };
 
 const shellClass =
-  "scroll-mt-16 scroll-pb-24 bg-background pb-14 pt-6 md:pb-20 md:pt-8 lg:pb-24 hero-frame-sides";
+  "scroll-mt-16 scroll-pb-24 bg-background pb-14 pt-6 md:pb-20 md:pt-8 lg:pb-24";
 
 /** v1 — paired cards with sans-serif card titles, placeholder contact photo */
 export function OverviewSectionV1({
@@ -32,25 +32,27 @@ export function OverviewSectionV1({
   if (!paired) {
     return (
       <section id="overview" className={shellClass}>
-        <ScrollReveal>
-          <p className="eyebrow">Overview</p>
-          <h2 className="font-display max-w-3xl text-2xl font-medium tracking-tight text-foreground md:text-3xl lg:text-4xl">
-            {data.title}
-          </h2>
-        </ScrollReveal>
-        <ScrollReveal delay={0.08} y={32}>
-          <p className="mt-5 max-w-3xl text-base leading-relaxed md:text-lg">
-            <span className="font-semibold text-foreground">{data.introduction}</span>{" "}
-            <span className="text-body">{data.description}</span>
-          </p>
-        </ScrollReveal>
+        <div className="page-bounds">
+          <ScrollReveal>
+            <p className="eyebrow">Overview</p>
+            <h2 className="font-display max-w-3xl text-2xl font-medium tracking-tight text-foreground md:text-3xl lg:text-4xl">
+              {data.title}
+            </h2>
+          </ScrollReveal>
+          <ScrollReveal delay={0.08} y={32}>
+            <p className="mt-5 max-w-3xl text-base leading-relaxed md:text-lg">
+              <span className="font-semibold text-foreground">{data.introduction}</span>{" "}
+              <span className="text-body">{data.description}</span>
+            </p>
+          </ScrollReveal>
+        </div>
       </section>
     );
   }
 
   return (
     <section id="overview" className={cn(shellClass, "!pt-4 md:!pt-5")}>
-      <div className="grid gap-4 md:grid-cols-2 md:gap-5 lg:gap-6">
+      <div className="page-bounds grid gap-4 md:grid-cols-2 md:gap-5 lg:gap-6">
         <ScrollReveal className="h-full">
           <article className="card-surface flex h-full min-h-[22rem] flex-col p-6 md:min-h-[26rem] md:p-8 lg:p-10">
             <h2 className="text-xl font-bold text-foreground md:text-2xl">Description</h2>

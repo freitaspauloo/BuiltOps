@@ -55,7 +55,6 @@ function renderSection(
         ) : (
           <OverviewSection
             data={community.overview}
-            quickFacts={community.quickFacts}
             salesOffice={community.salesOffice}
             videoUrl={community.videoUrl}
             videoPoster={community.gallery?.[0]?.url ?? community.hero.heroImage}
@@ -64,21 +63,19 @@ function renderSection(
         )
       ) : null;
     case "quickFacts":
-      return community.quickFacts?.facts.length
-        ? siteVersion === "v2"
-          ? <QuickFactsBentoSection data={community.quickFacts} siteVersion={siteVersion} />
-          : community.overview
-            ? null
-            : <QuickFactsSection data={community.quickFacts} siteVersion={siteVersion} />
-        : null;
+      if (!community.quickFacts?.facts.length) return null;
+      return siteVersion === "v2" ? (
+        <QuickFactsBentoSection data={community.quickFacts} siteVersion={siteVersion} />
+      ) : community.overview ? null : (
+        <QuickFactsSection data={community.quickFacts} siteVersion={siteVersion} />
+      );
     case "salesOffice":
-      return community.overview &&
-        community.quickFacts?.facts.length &&
-        community.salesOffice
-        ? null
-        : community.salesOffice
-          ? <SalesOfficeSection data={community.salesOffice} siteVersion={siteVersion} />
-          : null;
+      // The overview pairs a sales-centre card next to the description, so the
+      // standalone band would repeat it.
+      if (!community.salesOffice) return null;
+      return community.overview ? null : (
+        <SalesOfficeSection data={community.salesOffice} siteVersion={siteVersion} />
+      );
     case "promotions":
       return community.promotions ? (
         <PromotionsSection promotions={community.promotions} siteVersion={siteVersion} />

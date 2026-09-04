@@ -142,7 +142,9 @@ export function getVisibleSections(community: Community): SectionId[] {
 }
 
 const NAV_LABELS: Record<SectionId, string> = {
-  hero: "Overview",
+  // Not "Overview" — that belongs to the overview section, and two nav entries
+  // must never resolve to the same label.
+  hero: "Top",
   snapshot: "Snapshot",
   vision: "Vision",
   salesOffice: "Visit us",

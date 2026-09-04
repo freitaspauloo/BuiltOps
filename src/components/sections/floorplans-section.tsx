@@ -43,7 +43,7 @@ export function FloorplansSection({
               />
             </div>
             <div className="p-5">
-              <h3 className="text-lg font-bold text-foreground">{plan.name}</h3>
+              <h3 className="card-title">{plan.name}</h3>
               <PillGroup size="sm" className="mt-3">
                 {plan.phase && (
                   <Pill size="sm" icon={spec.phase}>

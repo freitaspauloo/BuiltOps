@@ -1,10 +1,11 @@
 import type { MapPoint } from "@/lib/types/community";
 
+/** Rendered as DOM marker backgrounds, so these stay on the palette tokens. */
 export const AREA_MARKER_COLORS: Record<MapPoint["category"], string> = {
-  community: "#002934",
-  sales: "#4895a2",
-  school: "#1ba1b7",
-  park: "#2d6a4f",
-  shopping: "#5a5250",
-  transit: "#db6a1d",
+  community: "var(--color-primary)",
+  sales: "var(--color-teal-mid)",
+  school: "var(--color-nav)",
+  park: "var(--color-forest)",
+  shopping: "var(--color-body)",
+  transit: "var(--color-accent)",
 };

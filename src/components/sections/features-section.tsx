@@ -15,7 +15,7 @@ export function FeaturesSection({
       <div className="grid gap-5 sm:grid-cols-2">
         {data.items.map((item) => (
           <article key={item.title} className={`${cardSurfaceClass(siteVersion)} p-7 md:p-8`}>
-            <h3 className="text-lg font-bold text-foreground">{item.title}</h3>
+            <h3 className="card-title">{item.title}</h3>
             <p className="mt-2 text-sm leading-relaxed text-body md:text-base">{item.description}</p>
           </article>
         ))}

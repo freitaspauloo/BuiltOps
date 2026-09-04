@@ -12,7 +12,8 @@ export function QuickFactsSection({
   siteVersion?: MicrositeVersionId;
 }) {
   return (
-    <SectionShell id="quickFacts" siteVersion={siteVersion}>      <SectionHeading eyebrow="Details" title={data.title ?? "Quick facts"} />
+    <SectionShell id="quickFacts" siteVersion={siteVersion}>
+      <SectionHeading eyebrow="Details" title={data.title ?? "Quick facts"} />
       <PillGroup>
         {data.facts.map((fact) => (
           <Pill key={fact.label} icon={getSnapshotIcon(fact.label)}>

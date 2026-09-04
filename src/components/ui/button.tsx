@@ -8,11 +8,14 @@ type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   rel?: string;
 };
 
-const sizeStyles: Record<NonNullable<ButtonProps["size"]>, string> = {
+/** One CTA geometry for the whole site — shared with CommunityCtaButtons. */
+export const buttonSizeStyles = {
   sm: "px-5 py-2 text-sm",
   md: "px-6 py-2.5 text-sm",
   lg: "px-8 py-3.5 text-base",
-};
+} as const;
+
+const sizeStyles: Record<NonNullable<ButtonProps["size"]>, string> = buttonSizeStyles;
 
 export function Button({
   variant = "primary",

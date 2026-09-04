@@ -30,7 +30,7 @@ const footerLinkClass =
 export function CommunityFooter({ hero }: { hero: CommunityHero }) {
   return (
     <footer className="bg-primary text-white">
-      <div className="hero-frame-sides py-16 md:py-20">
+      <div className="page-bounds py-16 md:py-20">
         <div className="flex w-full flex-col gap-12 lg:flex-row lg:items-start lg:justify-between lg:gap-16">
           <div className="max-w-sm">
             <p className="text-sm font-bold tracking-[0.18em]">LOSANI</p>
@@ -82,7 +82,8 @@ export function CommunityFooter({ hero }: { hero: CommunityHero }) {
               primaryCta={hero.primaryCta}
               secondaryCta={hero.secondaryCta}
               tone="onPrimary"
-            />          </div>
+            />
+          </div>
         </div>
       </div>
     </footer>

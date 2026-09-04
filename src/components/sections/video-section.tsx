@@ -27,7 +27,7 @@ export function VideoSection({
         description="Tour the neighbourhood, home designs, and lifestyle that define this community."
         siteVersion={siteVersion}
       />
-      <div className="aspect-video overflow-hidden border border-border bg-card">
+      <div className="aspect-video overflow-hidden bg-card">
         <iframe
           src={src}
           title="Community video"
