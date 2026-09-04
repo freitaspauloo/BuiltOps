@@ -95,7 +95,7 @@ function DiscoverPanel({ onNavigate }: { onNavigate: () => void }) {
       </div>
 
       <div>
-        <div className="mb-5 flex items-end justify-between gap-4">
+        <div className="mb-5 flex items-center justify-between gap-4">
           <p className="eyebrow mb-0">Explore communities</p>
           <a
             href={ALL_COMMUNITIES_HREF}
@@ -134,10 +134,10 @@ function DiscoverPanel({ onNavigate }: { onNavigate: () => void }) {
                 <p className="text-sm font-bold text-foreground transition-colors group-hover:text-primary">
                   {community.name}
                 </p>
-                <p className="mt-0.5 text-xs text-muted">
-                  {community.city}
-                  {community.priceFrom ? ` · ${community.priceFrom}` : ""}
-                </p>
+                <p className="mt-0.5 text-xs text-muted">{community.city}</p>
+                {community.priceFrom && (
+                  <p className="text-xs text-muted">{community.priceFrom}</p>
+                )}
               </div>
             </a>
           ))}
