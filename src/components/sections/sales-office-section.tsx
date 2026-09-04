@@ -55,7 +55,7 @@ export function SalesOfficeSection({
       <div className="grid gap-10 lg:grid-cols-2">
         <SalesOfficeVisitDetails data={data} />
         {data.team?.map((member) => (
-          <div key={member.name} className="archun-card p-6">
+          <div key={member.name} className="card-surface p-6">
             <p className="font-bold">{member.name}</p>
             <p className="text-sm text-muted">{member.role}</p>
           </div>

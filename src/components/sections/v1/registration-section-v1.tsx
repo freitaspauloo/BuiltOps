@@ -5,7 +5,7 @@ import { SectionShell } from "@/components/ui/section";
 export function RegistrationSectionV1({ data }: { data: RegistrationForm }) {
   return (
     <SectionShell id="registration" siteVersion="v1">
-      <div className="archun-card grid gap-12 p-8 md:p-12 lg:grid-cols-2 lg:gap-20 lg:p-16">
+      <div className="card-surface grid gap-12 p-8 md:p-12 lg:grid-cols-2 lg:gap-20 lg:p-16">
         <div>
           <p className="card-label block">Register</p>
           <h2 className="headline-section">{data.title}</h2>

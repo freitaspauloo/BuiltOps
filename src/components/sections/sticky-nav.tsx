@@ -359,7 +359,12 @@ export function StickyNav({ community }: { community: Community }) {
             {openGroup ? (
               <>
                 <p className="eyebrow">{openGroup.label}</p>
-                <div className="grid gap-x-12 sm:grid-cols-2 lg:grid-cols-3">
+                {/* Fixed-width cells, left aligned — a two-item group must not
+                    stretch its rules across the whole page frame. */}
+                <div
+                  className="grid gap-x-12"
+                  style={{ gridTemplateColumns: "repeat(auto-fill, minmax(15rem, 20rem))" }}
+                >
                   {openGroup.items.map((child) => (
                     <PanelLink
                       key={child.id}

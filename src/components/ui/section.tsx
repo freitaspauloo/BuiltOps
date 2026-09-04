@@ -93,5 +93,5 @@ export function SectionShell({
 
 export function cardSurfaceClass(siteVersion: MicrositeVersionId = "v2", interactive = true) {
   if (siteVersion === "v2" && interactive) return "card-interactive";
-  return "archun-card";
+  return "card-surface";
 }

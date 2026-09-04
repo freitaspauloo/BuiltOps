@@ -31,7 +31,6 @@ const colors = [
   { name: "Ambient Top", value: "#58BBCA", var: "--color-ambient-top" },
   { name: "Ambient Bottom", value: "#B8E2E8", var: "--color-ambient-bottom" },
   { name: "Accent Orange", value: "#DB6A1D", var: "--color-accent" },
-  { name: "Hero frame inset", value: "30px", var: "--hero-frame-inset" },
 ];
 
 const radii = [
@@ -47,10 +46,12 @@ const shadows = [
 ];
 
 const spacing = [
+  { name: "Page gutter (mobile)", value: "1.5rem · --page-gutter", w: 24 },
+  { name: "Page gutter (md)", value: "2.5rem · --page-gutter", w: 40 },
+  { name: "Page gutter (lg)", value: "4rem · --page-gutter", w: 64 },
+  { name: "Content max width", value: "1320px · --page-max", w: 132 },
   { name: "Section Y (mobile)", value: "5rem", w: 80 },
   { name: "Section Y (desktop)", value: "7rem", w: 112 },
-  { name: "Gutter", value: "1.5rem", w: 24 },
-  { name: "Block gap", value: "5rem", w: 80 },
 ];
 
 const sections = [
@@ -73,7 +74,7 @@ export default function DesignHubPage() {
   return (
     <div className="min-h-screen bg-background">
       <header className="sticky top-0 z-50 border-b border-border bg-background">
-        <div className="container-wide flex items-center justify-between px-6 py-4 md:px-10">
+        <div className="page-bounds flex items-center justify-between py-4">
           <p className="text-base font-semibold">Losani Homes · Design Hub</p>
           <nav className="flex gap-3">
             <Button size="sm" variant="secondary" href="/communities/benchmark">
@@ -92,7 +93,7 @@ export default function DesignHubPage() {
         </div>
       </header>
 
-      <div className="container-wide gap-12 px-6 md:px-10 lg:flex lg:gap-16">
+      <div className="page-bounds gap-12 lg:flex lg:gap-16">
         {/* Sidebar */}
         <aside className="hidden w-56 shrink-0 lg:block">
           <div className="sticky top-28 py-16">
@@ -121,9 +122,11 @@ export default function DesignHubPage() {
               BuiltOps design language
             </h1>
             <p className="prose-editorial mt-5 max-w-2xl">
-              ARCHUN base system with a framed hero (30px ambient gutter), soft teal page glow,
-              Instrument Serif display type, unified section headers, scroll reveals on every module,
-              sharp corners (0 radius), and flat #F6F6F6 cards. Benchmark ships as microsite v2.
+              One page frame shared by every band — nav, hero, sections and footer land on the
+              same <code className="font-mono text-[0.9em]">--page-gutter</code> and{" "}
+              <code className="font-mono text-[0.9em]">--page-max</code>. Instrument Serif display
+              type, one section header component, scroll reveals on every module, sharp corners
+              (0 radius), and flat #F6F6F6 cards. Benchmark ships as microsite v2.
             </p>
           </section>
 
