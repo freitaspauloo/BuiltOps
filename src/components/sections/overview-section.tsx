@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import type { CommunityOverview, QuickFacts, SalesOffice } from "@/lib/types/community";
+import type { CommunityOverview, SalesOffice } from "@/lib/types/community";
 import { AppIcon, UI_ICONS } from "@/lib/icons";
 import { cn } from "@/lib/utils/cn";
 import { Button } from "@/components/ui/button";
@@ -10,7 +10,6 @@ import { SalesOfficeVisitDetails } from "./sales-office-section";
 
 type OverviewSectionProps = {
   data: CommunityOverview;
-  quickFacts?: QuickFacts;
   salesOffice?: SalesOffice;
   videoUrl?: string;
   videoPoster?: string;
@@ -18,38 +17,41 @@ type OverviewSectionProps = {
 };
 
 const shellClass =
-  "scroll-mt-[var(--nav-height,4.25rem)] scroll-pb-24 bg-background pb-14 pt-6 md:pb-20 md:pt-8 lg:pb-24 hero-frame-sides";
+  "scroll-mt-[var(--nav-height,4.25rem)] scroll-pb-24 bg-background pb-14 pt-6 md:pb-20 md:pt-8 lg:pb-24";
 
 export function OverviewSection({
   data,
-  quickFacts,
   salesOffice,
   videoUrl,
   videoPoster,
   contact,
 }: OverviewSectionProps) {
-  const paired = Boolean(quickFacts?.facts.length);
+  // The second card is the sales-centre panel, so pair up only when there is
+  // something to put in it.
+  const paired = Boolean(salesOffice);
 
   if (!paired) {
     return (
       <section id="overview" className={shellClass}>
-        <p className="eyebrow">Overview</p>
-        <h2 className="headline-section max-w-3xl text-balance">{data.title}</h2>
-        <p className="mt-5 max-w-3xl text-base leading-relaxed md:text-lg">
-          <span className="font-semibold text-foreground">{data.introduction}</span>{" "}
-          <span className="text-body">{data.description}</span>
-        </p>
+        <div className="page-bounds">
+          <p className="eyebrow">Overview</p>
+          <h2 className="headline-section max-w-3xl text-balance">{data.title}</h2>
+          <p className="mt-5 max-w-3xl text-base leading-relaxed md:text-lg">
+            <span className="font-semibold text-foreground">{data.introduction}</span>{" "}
+            <span className="text-body">{data.description}</span>
+          </p>
+        </div>
       </section>
     );
   }
 
   return (
     <section id="overview" className={cn(shellClass, "!pt-4 md:!pt-5")}>
-      <div className="grid gap-4 md:grid-cols-2 md:gap-5 lg:gap-6">
+      <div className="page-bounds grid gap-4 md:grid-cols-2 md:gap-5 lg:gap-6">
         <article className="card-surface flex h-full min-h-[22rem] flex-col p-6 md:min-h-[26rem] md:p-8 lg:p-10">
           <p className="card-label">Overview</p>
-          <h2 className="headline-section text-2xl md:text-3xl lg:text-4xl">Description</h2>
-          <p className="mt-4 flex-1 text-sm leading-relaxed text-body md:text-base">
+          <h2 className="headline-card text-balance">{data.title}</h2>
+          <p className="mt-5 flex-1 text-sm leading-relaxed text-body md:text-base">
             <span className="font-semibold text-foreground">{data.introduction}</span>{" "}
             {data.description}
           </p>
@@ -110,9 +112,9 @@ export function OverviewSection({
           id="salesOffice"
           className="card-surface flex h-full min-h-[22rem] flex-col p-6 md:min-h-[26rem] md:p-8 lg:p-10"
         >
-          <p className="card-label">Details</p>
-          <h2 className="headline-section text-2xl md:text-3xl lg:text-4xl">
-            {quickFacts!.title ?? "At a Glance"}
+          <p className="card-label">Visit us</p>
+          <h2 className="headline-card text-balance">
+            {salesOffice?.title ?? "Visit our sales centre"}
           </h2>
 
           {salesOffice && (

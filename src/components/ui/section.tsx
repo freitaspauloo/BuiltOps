@@ -2,64 +2,25 @@ import { ScrollReveal } from "@/components/motion/scroll-reveal";
 import type { MicrositeVersionId } from "@/lib/site-versions";
 import { cn } from "@/lib/utils/cn";
 
-export function SectionHeading({
-  eyebrow,
-  title,
-  description,
-  align = "left",
-  className,
-}: {
+type SectionHeaderProps = {
   eyebrow?: string;
   title: string;
   description?: string;
-  align?: "left" | "center";
   className?: string;
-}) {
-  return (
-    <div
-      className={cn(
-        "mb-12 max-w-3xl md:mb-16",
-        align === "center" && "mx-auto text-center",
-        className,
-      )}
-    >
-      {eyebrow && (
-        <p className={cn("eyebrow", align === "center" && "mx-auto")}>{eyebrow}</p>
-      )}
-      <h2 className="headline-section">{title}</h2>
-      {description && (
-        <p className="prose-editorial mt-5 max-w-2xl text-muted">{description}</p>
-      )}
-    </div>
-  );
-}
+};
 
-export function SectionHeaderSplit({
+/**
+ * The one section header on the site. Every section — with or without an
+ * aside — renders this markup so eyebrow, headline, dek and the gap down to
+ * the section body stay on a single rhythm.
+ */
+function SectionHeaderBase({
   eyebrow,
   title,
   description,
   aside,
   className,
-  siteVersion = "v2",
-}: {
-  eyebrow?: string;
-  title: string;
-  description?: string;
-  aside?: React.ReactNode;
-  className?: string;
-  siteVersion?: MicrositeVersionId;
-}) {
-  if (siteVersion === "v1") {
-    return (
-      <SectionHeading
-        eyebrow={eyebrow}
-        title={title}
-        description={description}
-        className={className}
-      />
-    );
-  }
-
+}: SectionHeaderProps & { aside?: React.ReactNode }) {
   return (
     <div
       className={cn(
@@ -71,7 +32,7 @@ export function SectionHeaderSplit({
         {eyebrow && <p className="eyebrow">{eyebrow}</p>}
         <h2 className="headline-section text-balance">{title}</h2>
         {description && (
-          <p className="mt-5 max-w-lg text-base leading-relaxed text-body md:text-lg">
+          <p className="mt-5 max-w-2xl text-base leading-relaxed text-body md:text-lg">
             {description}
           </p>
         )}
@@ -79,6 +40,21 @@ export function SectionHeaderSplit({
       {aside && <div className="shrink-0">{aside}</div>}
     </div>
   );
+}
+
+export function SectionHeading(props: SectionHeaderProps) {
+  return <SectionHeaderBase {...props} />;
+}
+
+export function SectionHeaderSplit({
+  aside,
+  siteVersion = "v2",
+  ...props
+}: SectionHeaderProps & {
+  aside?: React.ReactNode;
+  siteVersion?: MicrositeVersionId;
+}) {
+  return <SectionHeaderBase {...props} aside={siteVersion === "v1" ? undefined : aside} />;
 }
 
 export function SectionShell({
@@ -110,7 +86,7 @@ export function SectionShell({
         className,
       )}
     >
-      <div className="container-wide min-w-0 max-w-full">{inner}</div>
+      <div className="page-bounds min-w-0">{inner}</div>
     </section>
   );
 }

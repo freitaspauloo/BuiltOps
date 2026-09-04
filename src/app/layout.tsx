@@ -25,10 +25,21 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // The draggable preview widget is a build tool, not part of the experience —
+  // opt in explicitly rather than shipping it to every visitor.
+  const showPreviewNav =
+    process.env.NEXT_PUBLIC_SHOW_PREVIEW_NAV === "true" ||
+    (process.env.NODE_ENV === "development" &&
+      process.env.NEXT_PUBLIC_SHOW_PREVIEW_NAV !== "false");
+
   return (
-    <html lang="en" className={`${sans.variable} ${display.variable}`}>
+    <html
+      lang="en"
+      className={`${sans.variable} ${display.variable}`}
+      data-scroll-behavior="smooth"
+    >
       <body className="font-body antialiased">
-        {process.env.NEXT_PUBLIC_SHOW_PREVIEW_NAV !== "false" && <PreviewNav />}
+        {showPreviewNav && <PreviewNav />}
         {children}
       </body>
     </html>

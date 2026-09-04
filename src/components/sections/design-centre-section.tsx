@@ -12,24 +12,45 @@ export function DesignCentreSection({
   siteVersion?: MicrositeVersionId;
 }) {
   return (
-    <SectionShell id="designCentre" muted siteVersion={siteVersion}>      <div className="grid gap-10 lg:grid-cols-2 lg:items-center">
+    <SectionShell id="designCentre" muted siteVersion={siteVersion}>
+      <div className="grid gap-10 lg:grid-cols-2 lg:items-center lg:gap-14">
         <div>
-          <SectionHeading eyebrow="Design centre" title={data.title} description={data.description} className="mb-0" />
-          {data.address && <p className="mt-4 text-sm text-muted">{data.address}</p>}
-          {data.hours && (
-            <ul className="mt-2 space-y-1 text-sm text-muted">
-              {data.hours.map((h) => (
-                <li key={h}>{h}</li>
-              ))}
-            </ul>
+          <SectionHeading
+            eyebrow="Design centre"
+            title={data.title}
+            description={data.description}
+            className="mb-0"
+          />
+
+          {(data.address || data.hours?.length) && (
+            <div className="mt-8 border-t border-foreground/10 pt-6">
+              {data.address && (
+                <p className="text-sm font-semibold text-foreground">{data.address}</p>
+              )}
+              {data.hours && (
+                <ul className="mt-2 space-y-1 text-sm text-body">
+                  {data.hours.map((h) => (
+                    <li key={h}>{h}</li>
+                  ))}
+                </ul>
+              )}
+            </div>
           )}
-          <Button href="#registration" className="mt-6">
+
+          <Button href="#registration" className="mt-8">
             {data.ctaLabel ?? "Book a design appointment"}
           </Button>
         </div>
+
         {data.image && (
-          <div className="relative aspect-[4/3] overflow-hidden border border-border">
-            <Image src={data.image} alt={data.title} fill className="object-cover" />
+          <div className="relative aspect-[4/3] overflow-hidden bg-mist">
+            <Image
+              src={data.image}
+              alt={data.title}
+              fill
+              className="object-cover"
+              sizes="(max-width: 1024px) 92vw, 640px"
+            />
           </div>
         )}
       </div>

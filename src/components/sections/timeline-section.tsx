@@ -11,7 +11,8 @@ export function TimelineSection({
   siteVersion?: MicrositeVersionId;
 }) {
   return (
-    <SectionShell id="timeline" siteVersion={siteVersion}>      <SectionHeading eyebrow="Progress" title="Community timeline" description="Key milestones from announcement to move-in." />
+    <SectionShell id="timeline" siteVersion={siteVersion}>
+      <SectionHeading eyebrow="Progress" title="Community timeline" description="Key milestones from announcement to move-in." />
       <ol className="space-y-0 border-l-2 border-mist pl-8">
         {milestones.map((m, i) => (
           <li key={`${m.title}-${i}`} className="relative pb-8 last:pb-0">

@@ -10,7 +10,8 @@ export function EventsSection({
   siteVersion?: MicrositeVersionId;
 }) {
   return (
-    <SectionShell id="events" siteVersion={siteVersion}>      <SectionHeading eyebrow="Calendar" title="Events" />
+    <SectionShell id="events" siteVersion={siteVersion}>
+      <SectionHeading eyebrow="Calendar" title="Events" />
       <div className="space-y-4">
         {events.map((event) => (
           <article key={event.title} className="card-surface p-6">

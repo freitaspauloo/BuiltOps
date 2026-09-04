@@ -30,7 +30,7 @@ function HeroFixedStage({
         <div className="hero-content-scrim absolute inset-x-0 bottom-0 h-[min(72%,560px)]" />
       </div>
 
-      <div className="absolute inset-x-0 bottom-0 hero-frame-sides pb-10 pt-28 md:pb-14 md:pt-32 lg:pb-16">
+      <div className="page-bounds absolute inset-x-0 bottom-0 pb-10 pt-28 md:pb-14 md:pt-32 lg:pb-16">
         <div className="pointer-events-auto relative w-full">
           <div className="max-w-4xl">
             <CommunityCtaButtons

@@ -48,10 +48,14 @@ export function QuickFactsBentoSection({
       <div className="metrics-editorial-grid">
         <div className="metrics-editorial-cell metrics-editorial-header">
           <div>
-            <p className="text-xs font-medium tracking-wide text-muted">Details</p>
-            <h2 className="headline-section mt-4 max-w-[12ch] text-balance">
-              {data.title ?? "At a Glance"}
+            <p className="card-label">Details</p>
+            <h2 className="headline-card max-w-[14ch] text-balance">
+              {data.title ?? "At a glance"}
             </h2>
+            <p className="mt-4 max-w-[34ch] text-sm leading-relaxed text-body">
+              The numbers behind the collection — sizes, pricing and the mix of
+              homes available in this release.
+            </p>
           </div>
         </div>
 
