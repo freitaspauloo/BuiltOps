@@ -33,20 +33,20 @@ function HeroFixedStage({
       <div className="page-bounds absolute inset-x-0 bottom-0 pb-10 pt-28 md:pb-14 md:pt-32 lg:pb-16">
         <div className="pointer-events-auto relative w-full">
           <div className="max-w-4xl">
-            <CommunityCtaButtons
-              className="mb-6 md:mb-8"
-              primaryCta={data.primaryCta}
-              secondaryCta={data.secondaryCta}
-              tone="onImage"
-            />
-
             {meta.length > 0 && (
-              <p className="mb-4 max-w-xl text-sm font-medium tracking-wide text-white/80 md:text-base">
+              <p className="mb-4 max-w-xl text-sm font-medium tracking-wide text-white/85 md:text-base">
                 {meta.join(" · ")}
               </p>
             )}
 
             <h1 className="headline-hero max-w-[14ch] text-left text-white">{data.communityName}</h1>
+
+            <CommunityCtaButtons
+              className="mt-8 md:mt-10"
+              primaryCta={data.primaryCta}
+              secondaryCta={data.secondaryCta}
+              tone="onImage"
+            />
           </div>
 
           {facts.length > 0 && (

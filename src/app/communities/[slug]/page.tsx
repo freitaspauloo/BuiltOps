@@ -3,7 +3,6 @@ import { fetchCommunity } from "@/lib/data/get-community";
 import { getAllCommunitySlugs } from "@/lib/data/seed-benchmark";
 import { SectionRenderer } from "@/components/sections/section-renderer";
 import { CommunityFooter } from "@/components/layout/community-chrome";
-import { ScrollToHeroOnLoad } from "@/components/layout/scroll-to-hero-on-load";
 import { parseMicrositeVersion } from "@/lib/site-versions";
 
 export async function generateStaticParams() {
@@ -27,7 +26,6 @@ export default async function CommunityPage({
 
   return (
     <div className="relative isolate min-w-0 overflow-x-clip">
-      <ScrollToHeroOnLoad />
       <main className="relative">
         <SectionRenderer community={{ ...community, micrositeVersion }} />
       </main>

@@ -1,4 +1,5 @@
 import type { Community } from "@/lib/types/community";
+import { discoverCommunities } from "@/lib/sections/nav-discovery";
 
 const SITE_PLAN_BASE = "https://losani-connected-site-experience.replit.app";
 
@@ -464,6 +465,8 @@ export const benchmarkCommunity: Community = {
       "Register to tour model homes, receive pricing updates, and connect with our sales team at the Beamsville sales centre.",
     submitLabel: "Book Appointment",
   },
+  // Same placeholder feed the nav discovery panel reads, so the two never drift.
+  similarCommunities: discoverCommunities,
 };
 
 export const seedCommunities: Record<string, Community> = {

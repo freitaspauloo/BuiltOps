@@ -117,12 +117,12 @@ export function AreaMapPanel({ points, listVariant = "v2" }: AreaMapPanelProps) 
 
       <article className={cn("card-surface flex flex-col", listVariant === "v2" && "p-6 md:p-8")}>
         <div className="mb-5 flex items-center justify-between gap-4">
-          <h3 className="text-sm font-semibold uppercase tracking-wider text-muted">Nearby</h3>
+          <h3 className="card-label mb-0">Nearby</h3>
           <button
             type="button"
             onClick={() => setFocusedId(null)}
             className={cn(
-              "text-xs font-semibold uppercase tracking-wider transition-colors",
+              "text-sm font-semibold underline-offset-4 transition-colors hover:underline",
               showAll ? "text-primary" : "text-muted hover:text-foreground",
             )}
           >

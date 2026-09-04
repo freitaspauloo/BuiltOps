@@ -28,7 +28,7 @@ function navItemClasses(inverse: boolean, highlighted: boolean) {
     inverse
       ? highlighted
         ? "bg-white/16 text-white"
-        : "text-white/75 hover:bg-white/10 hover:text-white"
+        : "text-white/85 hover:bg-white/10 hover:text-white"
       : highlighted
         ? "bg-primary-muted font-semibold text-primary"
         : "text-body hover:bg-mist hover:text-foreground",
@@ -71,7 +71,7 @@ function DiscoverPanel({ onNavigate }: { onNavigate: () => void }) {
         <div className="mt-8 grid gap-x-10 gap-y-8 sm:grid-cols-2">
           {discoverColumns.map((column) => (
             <div key={column.title}>
-              <p className="text-xs font-semibold uppercase tracking-wider text-muted">
+              <p className="label-overline">
                 {column.title}
               </p>
               <ul className="mt-3 space-y-2">
@@ -399,7 +399,7 @@ export function StickyNav({ community }: { community: Community }) {
                 />
               ) : (
                 <div key={item.id} className="pt-6 first:pt-0">
-                  <p className="text-xs font-semibold uppercase tracking-wider text-muted">
+                  <p className="label-overline">
                     {item.label}
                   </p>
                   <div className="mt-1">

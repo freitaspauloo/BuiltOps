@@ -31,6 +31,7 @@ const colors = [
   { name: "Ambient Top", value: "#58BBCA", var: "--color-ambient-top" },
   { name: "Ambient Bottom", value: "#B8E2E8", var: "--color-ambient-bottom" },
   { name: "Accent Orange", value: "#DB6A1D", var: "--color-accent" },
+  { name: "Forest", value: "#2D6A4F", var: "--color-forest" },
 ];
 
 const radii = [

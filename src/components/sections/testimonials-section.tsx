@@ -61,7 +61,9 @@ function TestimonialCard({
 
   const className = cn(
     "group flex w-[min(100%,720px)] shrink-0 flex-col overflow-hidden transition-opacity duration-500 sm:flex-row",
-    isActive ? "opacity-100" : "opacity-40 hover:opacity-65",
+    // Never opacity a white-on-white card until it disappears — dim it enough
+    // to read as secondary while staying legible.
+    isActive ? "opacity-100" : "opacity-55 hover:opacity-85",
   );
 
   if (isActive) {
@@ -73,7 +75,10 @@ function TestimonialCard({
       type="button"
       onClick={onSelect}
       aria-label={`View testimonial from ${testimonial.author}`}
-      className={cn("carousel-control text-left", className)}
+      className={cn(
+        className,
+        "text-left focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary",
+      )}
     >
       {content}
     </button>
@@ -98,13 +103,12 @@ export function TestimonialsSection({
     "Testimonial",
   );
 
+  // Left-align the active slide with the section headline above it and let the
+  // next story peek in from the right, rather than centring it in the frame.
   const measure = useCallback(() => {
     const slide = slideRef.current;
-    const track = trackRef.current;
-    if (!slide || !track) return;
-
-    const slideWidth = slide.offsetWidth;
-    setOffset(track.offsetWidth / 2 - slideWidth / 2 - active * (slideWidth + SLIDE_GAP));
+    if (!slide) return;
+    setOffset(-active * (slide.offsetWidth + SLIDE_GAP));
   }, [active]);
 
   useEffect(() => {
@@ -161,7 +165,7 @@ export function TestimonialsSection({
 
       <div
         {...regionProps}
-        className="relative mx-auto w-full max-w-[1200px] overflow-hidden outline-none"
+        className="relative w-full overflow-hidden outline-none"
       >
         <div ref={trackRef} className="overflow-hidden py-2">
           <div

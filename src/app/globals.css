@@ -32,6 +32,7 @@
   --color-ambient-bottom: #b8e2e8;
   --color-accent: #db6a1d;
   --color-accent-hover: #c25e18;
+  --color-forest: #2d6a4f;
 
   /* ── Legacy aliases (kept for import compatibility) ── */
   --color-babu: #4895a2;
@@ -130,6 +131,12 @@ body {
 /* In-card label — matches eyebrow pill; mb-4 separates label from heading */
 .card-label {
   @apply mb-4 inline-flex w-fit items-center rounded-none bg-primary-muted px-3.5 py-1.5 text-sm font-medium text-primary;
+}
+
+/* Overline for sub-groups inside a panel or column, where a teal pill would
+   compete with the section eyebrow above it. */
+.label-overline {
+  @apply text-xs font-semibold uppercase tracking-wider text-muted;
 }
 
 .prose-editorial {
