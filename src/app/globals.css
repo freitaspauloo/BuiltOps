@@ -279,6 +279,11 @@ body {
   @apply font-display text-2xl font-medium tracking-tight text-foreground md:text-3xl lg:text-4xl lg:leading-[1.1];
 }
 
+/* Title of a listing card — sans, one weight and one size everywhere. */
+.card-title {
+  @apply text-lg font-bold leading-snug text-foreground;
+}
+
 /* ── Pills — sharp tags with icon + label ─────────────── */
 .pill {
   @apply inline-flex items-center gap-2 rounded-none border border-foreground/10 bg-transparent px-5 py-2.5 text-sm font-medium text-foreground;

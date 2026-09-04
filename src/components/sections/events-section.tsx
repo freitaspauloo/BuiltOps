@@ -16,7 +16,7 @@ export function EventsSection({
         {events.map((event) => (
           <article key={event.title} className="card-surface p-6">
             <p className="text-sm text-muted">{event.date}</p>
-            <h3 className="mt-1 text-lg font-bold">{event.title}</h3>
+            <h3 className="card-title mt-1">{event.title}</h3>
             <p className="mt-2 text-sm text-muted">{event.description}</p>
           </article>
         ))}

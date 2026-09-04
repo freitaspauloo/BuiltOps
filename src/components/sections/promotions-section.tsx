@@ -18,7 +18,7 @@ export function PromotionsSection({
             {promo.badge && (
               <span className="card-label block">{promo.badge}</span>
             )}
-            <h3 className="text-xl font-bold">{promo.title}</h3>
+            <h3 className="card-title">{promo.title}</h3>
             <p className="mt-3 text-sm leading-relaxed text-body">{promo.description}</p>
             {promo.expiresAt && (
               <p className="mt-5 text-xs text-muted">Expires {promo.expiresAt}</p>

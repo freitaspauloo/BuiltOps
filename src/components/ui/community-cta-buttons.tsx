@@ -1,12 +1,10 @@
 import Link from "next/link";
 import { cn } from "@/lib/utils/cn";
+import { buttonSizeStyles } from "@/components/ui/button";
 
 type CtaLink = { label: string; href: string };
 
-const sizeStyles = {
-  sm: "px-4 py-2.5 text-sm",
-  md: "px-6 py-3 text-sm",
-} as const;
+const sizeStyles = buttonSizeStyles;
 
 export function CommunityCtaButtons({
   primaryCta,
