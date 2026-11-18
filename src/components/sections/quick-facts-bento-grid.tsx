@@ -1,6 +1,6 @@
 import type { QuickFacts } from "@/lib/types/community";
 import { AppIcon, getSnapshotIcon } from "@/lib/icons";
-import { getBentoSpan, sortFactsForBento } from "@/lib/quick-facts/bento";
+import { getBentoSpan, normalizeFactKey, sortFactsForBento } from "@/lib/quick-facts/bento";
 import { cn } from "@/lib/utils/cn";
 
 type QuickFactsBentoGridProps = {
@@ -8,6 +8,17 @@ type QuickFactsBentoGridProps = {
   variant?: "onImage" | "light";
   className?: string;
 };
+
+function formatBentoValue(fact: { label: string; value: string }) {
+  const key = normalizeFactKey(fact.label);
+  if (
+    (key === "size_sqft" || key === "size" || key === "area") &&
+    !/\bsqft\b/i.test(fact.value)
+  ) {
+    return `${fact.value} sqft`;
+  }
+  return fact.value;
+}
 
 export function QuickFactsBentoGrid({
   facts,
@@ -48,7 +59,7 @@ export function QuickFactsBentoGrid({
               onImage ? "text-white" : "text-foreground",
             )}
           >
-            {fact.value}
+            {formatBentoValue(fact)}
           </span>
         </div>
       ))}

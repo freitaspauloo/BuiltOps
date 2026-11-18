@@ -19,10 +19,24 @@ export interface SnapshotFact {
   value: string;
 }
 
+/** Overview below-fold layout variants (Scott Jul 8 — pick one per community). */
+export type OverviewLayoutVariant = "a" | "b" | "c" | "d";
+
+/** v5 overview — introduction-led layouts with outline stat pills. */
+export type OverviewSectionLayoutVariant =
+  | "bento-poster"
+  | "stacked-pills"
+  | "vertical-rail"
+  | "inline-band";
+
 export interface CommunityOverview {
   title: string;
   introduction: string;
   description: string;
+  layoutVariant?: OverviewLayoutVariant;
+  overviewSectionLayout?: OverviewSectionLayoutVariant;
+  brochureUrl?: string;
+  brochureLabel?: string;
 }
 
 export interface CommunityVision {
@@ -87,6 +101,19 @@ export interface Floorplan {
   image: string;
   pdfUrl?: string;
   phase?: string;
+  /** Per-level architectural drawings (ground / main / upper). */
+  levelGallery?: GalleryImage[];
+  /** Collection badge on the photo (e.g. Losani Originals). */
+  collection?: CommunityCollectionBadge;
+  /** Short type line under the model name. */
+  subtitle?: string;
+  /** Lot width pill (e.g. "46' lot"). */
+  lotLabel?: string;
+  /** Sqft range copy when it differs from a single `sqft` value. */
+  sqftRange?: string;
+  /** Link to `/models/[slug]` when a model page exists. */
+  modelSlug?: string;
+  tourHref?: string;
 }
 
 export interface QuickMoveInHome {
@@ -105,6 +132,8 @@ export interface DownloadAsset {
   title: string;
   type: string;
   url: string;
+  /** Title-page / cover image used as the carousel thumbnail (editorial v4). */
+  thumbnailUrl?: string;
 }
 
 export interface Promotion {
@@ -112,6 +141,7 @@ export interface Promotion {
   description: string;
   badge?: string;
   expiresAt?: string;
+  imageUrl?: string;
 }
 
 export interface SalesOffice {
@@ -135,6 +165,11 @@ export interface FaqItem {
   answer: string;
 }
 
+export type CommunityCollectionBadge = {
+  label: string;
+  variant?: "pronto" | "originals" | "default";
+};
+
 export interface SimilarCommunity {
   name: string;
   city: string;
@@ -142,12 +177,20 @@ export interface SimilarCommunity {
   priceFrom?: string;
   image: string;
   href: string;
+  /** Short line on the photo overlay, e.g. "8 Lots Available & 4 Pronto Homes". */
+  availabilitySummary?: string;
+  collections?: CommunityCollectionBadge[];
+  description?: string;
+  homeTypes?: string;
+  sizeRange?: string;
+  modelsHref?: string;
+  appointmentHref?: string;
 }
 
 export interface MapPoint {
   id: string;
   label: string;
-  category: "community" | "sales" | "school" | "park" | "shopping" | "transit";
+  category: "community" | "sales" | "school" | "park" | "shopping" | "transit" | "winery" | "dining";
   lat: number;
   lng: number;
 }
@@ -156,19 +199,31 @@ export interface SitePlanLot {
   id: string;
   lotNumber: string;
   status: LotStatus;
-  x: number;
-  y: number;
-  width: number;
-  height: number;
+  x?: number;
+  y?: number;
+  width?: number;
+  height?: number;
   price?: string;
   floorplan?: string;
+  sqft?: string;
   possessionDate?: string;
+}
+
+export interface SitePlanPhase {
+  id: string;
+  label: string;
+  imageUrl: string;
+  lots: SitePlanLot[];
 }
 
 export interface SitePlan {
   title: string;
   imageUrl: string;
   lots: SitePlanLot[];
+  aspectRatio?: string;
+  phases?: SitePlanPhase[];
+  brochureUrl?: string;
+  brochureLabel?: string;
 }
 
 export interface RegistrationForm {
@@ -177,11 +232,17 @@ export interface RegistrationForm {
   submitLabel: string;
 }
 
+import type { PresentationMode } from "@/lib/presentation-mode";
+
 export interface Community {
   slug: string;
   stage: CommunityStage;
   /** Microsite design iteration — e.g. v1, v2 */
   micrositeVersion?: string;
+  /** Portal embed vs standalone landing — set at render time from ?presentation= */
+  presentationMode?: PresentationMode;
+  /** Dev override for overview layout variant (?overviewLayout=) */
+  overviewLayoutOverride?: OverviewLayoutVariant;
   hero: CommunityHero;
   snapshot: SnapshotFact[];
   vision?: CommunityVision;
@@ -190,7 +251,14 @@ export interface Community {
   videoUrl?: string;
   gallery?: GalleryImage[];
   areaMap?: { title: string; points: MapPoint[] };
-  amenities?: { title: string; items: AmenityItem[] };
+  amenities?: {
+    title: string;
+    items: AmenityItem[];
+    lifestyleImages?: GalleryImage[];
+    /** Optional CMS brochure link — shown below amenity list (Anthony Jul 8). */
+    brochureUrl?: string;
+    brochureLabel?: string;
+  };
   features?: { title: string; items: FeatureItem[] };
   sitePlan?: SitePlan;
   floorplans?: Floorplan[];
@@ -205,6 +273,15 @@ export interface Community {
   faq?: FaqItem[];
   registration: RegistrationForm;
   similarCommunities?: SimilarCommunity[];
+  /**
+   * Optional CMS-controlled scroll order. When set, replaces the stage default
+   * template. Empty / missing sections are still filtered out at render time.
+   */
+  sectionOrder?: SectionId[];
+  /**
+   * Sections explicitly turned OFF in the CMS — hidden even when they have content.
+   */
+  sectionDisabled?: SectionId[];
 }
 
 export type SectionId =

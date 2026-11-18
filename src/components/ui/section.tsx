@@ -1,5 +1,6 @@
 import { ScrollReveal } from "@/components/motion/scroll-reveal";
-import type { MicrositeVersionId } from "@/lib/site-versions";
+import { SectionIntro } from "@/components/ui/section-intro";
+import { isEditorialVersion, type MicrositeVersionId } from "@/lib/site-versions";
 import { cn } from "@/lib/utils/cn";
 
 export function SectionHeading({
@@ -39,15 +40,21 @@ export function SectionHeaderSplit({
   title,
   description,
   aside,
+  asideAlign = "end",
+  align = "left",
   className,
-  siteVersion = "v2",
+  siteVersion = "v3",
+  showRule = true,
 }: {
   eyebrow?: string;
   title: string;
   description?: string;
   aside?: React.ReactNode;
+  asideAlign?: "start" | "center" | "end";
+  align?: "left" | "center";
   className?: string;
   siteVersion?: MicrositeVersionId;
+  showRule?: boolean;
 }) {
   if (siteVersion === "v1") {
     return (
@@ -55,28 +62,82 @@ export function SectionHeaderSplit({
         eyebrow={eyebrow}
         title={title}
         description={description}
+        align={align}
         className={className}
       />
     );
   }
 
+  if (isEditorialVersion(siteVersion)) {
+    const centered = align === "center";
+    const asideItemsClass =
+      asideAlign === "center"
+        ? "lg:items-center"
+        : asideAlign === "start"
+          ? "lg:items-start"
+          : "lg:items-end";
+
+    return (
+      <div
+        className={cn(
+          centered && aside ? "mb-6 md:mb-8" : "mb-10 md:mb-14",
+          centered && "text-center",
+          className,
+        )}
+      >
+        <div
+          className={cn(
+            "flex flex-col",
+            centered && aside ? "gap-4" : "gap-6",
+            aside && !centered && cn("lg:flex-row lg:justify-between", asideItemsClass),
+            aside && centered && "items-center",
+          )}
+        >
+          <SectionIntro
+            label={eyebrow}
+            title={title}
+            description={description}
+            showRule={false}
+            className={cn("mb-0", centered && "mx-auto max-w-3xl")}
+          />
+          {aside && <div className="shrink-0">{aside}</div>}
+        </div>
+        {showRule && <hr className="v3-hairline" aria-hidden />}
+      </div>
+    );
+  }
+
+  const centered = align === "center";
+
   return (
     <div
       className={cn(
-        "mb-10 flex flex-col gap-6 lg:mb-14 lg:flex-row lg:items-end lg:justify-between",
+        "mb-10 flex flex-col gap-6 lg:mb-14",
+        centered
+          ? "items-center text-center"
+          : "lg:flex-row lg:items-end lg:justify-between",
         className,
       )}
     >
-      <div className="max-w-2xl">
-        {eyebrow && <p className="eyebrow">{eyebrow}</p>}
+      <div className={cn("max-w-2xl", centered && "mx-auto")}>
+        {eyebrow && (
+          <p className={cn("eyebrow", centered && "mx-auto")}>{eyebrow}</p>
+        )}
         <h2 className="headline-section text-balance">{title}</h2>
         {description && (
-          <p className="mt-5 max-w-lg text-base leading-relaxed text-body md:text-lg">
+          <p
+            className={cn(
+              "mt-5 max-w-lg text-base leading-relaxed text-body md:text-lg",
+              centered && "mx-auto",
+            )}
+          >
             {description}
           </p>
         )}
       </div>
-      {aside && <div className="shrink-0">{aside}</div>}
+      {aside && (
+        <div className={cn("shrink-0", centered && "flex justify-center")}>{aside}</div>
+      )}
     </div>
   );
 }
@@ -87,7 +148,7 @@ export function SectionShell({
   className,
   muted,
   reveal,
-  siteVersion = "v2",
+  siteVersion = "v3",
 }: {
   id?: string;
   children: React.ReactNode;
@@ -115,7 +176,8 @@ export function SectionShell({
   );
 }
 
-export function cardSurfaceClass(siteVersion: MicrositeVersionId = "v2", interactive = true) {
+export function cardSurfaceClass(siteVersion: MicrositeVersionId = "v3", interactive = true) {
+  if (isEditorialVersion(siteVersion)) return interactive ? "v3-panel" : "bg-background";
   if (siteVersion === "v2" && interactive) return "card-interactive";
   return "archun-card";
 }

@@ -1,0 +1,77 @@
+/* Scoped to Yet Another React Lightbox — larger slides, ghost arrows */
+
+.builtops-yarl {
+  --yarl__button_background_color: transparent;
+  --yarl__button_filter: none;
+  --yarl__color_button: rgba(255, 255, 255, 0.92);
+  --yarl__color_button_active: #fff;
+  --yarl__slide_padding: 0;
+}
+
+.builtops-yarl .yarl__slide {
+  padding: 0 !important;
+}
+
+.builtops-yarl .yarl__slide_wrapper {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.builtops-yarl .yarl__slide_image {
+  width: 100% !important;
+  height: 100% !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
+  object-fit: contain !important;
+}
+
+.builtops-yarl .yarl__toolbar {
+  padding: 0.5rem 0.65rem;
+  background: transparent;
+}
+
+.builtops-yarl .yarl__button,
+.builtops-yarl .yarl__navigation_prev,
+.builtops-yarl .yarl__navigation_next {
+  background: transparent !important;
+  background-color: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  filter: none !important;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.builtops-yarl .yarl__navigation_prev,
+.builtops-yarl .yarl__navigation_next {
+  padding: 1rem 0.85rem !important;
+}
+
+.builtops-yarl .yarl__navigation_prev .yarl__icon,
+.builtops-yarl .yarl__navigation_next .yarl__icon {
+  width: 2.75rem;
+  height: 2.75rem;
+  filter: drop-shadow(0 1px 4px rgb(0 0 0 / 0.9));
+}
+
+.builtops-yarl .yarl__toolbar .yarl__button .yarl__icon {
+  filter: drop-shadow(0 1px 3px rgb(0 0 0 / 0.75));
+}
+
+.builtops-yarl .yarl__thumbnails_thumbnail {
+  opacity: 0.55;
+  transition: opacity 180ms ease, outline-color 180ms ease;
+  background: transparent !important;
+}
+
+.builtops-yarl .yarl__thumbnails_thumbnail_active {
+  opacity: 1;
+  outline: 2px solid #fff;
+  outline-offset: 1px;
+}
+
+.builtops-yarl .yarl__counter {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+  opacity: 0.85;
+}

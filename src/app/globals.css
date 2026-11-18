@@ -4,53 +4,59 @@
   /* ── Canvas ─────────────────────────────────────────── */
   --color-background: #ffffff;
   --color-surface: #ffffff;
-  --color-card: #f6f6f6;
-  --color-fog: #f6f6f6;
-  --color-mist: #ececec;
+  --color-card: #f4f7fb;
+  --color-fog: #f4f7fb;
+  --color-mist: #e8edf5;
+  --color-card-label: #dae3ef;
 
-  /* ── Ink / text ─────────────────────────────────────── */
-  --color-foreground: #0c1417;
-  --color-body: #5a5250;
-  --color-muted: #a1b2b4;
-  --color-emphasis: #486268;
-  --color-subtle: #c5cfd0;
+  /* ── Ink / text (Losani navy #062543 per Scott Jul 8) ─ */
+  --color-foreground: #062543;
+  --color-heading: #062543;
+  --color-body: #3d5568;
+  --color-muted: #8fa0b5;
+  --color-emphasis: #4a6282;
+  --color-subtle: #c5d0de;
 
   /* ── Borders — keep hairline, prefer whitespace ─────── */
-  --color-border: #e8ecee;
+  --color-border: #dfe6f0;
   --color-border-strong: #0c1417;
 
-  /* ── Tide blue primary ──────────────────────────────── */
-  --color-primary: #002934;
-  --color-primary-hover: #003942;
-  --color-primary-light: #004556;
-  --color-primary-muted: #e8eef0;
+  /* ── Losani navy primary — CTA gradient #062543 → #1F4870 ─ */
+  --color-primary: #062543;
+  --color-primary-hover: #1f4870;
+  --color-primary-light: #1f4870;
+  --color-primary-muted: #ecf0f6;
 
-  /* ── Secondary accents ──────────────────────────────── */
-  --color-teal-mid: #4895a2;
-  --color-nav: #1ba1b7;
-  --color-ambient-top: #58bbca;
-  --color-ambient-bottom: #b8e2e8;
+  /* ── Secondary accents — same blue family ─────────── */
+  --color-teal-mid: #5b7a9e;
+  --color-nav: #062543;
+  --color-ambient-top: #8fa8c8;
+  --color-ambient-bottom: #dce6f2;
   --color-accent: #db6a1d;
   --color-accent-hover: #c25e18;
 
   /* ── Legacy aliases (kept for import compatibility) ── */
-  --color-babu: #4895a2;
+  --color-babu: #5b7a9e;
   --color-arches: #db6a1d;
 
   /* ── Stage labels ───────────────────────────────────── */
   --color-status-future: #a1b2b4;
   --color-status-coming: #db6a1d;
-  --color-status-available: #002934;
+  --color-status-available: #062543;
 
   --font-display: var(--font-display);
+  --font-heading: var(--font-sans);
   --font-body: var(--font-sans);
 
-  --radius-sm: 0;
-  --radius-md: 0;
-  --radius-lg: 0;
-  --radius-xl: 0;
-  --radius-2xl: 0;
-  --radius-3xl: 0;
+  /* Portal radius — soft corners, not pill-shaped (Scott Jul 9) */
+  --radius-card: 1rem; /* 16px — cards, media frames, panels */
+  --radius-control: 0.75rem; /* 12px — buttons, inputs, pills, toggles */
+  --radius-sm: 0.5rem; /* 8px — small icon chips */
+  --radius-md: var(--radius-control);
+  --radius-lg: var(--radius-card);
+  --radius-xl: var(--radius-card);
+  --radius-2xl: var(--radius-card);
+  --radius-3xl: var(--radius-card);
 
   /* Flat aesthetic — shadows are whisper-soft, used sparingly */
   --shadow-card: 0 1px 2px rgba(12, 20, 23, 0.04);
@@ -61,11 +67,48 @@
 
   /* Framed hero — white/ambient canvas visible on top + sides */
   --hero-frame-inset: 30px;
+  --animate-marquee: marquee var(--duration) infinite linear;
+  --animate-marquee-vertical: marquee-vertical var(--duration) linear infinite;
+  --animate-accordion-down: accordion-down 0.2s ease-out;
+  --animate-accordion-up: accordion-up 0.2s ease-out;
+  @keyframes marquee {
+  from {
+    transform: translateX(0);
+    }
+  to {
+    transform: translateX(calc(-100% - var(--gap)));
+    }
+  }
+  @keyframes marquee-vertical {
+  from {
+    transform: translateY(0);
+    }
+  to {
+    transform: translateY(calc(-100% - var(--gap)));
+    }
+  }
+  @keyframes accordion-down {
+    from {
+      height: 0;
+    }
+    to {
+      height: var(--radix-accordion-content-height);
+    }
+  }
+  @keyframes accordion-up {
+    from {
+      height: var(--radix-accordion-content-height);
+    }
+    to {
+      height: 0;
+    }
+  }
 }
 
 html {
   scroll-behavior: smooth;
   overflow-x: clip;
+  scrollbar-gutter: stable;
 }
 
 /* Page canvas — solid white */
@@ -74,6 +117,21 @@ body {
   background: var(--color-background);
   color: var(--color-foreground);
   -webkit-font-smoothing: antialiased;
+  /* Keep layout stable if any overlay still toggles scroll lock */
+  scrollbar-gutter: stable;
+}
+
+/*
+ * Radix Select always wraps content in react-remove-scroll (no modal opt-out
+ * in @radix-ui/react-select@2.3). That hides the scrollbar (~15px) and shifts
+ * the page left. Keep overflow + gutter so opening the realtor select doesn't jump.
+ */
+html body[data-scroll-locked],
+body[data-scroll-locked] {
+  overflow: visible !important;
+  margin-right: 0 !important;
+  padding-right: 0 !important;
+  --removed-body-scroll-bar-size: 0px !important;
 }
 
 ::selection {
@@ -82,6 +140,16 @@ body {
 }
 
 .font-display {
+  font-family: var(--font-display), Georgia, "Times New Roman", serif;
+  letter-spacing: -0.02em;
+}
+
+.font-heading {
+  font-family: var(--font-sans), system-ui, sans-serif;
+  letter-spacing: -0.02em;
+}
+
+.headline-serif {
   font-family: var(--font-display), Georgia, "Times New Roman", serif;
   letter-spacing: -0.02em;
 }
@@ -103,14 +171,19 @@ body {
   @apply mx-auto max-w-3xl;
 }
 
-/* ── Eyebrow: light teal section label pill ───────────── */
+/* ── Eyebrow: light navy section label pill ───────────── */
 .eyebrow {
-  @apply mb-4 inline-flex w-fit items-center rounded-none bg-primary-muted px-3.5 py-1.5 text-sm font-medium text-primary;
+  @apply mb-4 inline-flex w-fit items-center rounded-[var(--radius-control)] bg-primary-muted px-3.5 py-1.5 text-sm font-medium text-primary;
 }
 
-/* In-card label — matches eyebrow pill; mb-4 separates label from heading */
+/* In-card label — slightly darker than eyebrow for contrast on bg-card */
 .card-label {
-  @apply mb-4 inline-flex w-fit items-center rounded-none bg-primary-muted px-3.5 py-1.5 text-sm font-medium text-primary;
+  @apply mb-4 inline-flex w-fit items-center rounded-[var(--radius-control)] bg-card-label px-3.5 py-1.5 text-sm font-medium text-primary;
+}
+
+/* Small icon chip — muted square behind section list icons */
+.icon-chip {
+  @apply flex h-10 w-10 shrink-0 items-center justify-center rounded-[var(--radius-sm)] bg-primary-muted text-primary;
 }
 
 .prose-editorial {
@@ -129,8 +202,21 @@ body {
   padding-right: var(--hero-frame-inset);
 }
 
+.footer-wordmark {
+  font-size: clamp(2.75rem, 13vw, 4rem);
+  line-height: 0.88;
+  letter-spacing: -0.03em;
+}
+
+@media (min-width: 768px) {
+  .footer-wordmark {
+    font-size: clamp(4.5rem, 16vw, 11rem);
+  }
+}
+
 .hero-frame {
-  border-radius: 0;
+  border-radius: var(--radius-card);
+  overflow: hidden;
 }
 
 /* Fixed hero backdrop — house image pinned under scrolling content */
@@ -146,6 +232,12 @@ body {
     rgba(12, 20, 23, 0.28) 58%,
     rgba(12, 20, 23, 0.72) 100%
   );
+}
+
+/* Losani navy wash for branded photo panels (e.g. FAQ) */
+.tide-photo-overlay {
+  background-color: var(--color-primary);
+  opacity: 0.52;
 }
 
 /* Bottom-weighted scrim — keeps hero copy legible on any photo */
@@ -187,7 +279,7 @@ body {
 }
 
 .hero-eyebrow {
-  @apply inline-flex w-fit items-center rounded-none border border-white/70 bg-transparent px-3.5 py-1.5 text-sm font-medium text-white;
+  @apply inline-flex w-fit items-center rounded-[var(--radius-control)] border border-white/70 bg-transparent px-3.5 py-1.5 text-sm font-medium text-white;
 }
 
 .hero-pill {
@@ -195,7 +287,7 @@ body {
 }
 
 .hero-bento-cell {
-  @apply rounded-none border border-white bg-transparent px-4 py-3.5 text-white md:px-5 md:py-4;
+  @apply rounded-[var(--radius-control)] border border-white bg-transparent px-4 py-3.5 text-white md:px-5 md:py-4;
 }
 
 .hero-bento-cell svg {
@@ -203,7 +295,7 @@ body {
 }
 
 .metrics-bento-cell {
-  @apply rounded-none border border-foreground/12 bg-transparent px-4 py-3.5 text-foreground md:px-5 md:py-4;
+  @apply rounded-[var(--radius-control)] border border-foreground/12 bg-transparent px-4 py-3.5 text-foreground md:px-5 md:py-4;
 }
 
 .metrics-bento-cell svg {
@@ -268,7 +360,8 @@ body {
 }
 
 .headline-section {
-  @apply font-display text-3xl font-medium tracking-tight text-foreground md:text-4xl lg:text-5xl lg:leading-[1.05];
+  @apply font-heading font-medium tracking-tight text-foreground leading-[1.05];
+  font-size: clamp(2rem, 4.5vw, 3.25rem);
 }
 
 .stat-value {
@@ -298,9 +391,9 @@ body {
   color: var(--color-muted);
 }
 
-/* ── Pills — sharp tags with icon + label ─────────────── */
+/* ── Pills — capsule tags with icon + label ───────────── */
 .pill {
-  @apply inline-flex items-center gap-2 rounded-none border border-foreground/10 bg-transparent px-5 py-2.5 text-sm font-medium text-foreground;
+  @apply inline-flex items-center gap-2 rounded-[var(--radius-control)] border border-foreground/10 bg-transparent px-5 py-2.5 text-sm font-medium text-foreground;
 }
 
 .pill-sm {
@@ -309,24 +402,27 @@ body {
 
 /* Legacy alias */
 .tag {
-  @apply inline-flex items-center gap-2 rounded-none border border-foreground/10 bg-transparent px-5 py-2.5 text-sm font-medium text-foreground;
+  @apply inline-flex items-center gap-2 rounded-[var(--radius-control)] border border-foreground/10 bg-transparent px-5 py-2.5 text-sm font-medium text-foreground;
 }
 
-/* ── Cards: flat #F6F6F6 on white — no border, no shadow ─ */
+/* ── Cards: flat #F6F6F6 on white — portal radius ─────── */
 .archun-card {
-  @apply bg-card;
+  @apply overflow-hidden bg-card;
+  border-radius: var(--radius-card);
 }
 
 .card-surface {
-  @apply bg-card;
+  @apply overflow-hidden bg-card;
+  border-radius: var(--radius-card);
 }
 
 .card-interactive {
-  @apply bg-card transition-[transform,box-shadow,background-color] duration-300 ease-[var(--ease-out-soft)];
+  @apply overflow-hidden bg-card transition-[background-color] duration-300 ease-[var(--ease-out-soft)];
+  border-radius: var(--radius-card);
 }
 
 .card-interactive:hover {
-  @apply bg-mist shadow-[var(--shadow-card-hover)];
+  @apply bg-mist;
 }
 
 .card-interactive:focus-within {
@@ -344,8 +440,9 @@ body {
 }
 
 .carousel-control {
-  @apply flex items-center justify-center bg-white text-foreground transition-colors hover:bg-mist;
+  @apply flex items-center justify-center overflow-hidden bg-white text-foreground transition-colors hover:bg-mist;
   @apply focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary;
+  border-radius: var(--radius-control);
 }
 
 /* ── Gallery carousel ─────────────────────────────────── */
@@ -382,6 +479,7 @@ body {
 
 .gallery-thumb {
   scroll-snap-align: center;
+  border-radius: var(--radius-card);
   transition:
     transform 0.35s var(--ease-out-soft),
     box-shadow 0.35s var(--ease-out-soft);
@@ -473,7 +571,10 @@ body {
 }
 
 .scrollbar-hide::-webkit-scrollbar {
+  width: 0;
+  height: 0;
   display: none;
+  background: transparent;
 }
 
 /* ── Scroll reveal (CSS / IntersectionObserver driven) ── */
@@ -502,4 +603,1485 @@ body {
     transform: none;
     transition: none;
   }
+
+  .animate-marquee,
+  .animate-marquee-vertical {
+    animation: none !important;
+  }
+
+  .testimonials-marquee {
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .testimonials-marquee::-webkit-scrollbar {
+    display: none;
+  }
+
+  .testimonials-marquee > div {
+    flex-wrap: nowrap;
+  }
 }
+
+/* ── Testimonials marquee — full bleed ─────────────────── */
+.testimonials-marquee-bleed {
+  position: relative;
+  left: 50%;
+  width: 100vw;
+  max-width: 100vw;
+  transform: translateX(-50%);
+}
+
+.testimonials-marquee-bleed > * {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.testimonials-marquee-bleed > *::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
+}
+
+/* ── Features carousel — full bleed ────────────────────── */
+.features-carousel-bleed {
+  position: relative;
+  left: 50%;
+  width: 100vw;
+  max-width: 100vw;
+  transform: translateX(-50%);
+}
+
+/* ── Floorplans carousel — full bleed ──────────────────── */
+.floorplans-carousel-bleed {
+  position: relative;
+  left: 50%;
+  width: 100vw;
+  max-width: 100vw;
+  transform: translateX(-50%);
+}
+
+.floorplans-carousel-bleed > * {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.floorplans-carousel-bleed > *::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
+}
+
+/* ── Navigation menu (shadcn) — BuiltOps tokens ───────── */
+.nav-menu-viewport {
+  @apply overflow-hidden border border-border bg-background shadow-[var(--shadow-card-hover)];
+  border-radius: var(--radius-card);
+}
+
+.nav-menu-panel {
+  @apply min-w-[12rem] rounded-[var(--radius-card)] border border-border bg-card p-3;
+}
+
+.nav-menu-panel-label {
+  @apply mb-2 px-1 text-xs font-semibold uppercase tracking-wider text-muted;
+}
+
+.nav-menu-panel-rich {
+  @apply min-w-[18rem] max-w-[calc(100vw-2rem)] overflow-hidden rounded-[var(--radius-card)] border-0 bg-transparent p-0 sm:min-w-[22rem] sm:max-w-[36rem];
+}
+
+/* ── Gallery bento — video/lead + 4-photo grid ─────────── */
+.gallery-bento-grid {
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-areas:
+    "lead lead"
+    "s0 s1"
+    "s2 s3";
+  grid-auto-rows: minmax(10rem, auto);
+}
+
+@media (min-width: 640px) {
+  .gallery-bento-grid {
+    gap: 1rem;
+    grid-auto-rows: minmax(11rem, auto);
+  }
+}
+
+@media (min-width: 1024px) {
+  .gallery-bento-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-rows: repeat(2, minmax(12rem, 1fr));
+    grid-template-areas:
+      "lead lead s0 s1"
+      "lead lead s2 s3";
+    grid-auto-rows: initial;
+  }
+}
+
+.gallery-bento-lead {
+  grid-area: lead;
+}
+
+/* Lead video/image — 16:9 on mobile/tablet (min-h-0 on .gallery-bento-cell was collapsing the row). */
+.gallery-bento-cell.gallery-bento-lead {
+  aspect-ratio: 16 / 9;
+  min-height: unset;
+}
+
+@media (min-width: 1024px) {
+  .gallery-bento-cell.gallery-bento-lead {
+    aspect-ratio: auto;
+    min-height: 0;
+  }
+}
+
+.gallery-bento-s0 { grid-area: s0; }
+.gallery-bento-s1 { grid-area: s1; }
+.gallery-bento-s2 { grid-area: s2; }
+.gallery-bento-s3 { grid-area: s3; }
+.gallery-bento-s4 { grid-area: s4; }
+.gallery-bento-s5 { grid-area: s5; }
+.gallery-bento-s6 { grid-area: s6; }
+.gallery-bento-s7 { grid-area: s7; }
+
+.gallery-bento-hero {
+  grid-area: hero;
+  min-height: 12rem;
+}
+
+@media (min-width: 1024px) {
+  .gallery-bento-hero {
+    min-height: 0;
+  }
+}
+
+.gallery-bento-cell {
+  @apply relative min-h-0 overflow-hidden bg-card;
+  border-radius: var(--radius-card);
+}
+
+.gallery-bento-cell > img,
+.gallery-bento-cell iframe {
+  @apply h-full w-full object-cover;
+}
+
+/* ── Microsite v3 — editorial / AKER-inspired (scoped) ─── */
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .headline-section-v3 {
+  @apply font-heading font-medium tracking-tight text-foreground;
+  font-size: clamp(2rem, 4.5vw, 3.25rem);
+  line-height: 1.02;
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-section-label {
+  @apply mb-4 text-xs font-medium tracking-wide text-muted;
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-section-dek {
+  @apply mt-5 max-w-2xl text-base leading-relaxed text-body md:text-lg;
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-section-intro {
+  @apply mb-10 md:mb-14;
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-hairline {
+  @apply mt-8 w-full border-0 border-t border-border md:mt-10;
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-section-divider > section,
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-section-divider > div > section {
+  @apply border-t border-border/70;
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-section-divider > #similarCommunities {
+  border-top-width: 0;
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-sticky-scroll {
+  @apply flex flex-col gap-8 lg:grid lg:grid-cols-[minmax(0,16rem)_minmax(0,1fr)] lg:items-start lg:gap-10 xl:grid-cols-[minmax(0,20rem)_minmax(0,1fr)] xl:gap-14;
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-sticky-scroll-aside {
+  @apply shrink-0 lg:sticky lg:top-[calc(var(--nav-height,4rem)+1.5rem)] lg:max-w-xs lg:self-start;
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-sticky-scroll-column {
+  @apply min-w-0 overflow-hidden lg:overflow-visible;
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-sticky-scroll-bleed {
+  position: relative;
+  left: 50%;
+  width: 100vw;
+  max-width: 100vw;
+  transform: translateX(-50%);
+}
+
+@media (min-width: 1024px) {
+  :is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-sticky-scroll-bleed {
+    left: 0;
+    width: 100%;
+    max-width: none;
+    transform: none;
+  }
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-sticky-scroll-bleed > * {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  scroll-behavior: smooth;
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-sticky-scroll-bleed > *::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  :is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-sticky-scroll-bleed > * {
+    @apply pl-0;
+  }
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-feature-slide {
+  @apply border-t border-border pt-8 lg:border-t-0 lg:pt-0;
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-feature-slide:first-child {
+  @apply border-t-0 pt-0;
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-feature-slide-media {
+  @apply relative aspect-[4/5] w-full overflow-hidden bg-mist;
+  border-radius: var(--radius-card);
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-hero-tagline {
+  @apply max-w-xl text-sm font-normal leading-relaxed text-white/85 md:text-base;
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-hero-display {
+  @apply font-display max-w-[12ch] font-medium leading-[0.92] tracking-tight text-white;
+  font-size: clamp(3.25rem, 11vw, 7.5rem);
+}
+
+/* Portal control radius — buttons, inputs, toggles (12px) */
+.control-radius {
+  border-radius: var(--radius-control);
+}
+
+/* Portal-style primary CTA — gradient mid-button per Scott */
+.cta-primary-gradient {
+  background: linear-gradient(90deg, #062543 0%, #1f4870 55%, #1f4870 100%);
+  color: #ffffff;
+  border-radius: var(--radius-control);
+  overflow: hidden;
+  background-clip: padding-box;
+  transition: filter 200ms ease;
+}
+.cta-primary-gradient:hover {
+  filter: brightness(0.94);
+}
+.cta-primary-gradient:focus-visible {
+  outline: 2px solid var(--color-primary, #1f4870);
+  outline-offset: 2px;
+}
+
+/* Hero CTAs — matched height, padding, and radius */
+.hero-editorial-ctas > a,
+.hero-editorial-ctas > div > button {
+  border-radius: var(--radius-control);
+  box-sizing: border-box;
+}
+
+/* v5 mobile hero — center copy and sit lower on screen */
+@media (max-width: 767px) {
+  :is([data-microsite-version="v5"], [data-microsite-version="v6"]) .v5-hero-content-anchor {
+    top: 48%;
+    bottom: auto;
+    transform: translateY(-4%);
+    padding-bottom: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  :is([data-microsite-version="v5"], [data-microsite-version="v6"]) .v5-hero-content-anchor > div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    text-align: center;
+  }
+
+  :is([data-microsite-version="v5"], [data-microsite-version="v6"]) .v5-hero-content-anchor .v3-hero-display {
+    max-width: 14ch;
+    margin-inline: auto;
+    text-align: center;
+  }
+
+  :is([data-microsite-version="v5"], [data-microsite-version="v6"]) .v5-hero-content-anchor .v5-hero-meta {
+    text-align: center;
+  }
+
+  :is([data-microsite-version="v5"], [data-microsite-version="v6"]) .v5-hero-content-anchor .v4-available-badge {
+    align-self: center;
+  }
+
+  :is([data-microsite-version="v5"], [data-microsite-version="v6"]) .v5-hero-content-anchor .hero-editorial-ctas {
+    justify-content: center;
+  }
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-hero-rule {
+  @apply my-6 w-full max-w-xs border-0 border-t border-white/35 md:my-8;
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-panel {
+  @apply border-t border-border pt-8 md:pt-10;
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-panel-label {
+  @apply mb-3 text-xs font-medium tracking-wide text-muted;
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-metrics-band-bleed {
+  position: relative;
+  left: 50%;
+  width: 100vw;
+  max-width: 100vw;
+  transform: translateX(-50%);
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-metrics-band {
+  @apply grid grid-cols-2 border-t border-l border-border sm:grid-cols-3 xl:grid-cols-6;
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-metrics-band-item {
+  @apply flex min-w-0 flex-col justify-start gap-1 border-r border-b border-border bg-background px-3 py-3 sm:gap-2 sm:px-5 sm:py-8 lg:gap-3 lg:px-6 lg:py-10;
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-metrics-band-value {
+  @apply min-w-0 font-heading font-medium leading-tight tracking-tight text-foreground;
+  font-size: clamp(1.125rem, 3.2vw, 3.25rem);
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-metrics-band-label {
+  @apply text-xs leading-snug text-muted sm:text-sm;
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-map-band {
+  @apply bg-primary text-white;
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-map-band .v3-section-label,
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-map-band .v3-metrics-band-label,
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-map-band .v3-map-eyebrow {
+  @apply text-white/55;
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-map-band .headline-section-v3 {
+  @apply text-white;
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-map-band .v3-section-dek {
+  @apply text-white/75;
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-map-band .v3-hairline {
+  @apply border-white/20;
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-map-band .v3-map-frame {
+  @apply overflow-hidden bg-mist;
+  border-radius: var(--radius-card);
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-map-band .v3-map-link-bar {
+  background: linear-gradient(
+    0deg,
+    rgba(32, 58, 84, 0.88) 0%,
+    rgba(32, 58, 84, 0.48) 46%,
+    rgba(32, 58, 84, 0.08) 100%
+  );
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-map-band .v3-map-panel {
+  @apply border-0 bg-transparent p-0 md:p-0;
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-map-band .v3-map-toggle {
+  @apply text-white transition-colors;
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-map-band .v3-map-toggle[data-active="true"] {
+  @apply text-white/55;
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-map-band .v3-map-show-all {
+  @apply text-white underline-offset-4 transition-opacity hover:opacity-80;
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-map-band .v3-map-list-scroll-wrap {
+  @apply pr-0;
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-map-band .v3-map-list-scroll-wrap::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2.75rem;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    rgb(6 37 67 / 0) 0%,
+    rgb(6 37 67 / 0.65) 55%,
+    rgb(6 37 67 / 1) 100%
+  );
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-map-band .v3-map-list-scroll {
+  @apply min-h-0 max-h-full flex-1 overflow-y-auto px-0.5 pr-3;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-map-band .v3-map-list-scroll::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-map-band .v3-map-list-scroll-thumb {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 1px;
+  background: rgb(255 255 255 / 0.4);
+  pointer-events: none;
+  transition: transform 120ms linear, height 120ms linear;
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-map-band .v3-map-list {
+  @apply divide-white/20;
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-map-band .v3-map-row {
+  @apply transition-colors;
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-map-band .v3-map-row[data-focused="true"] {
+  @apply bg-transparent;
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-map-list-icon {
+  border-radius: var(--radius-sm);
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-map-band .v3-map-list-icon {
+  @apply origin-center transition-[transform,box-shadow] duration-200 ease-[var(--ease-out-soft)];
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-map-band .v3-map-row button:hover .v3-map-list-icon,
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-map-band .v3-map-row button:focus-visible .v3-map-list-icon {
+  @apply scale-105;
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-map-band .v3-map-row[data-focused="true"] .v3-map-list-icon {
+  @apply scale-110 shadow-[0_0_0_2px_#fff];
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .area-map-leaflet-marker {
+  background: transparent !important;
+  border: 0 !important;
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .area-map-leaflet .leaflet-control-zoom {
+  margin: 12px !important;
+  border: 0 !important;
+  overflow: hidden;
+  border-radius: var(--radius-control);
+  box-shadow: 0 8px 24px rgba(12, 20, 23, 0.18);
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .area-map-leaflet .leaflet-control-zoom a {
+  @apply border-border bg-white text-foreground;
+  width: 36px;
+  height: 36px;
+  line-height: 36px;
+  font-size: 18px;
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .area-map-leaflet .leaflet-control-zoom a:hover {
+  @apply bg-mist;
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-map-band .v3-map-row-title {
+  @apply text-white;
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-map-band .v3-map-row-meta {
+  @apply text-white/55;
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-map-band .v3-map-external {
+  @apply text-teal-mid transition-colors hover:text-white;
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-site-plan-band {
+  background-color: #2d6a4f;
+  @apply text-white;
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-site-plan-band .v3-section-label,
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-site-plan-band .v3-panel-label {
+  @apply text-white/55;
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-site-plan-band .headline-section-v3 {
+  @apply text-white;
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-site-plan-band .v3-section-dek {
+  @apply text-white/75;
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-site-plan-band .v3-hairline {
+  @apply border-white/20;
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-site-plan-band .pill {
+  @apply border-white/25 text-white;
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-site-plan-band .v3-inset-panel {
+  @apply border-white/25 bg-white/10;
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-site-plan-band .v3-site-plan-detail {
+  @apply flex-1;
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-site-plan-band .v3-panel {
+  @apply border-t border-white/25 pt-8 md:pt-10;
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-site-plan-band .text-muted {
+  @apply text-white/55;
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-site-plan-band .font-bold {
+  @apply text-white;
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-site-plan-band .v3-site-plan-zoom-btn {
+  @apply flex h-9 w-9 items-center justify-center border border-white/30 bg-white text-foreground transition-colors hover:bg-white/90;
+  border-radius: var(--radius-sm);
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-site-plan-band .v3-site-plan-zoom-btn + .v3-site-plan-zoom-btn {
+  @apply border-t-0;
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-portfolio-tile {
+  @apply relative aspect-[4/3] overflow-hidden bg-mist;
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-amenity-list {
+  @apply border-t border-border;
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-amenity-item {
+  @apply border-0;
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-amenity-item:not(:first-child) .v3-amenity-trigger {
+  @apply border-t border-border;
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-accordion-trigger {
+  @apply cursor-pointer text-foreground;
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-accordion-trigger:hover,
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-accordion-trigger[data-state=open] {
+  @apply text-foreground;
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-faq-item {
+  @apply border-0;
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-faq-item:not(:first-child) .v3-accordion-trigger {
+  @apply border-t border-border;
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-faq-accordion-icon {
+  @apply transition-[border-color,background-color,color,transform] duration-200 ease-[var(--ease-out-soft)];
+  border-radius: var(--radius-sm);
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-accordion-trigger:hover .v3-faq-accordion-icon,
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-accordion-trigger[data-state=open] .v3-faq-accordion-icon {
+  @apply border-primary bg-primary-muted/55 text-primary;
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-amenity-accordion-icon {
+  @apply transition-[border-color,background-color,color,transform] duration-200 ease-[var(--ease-out-soft)];
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-accordion-trigger:hover .v3-amenity-accordion-icon,
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-accordion-trigger[data-state=open] .v3-amenity-accordion-icon {
+  @apply border-accent bg-accent/20 text-accent;
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-accordion-trigger:hover .v3-amenity-icon,
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-accordion-trigger[data-state=open] .v3-amenity-icon {
+  @apply bg-accent/85;
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-amenity-trigger {
+  @apply flex w-full items-center gap-4 py-5 text-left md:py-6;
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-amenity-content > div {
+  @apply pb-6 pl-14 pr-10 pt-0 md:pl-[3.75rem];
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-amenity-icon {
+  @apply flex h-9 w-9 shrink-0 items-center justify-center bg-accent text-white transition-[background-color,border-color,color,transform] duration-200 ease-[var(--ease-out-soft)] md:h-10 md:w-10;
+  border-radius: var(--radius-sm);
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-story-row {
+  @apply grid gap-4 border-t border-border py-8 md:grid-cols-[5rem_minmax(0,1fr)] md:gap-8 md:py-10 lg:grid-cols-[6rem_minmax(0,1fr)];
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-portfolio-row {
+  @apply grid gap-6 border-t border-border py-8 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)] lg:items-center lg:gap-12 lg:py-10;
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-feature-reveal-section {
+  @apply bg-background py-0;
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-feature-reveal-section .container-wide {
+  @apply max-w-none px-0;
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-feature-reveal-bleed {
+  position: relative;
+  left: 50%;
+  width: 100vw;
+  max-width: 100vw;
+  min-height: calc(100svh - var(--nav-height, 4rem));
+  transform: translateX(-50%);
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-feature-reveal-eyebrow {
+  @apply text-xs font-medium tracking-wide text-white/55;
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-feature-reveal-section-title {
+  @apply font-heading font-medium tracking-tight text-white;
+  font-size: clamp(1.125rem, 2.4vw, 1.5rem);
+  line-height: 1.1;
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-feature-reveal-slide-title {
+  font-size: clamp(2.25rem, 6.5vw, 4rem);
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-feature-reveal-icon {
+  @apply h-14 w-14 border border-white/30 bg-white/10 md:h-16 md:w-16;
+  border-radius: var(--radius-sm);
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-feature-reveal-card {
+  @apply text-white;
+  background-image:
+    linear-gradient(to right, rgb(255 255 255 / 0.07) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(255 255 255 / 0.07) 1px, transparent 1px);
+  background-size: 3rem 3rem;
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-feature-card-primary {
+  background-color: var(--color-primary);
+  background-image:
+    radial-gradient(ellipse 85% 65% at 15% 10%, rgba(143, 168, 200, 0.42) 0%, transparent 58%),
+    radial-gradient(ellipse 75% 55% at 90% 95%, rgba(39, 72, 102, 0.65) 0%, transparent 52%),
+    linear-gradient(to right, rgb(255 255 255 / 0.07) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(255 255 255 / 0.07) 1px, transparent 1px);
+  background-size: auto, auto, 3rem 3rem, 3rem 3rem;
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-feature-card-accent {
+  background-color: var(--color-accent);
+  background-image:
+    radial-gradient(ellipse 80% 60% at 90% 15%, rgba(255, 255, 255, 0.18) 0%, transparent 55%),
+    radial-gradient(ellipse 70% 50% at 10% 90%, rgba(0, 0, 0, 0.15) 0%, transparent 52%),
+    linear-gradient(to right, rgb(255 255 255 / 0.1) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(255 255 255 / 0.1) 1px, transparent 1px);
+  background-size: auto, auto, 3rem 3rem, 3rem 3rem;
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-feature-card-green {
+  background-color: #2d6a4f;
+  background-image:
+    radial-gradient(ellipse 80% 60% at 85% 20%, rgba(255, 255, 255, 0.14) 0%, transparent 55%),
+    radial-gradient(ellipse 70% 50% at 15% 85%, rgba(0, 0, 0, 0.18) 0%, transparent 52%),
+    linear-gradient(to right, rgb(255 255 255 / 0.08) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(255 255 255 / 0.08) 1px, transparent 1px);
+  background-size: auto, auto, 3rem 3rem, 3rem 3rem;
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-portfolio-card {
+  @apply flex w-[min(88vw,22rem)] flex-col overflow-hidden sm:w-[24rem] lg:w-[26rem];
+  border-radius: var(--radius-card);
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-list-row {
+  @apply py-8 md:py-10;
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-form-inset {
+  @apply overflow-hidden border border-border bg-surface p-6 md:p-8 lg:p-10;
+  border-radius: var(--radius-card);
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .visit-registration-inset {
+  @apply border border-border bg-surface p-5 md:p-6 lg:p-8;
+  border-radius: var(--radius-card);
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .visit-registration-split {
+  @apply grid min-w-0 gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(18rem,26rem)] lg:items-start lg:gap-x-12 lg:gap-y-8;
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .visit-registration-aside {
+  @apply min-w-0;
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .visit-registration-aside .v3-section-intro {
+  @apply mb-0;
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .visit-registration-aside .v3-section-dek {
+  @apply mt-4 text-sm leading-relaxed md:text-base;
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .visit-registration-form {
+  @apply min-w-0 lg:border-l lg:border-border lg:pl-8 xl:pl-10;
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .visit-registration-form > form {
+  @apply w-full max-w-[26rem];
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-inset-panel {
+  @apply overflow-hidden border border-border p-5 md:p-6;
+  border-radius: var(--radius-card);
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-testimonial-row {
+  @apply grid gap-6 py-8 md:grid-cols-[minmax(0,12rem)_1fr] md:gap-8 md:py-10;
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-community-link {
+  @apply block overflow-hidden border-t border-border pt-8 transition-colors md:pt-10;
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-download-link {
+  @apply border-t border-border pt-8 transition-[background-color,color,border-color] duration-300 ease-[var(--ease-out-soft)] md:pt-10;
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-download-link:hover {
+  @apply border-primary/30 bg-mist;
+}
+
+:is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-download-link:focus-visible {
+  @apply outline outline-2 outline-offset-2 outline-primary;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :is([data-microsite-version="v3"], [data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-download-link {
+    transition: none;
+  }
+}
+
+/* v4-only additions */
+
+/* Leaflet map attribution (custom control - required OSM/CARTO credit) */
+.area-map-attribution {
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
+  z-index: 1000;
+  padding: 2px 8px;
+  font-size: 10px;
+  line-height: 1.4;
+  color: rgb(0 0 0 / 0.65);
+  background: rgb(255 255 255 / 0.75);
+  pointer-events: auto;
+}
+
+.area-map-attribution a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* Hero scroll cue (v4) */
+:is([data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v4-scroll-cue {
+  animation: v4-scroll-cue-bounce 2.2s ease-in-out infinite;
+}
+
+@keyframes v4-scroll-cue-bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(6px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :is([data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v4-scroll-cue {
+    animation: none;
+  }
+}
+
+/* v4 site plan — lot inventory table */
+:is([data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v4-site-plan-table th {
+  @apply text-xs uppercase tracking-wide;
+}
+
+:is([data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v4-site-plan-table tbody tr[data-selected] {
+  border-left: 3px solid #22c55e;
+  background-color: #ecfdf3;
+}
+
+/* v4/v6 hero stage badges — green = selling, yellow = early stages */
+:is([data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v4-available-badge[data-stage-badge="available"] {
+  box-shadow: 0 0 20px rgba(34, 197, 94, 0.32);
+}
+
+:is([data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v4-available-badge[data-stage-badge="coming-soon"],
+:is([data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v4-available-badge[data-stage-badge="future"] {
+  box-shadow: 0 0 20px rgba(251, 191, 36, 0.35);
+}
+
+:is([data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v4-available-dot {
+  display: inline-block;
+  height: 0.5rem;
+  width: 0.5rem;
+  border-radius: 9999px;
+  background-color: #22c55e;
+  animation: v4-available-pulse 2s ease-out infinite;
+}
+
+:is([data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v4-available-dot[data-stage-dot="available"] {
+  background-color: #22c55e;
+  animation: v4-available-pulse 2s ease-out infinite;
+}
+
+:is([data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v4-available-dot[data-stage-dot="coming-soon"],
+:is([data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v4-available-dot[data-stage-dot="future"] {
+  background-color: #fbbf24;
+  animation: v4-coming-soon-pulse 2s ease-out infinite;
+}
+
+@keyframes v4-available-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.6);
+  }
+  70% {
+    box-shadow: 0 0 0 7px rgba(34, 197, 94, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0);
+  }
+}
+
+@keyframes v4-coming-soon-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(251, 191, 36, 0.55);
+  }
+  70% {
+    box-shadow: 0 0 0 7px rgba(251, 191, 36, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(251, 191, 36, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :is([data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .v4-available-dot {
+    animation: none;
+  }
+}
+
+/* v5 metrics band — contained width, responsive rows */
+:is(:is([data-microsite-version="v5"], [data-microsite-version="v6"])) .v5-metrics-band-shell {
+  @apply w-full min-w-0;
+}
+
+:is(:is([data-microsite-version="v5"], [data-microsite-version="v6"])) .v5-metrics-band {
+  @apply grid grid-cols-2 overflow-hidden border border-border sm:grid-cols-3;
+  border-radius: var(--radius-card);
+}
+
+:is(:is([data-microsite-version="v5"], [data-microsite-version="v6"])) .v5-metrics-band-item {
+  @apply flex min-w-0 flex-col justify-center gap-1 border-r border-b border-border bg-background px-3 py-3.5 sm:px-5 sm:py-4 md:px-6 md:py-5;
+}
+
+:is(:is([data-microsite-version="v5"], [data-microsite-version="v6"])) .v5-metrics-band-item:nth-child(2n) {
+  @apply border-r-0 sm:border-r;
+}
+
+:is(:is([data-microsite-version="v5"], [data-microsite-version="v6"])) .v5-metrics-band-item:nth-child(3n) {
+  @apply sm:border-r-0;
+}
+
+:is(:is([data-microsite-version="v5"], [data-microsite-version="v6"])) .v5-metrics-band-item:nth-last-child(-n + 2) {
+  @apply border-b-0 sm:border-b;
+}
+
+:is(:is([data-microsite-version="v5"], [data-microsite-version="v6"])) .v5-metrics-band-item:nth-last-child(-n + 3) {
+  @apply sm:border-b-0;
+}
+
+:is(:is([data-microsite-version="v5"], [data-microsite-version="v6"])) .v5-metrics-band-item--anchor {
+  @apply bg-primary-muted/25;
+}
+
+:is(:is([data-microsite-version="v5"], [data-microsite-version="v6"])) .v5-metrics-band-value {
+  @apply min-w-0 font-heading font-medium leading-tight tracking-tight text-foreground;
+  font-size: clamp(1rem, 2.4vw, 2rem);
+  text-wrap: nowrap;
+}
+
+:is(:is([data-microsite-version="v5"], [data-microsite-version="v6"])) .v5-metrics-band-value-line {
+  @apply block;
+}
+
+:is(:is([data-microsite-version="v5"], [data-microsite-version="v6"])) .v5-metrics-band-item--anchor .v5-metrics-band-value {
+  @apply font-bold text-primary;
+  font-size: clamp(1.0625rem, 2.8vw, 2.5rem);
+}
+
+:is(:is([data-microsite-version="v5"], [data-microsite-version="v6"])) .v5-metrics-band-label {
+  @apply text-[0.6875rem] leading-snug text-muted sm:text-xs;
+}
+
+:is(:is([data-microsite-version="v5"], [data-microsite-version="v6"])) .v5-metrics-band-item--anchor .v5-metrics-band-label {
+  @apply font-medium text-primary;
+}
+
+/* v5 overview metrics — spotlight (price hero + spec rail) */
+:is(:is([data-microsite-version="v5"], [data-microsite-version="v6"])) .v5-metrics-spotlight {
+  @apply overflow-hidden border border-border bg-background;
+  border-radius: var(--radius-card);
+}
+
+:is(:is([data-microsite-version="v5"], [data-microsite-version="v6"])) .v5-metrics-spotlight-hero {
+  @apply flex flex-col gap-1 border-b border-border bg-primary-muted/30 px-5 py-5 sm:px-6 sm:py-6;
+}
+
+:is(:is([data-microsite-version="v5"], [data-microsite-version="v6"])) .v5-metrics-spotlight-rail {
+  @apply grid grid-cols-2 sm:flex sm:flex-wrap;
+}
+
+:is(:is([data-microsite-version="v5"], [data-microsite-version="v6"])) .v5-metrics-spotlight-rail-item {
+  @apply flex min-w-0 flex-1 flex-col justify-center gap-1 border-b border-r border-border px-4 py-4 sm:min-w-[9rem] sm:border-b-0 sm:px-5 sm:py-5;
+}
+
+:is(:is([data-microsite-version="v5"], [data-microsite-version="v6"])) .v5-metrics-spotlight-rail-item:nth-child(2n) {
+  @apply border-r-0 sm:border-r;
+}
+
+:is(:is([data-microsite-version="v5"], [data-microsite-version="v6"])) .v5-metrics-spotlight-rail-item:nth-last-child(-n + 2) {
+  @apply border-b-0 sm:border-b-0;
+}
+
+:is(:is([data-microsite-version="v5"], [data-microsite-version="v6"])) .v5-metrics-spotlight-rail-item:last-child:nth-child(odd) {
+  @apply col-span-2 border-r-0;
+}
+
+/* v5 overview metrics — ribbon strip */
+:is(:is([data-microsite-version="v5"], [data-microsite-version="v6"])) .v5-metrics-ribbon {
+  @apply flex flex-col overflow-hidden border border-border bg-background sm:flex-row sm:flex-wrap;
+  border-radius: var(--radius-card);
+}
+
+:is(:is([data-microsite-version="v5"], [data-microsite-version="v6"])) .v5-metrics-ribbon-item {
+  @apply flex min-w-0 flex-1 flex-col justify-center gap-1 border-b border-border px-4 py-4 sm:border-b-0 sm:border-r sm:px-5 sm:py-5 md:min-w-[8.5rem];
+}
+
+:is(:is([data-microsite-version="v5"], [data-microsite-version="v6"])) .v5-metrics-ribbon-item--last {
+  @apply border-b-0 sm:border-r-0;
+}
+
+:is(:is([data-microsite-version="v5"], [data-microsite-version="v6"])) .v5-metrics-ribbon-item--anchor {
+  @apply bg-primary-muted/25 sm:min-w-[10rem];
+}
+
+/* v5 overview metrics — fog chips */
+:is(:is([data-microsite-version="v5"], [data-microsite-version="v6"])) .v5-metrics-chips {
+  @apply flex flex-wrap gap-3;
+}
+
+:is(:is([data-microsite-version="v5"], [data-microsite-version="v6"])) .v5-metrics-chip {
+  @apply flex min-w-[calc(50%-0.375rem)] flex-col gap-1 bg-card px-4 py-4 sm:min-w-[9.5rem] sm:flex-1 sm:px-5 sm:py-5;
+  border-radius: var(--radius-card);
+}
+
+:is(:is([data-microsite-version="v5"], [data-microsite-version="v6"])) .v5-metrics-chip--anchor {
+  @apply w-full bg-primary-muted/40 sm:min-w-full sm:flex-[1_1_100%];
+}
+
+/* v5 overview metrics — shared spec typography */
+:is(:is([data-microsite-version="v5"], [data-microsite-version="v6"])) .v5-metrics-spec-value {
+  @apply min-w-0 font-heading font-medium leading-tight tracking-tight text-foreground tabular-nums;
+  font-size: clamp(0.9375rem, 1.8vw, 1.375rem);
+}
+
+:is(:is([data-microsite-version="v5"], [data-microsite-version="v6"])) .v5-metrics-spec-label {
+  @apply text-[0.6875rem] leading-snug text-muted sm:text-xs;
+}
+
+/* v5 overview compositions — introduction + outline pills */
+:is([data-microsite-version="v5"], [data-microsite-version="v6"]) .v5-overview-composition {
+  @apply min-w-0 border-0;
+}
+
+:is([data-microsite-version="v5"], [data-microsite-version="v6"]) .v5-overview-layout {
+  @apply min-w-0;
+}
+
+:is([data-microsite-version="v5"], [data-microsite-version="v6"]) .v5-overview-prose--editorial .v5-overview-introduction {
+  @apply text-xl font-semibold leading-snug text-foreground md:text-2xl;
+}
+
+:is([data-microsite-version="v5"], [data-microsite-version="v6"]) .v5-overview-prose--editorial .v5-overview-description {
+  @apply mt-4 text-sm leading-relaxed text-body md:text-base;
+}
+
+:is([data-microsite-version="v5"], [data-microsite-version="v6"]) .v5-overview-outline-facts {
+  @apply grid gap-3 border-0;
+}
+
+:is([data-microsite-version="v5"], [data-microsite-version="v6"]) .v5-overview-outline-facts .v5-overview-fact {
+  @apply flex min-w-0 flex-col justify-end gap-1 rounded-[var(--radius-control)] border border-border bg-transparent px-4 py-4 md:px-5 md:py-5;
+}
+
+:is([data-microsite-version="v5"], [data-microsite-version="v6"]) .v5-overview-outline-facts .v5-overview-fact dt {
+  @apply order-2 text-[0.6875rem] uppercase tracking-[0.1em] text-muted;
+}
+
+:is([data-microsite-version="v5"], [data-microsite-version="v6"]) .v5-overview-outline-facts .v5-overview-fact dd {
+  @apply min-w-0 font-heading text-base font-medium leading-tight tracking-tight text-foreground md:text-lg;
+}
+
+:is([data-microsite-version="v5"], [data-microsite-version="v6"]) .v5-overview-outline-facts .v5-overview-fact--lead {
+  @apply border-primary/35 bg-transparent;
+}
+
+:is([data-microsite-version="v5"], [data-microsite-version="v6"]) .v5-overview-outline-facts .v5-overview-fact--lead dd {
+  @apply text-primary;
+}
+
+/* Split grid — live default */
+:is([data-microsite-version="v5"], [data-microsite-version="v6"]) .v5-overview-layout--bento-poster {
+  @apply grid gap-8;
+  grid-template-areas: "copy" "facts";
+}
+
+:is([data-microsite-version="v5"], [data-microsite-version="v6"]) .v5-overview-poster-copy {
+  @apply min-w-0;
+  grid-area: copy;
+}
+
+:is([data-microsite-version="v5"], [data-microsite-version="v6"]) .v5-overview-poster-facts {
+  @apply min-w-0 grid-cols-2 sm:grid-cols-3;
+  grid-area: facts;
+}
+
+/* Stacked — prose then full-width grid */
+:is([data-microsite-version="v5"], [data-microsite-version="v6"]) .v5-overview-layout--stacked-pills {
+  @apply flex flex-col gap-10 md:gap-12;
+}
+
+:is([data-microsite-version="v5"], [data-microsite-version="v6"]) .v5-overview-stacked-copy {
+  @apply max-w-3xl;
+}
+
+:is([data-microsite-version="v5"], [data-microsite-version="v6"]) .v5-overview-stacked-facts {
+  @apply grid-cols-2 sm:grid-cols-3;
+}
+
+/* Vertical rail — prose + single-column pills */
+:is([data-microsite-version="v5"], [data-microsite-version="v6"]) .v5-overview-layout--vertical-rail {
+  @apply grid gap-8;
+  grid-template-areas: "copy" "facts";
+}
+
+:is([data-microsite-version="v5"], [data-microsite-version="v6"]) .v5-overview-rail-copy {
+  @apply min-w-0;
+  grid-area: copy;
+}
+
+:is([data-microsite-version="v5"], [data-microsite-version="v6"]) .v5-overview-rail-facts {
+  @apply grid-cols-1;
+  grid-area: facts;
+}
+
+/* Inline band — prose then wrapping pills */
+:is([data-microsite-version="v5"], [data-microsite-version="v6"]) .v5-overview-layout--inline-band {
+  @apply flex flex-col gap-8 md:gap-10;
+}
+
+:is([data-microsite-version="v5"], [data-microsite-version="v6"]) .v5-overview-band-copy {
+  @apply max-w-3xl;
+}
+
+:is([data-microsite-version="v5"], [data-microsite-version="v6"]) .v5-overview-band-facts {
+  @apply flex flex-wrap gap-3;
+}
+
+:is([data-microsite-version="v5"], [data-microsite-version="v6"]) .v5-overview-band-facts .v5-overview-fact {
+  @apply min-w-[calc(50%-0.375rem)] flex-[1_1_calc(50%-0.375rem)] sm:min-w-[calc(33.333%-0.5rem)] sm:flex-[1_1_calc(33.333%-0.5rem)];
+}
+
+@media (min-width: 1024px) {
+  :is([data-microsite-version="v5"], [data-microsite-version="v6"]) .v5-overview-layout--bento-poster {
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+    grid-template-areas: "copy facts";
+    align-items: start;
+    gap: 3rem;
+  }
+
+  :is([data-microsite-version="v5"], [data-microsite-version="v6"]) .v5-overview-layout--vertical-rail {
+    grid-template-columns: minmax(0, 1fr) minmax(14rem, 18rem);
+    grid-template-areas: "copy facts";
+    align-items: start;
+    gap: 3rem;
+  }
+}
+
+/* v5 lifestyle — text-only amenity rows (no icons) */
+:is(:is([data-microsite-version="v5"], [data-microsite-version="v6"])) .v5-amenity-row {
+  @apply py-6 md:py-7;
+}
+
+/* Community card — Losani portal model (Figma 181:718) */
+:is([data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .community-card {
+  @apply overflow-hidden border border-border bg-background;
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+}
+
+:is([data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .community-card-status-badge {
+  align-items: center;
+  gap: 0.5rem;
+  height: 1.375rem;
+  margin: 0;
+  padding: 0.125rem 0.625rem;
+  font-size: 0.75rem;
+  font-weight: 400;
+  line-height: 1;
+  color: #ffffff;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+}
+
+@media (min-width: 768px) {
+  :is([data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .community-card-status-badge {
+    display: inline-flex;
+  }
+}
+
+:is([data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .community-collection-badge--pronto {
+  background: linear-gradient(180deg, rgba(147, 51, 234, 0.92) 0%, rgba(187, 115, 255, 0.92) 100%);
+}
+
+:is([data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .community-collection-badge--originals,
+:is([data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .community-collection-badge--default {
+  background: linear-gradient(180deg, rgba(6, 37, 67, 0.92) 0%, rgba(31, 72, 112, 0.92) 100%);
+}
+
+:is([data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .community-collection-badge--special-offers {
+  background: linear-gradient(180deg, rgba(185, 28, 28, 0.92) 0%, rgba(239, 68, 68, 0.92) 100%);
+}
+
+/* Model card — house floorplan (Figma 204:3989) */
+:is([data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .model-card {
+  @apply overflow-hidden border border-border bg-background;
+  border-radius: var(--radius-control);
+  box-shadow: var(--shadow-card);
+}
+
+:is([data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .model-card-lot-pill {
+  @apply inline-flex h-5 items-center border border-border px-3.5 text-xs font-medium text-foreground;
+  border-radius: var(--radius-control);
+  background: var(--color-card-label);
+}
+
+/* ─── v5 final polish (scoped — do not edit shared :is(v3,v4,v5) blocks) ─── */
+
+:is([data-microsite-version="v5"], [data-microsite-version="v6"]) .headline-section-v3 {
+  line-height: 1.08;
+}
+
+:is([data-microsite-version="v5"], [data-microsite-version="v6"]) .v5-overview-outline-facts .v5-overview-fact dd,
+:is([data-microsite-version="v5"], [data-microsite-version="v6"]) .v5-overview-band-facts .v5-overview-fact dd {
+  font-variant-numeric: tabular-nums;
+}
+
+:is([data-microsite-version="v5"], [data-microsite-version="v6"]) .v5-overview-outline-facts .v5-overview-fact--lead {
+  background: color-mix(in srgb, var(--color-primary-muted, #e8eef5) 55%, transparent);
+  border-color: color-mix(in srgb, var(--color-primary, #1f4870) 35%, transparent);
+}
+
+:is([data-microsite-version="v5"], [data-microsite-version="v6"]) .v5-overview-poster-copy .v5-overview-description {
+  max-width: 62ch;
+}
+
+:is([data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .model-card,
+:is([data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .community-card {
+  transition:
+    transform 220ms var(--ease-out-soft, cubic-bezier(0.22, 1, 0.36, 1)),
+    box-shadow 220ms var(--ease-out-soft, cubic-bezier(0.22, 1, 0.36, 1));
+}
+
+:is([data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .model-card:hover,
+:is([data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .community-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-card-hover);
+}
+
+:is([data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .model-card img,
+:is([data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .community-card img {
+  transition: transform 700ms var(--ease-out-soft, cubic-bezier(0.22, 1, 0.36, 1));
+}
+
+:is([data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .model-card:hover img,
+:is([data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .community-card:hover img {
+  transform: scale(1.03);
+}
+
+:is([data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .model-card:focus-within,
+:is([data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .community-card:focus-within {
+  outline: 2px solid var(--color-primary, #1f4870);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :is([data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .model-card,
+  :is([data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .community-card,
+  :is([data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .model-card img,
+  :is([data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .community-card img {
+    transition: none;
+  }
+
+  :is([data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .model-card:hover,
+  :is([data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .community-card:hover {
+    transform: none;
+  }
+
+  :is([data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .model-card:hover img,
+  :is([data-microsite-version="v4"], [data-microsite-version="v5"], [data-microsite-version="v6"]) .community-card:hover img {
+    transform: none;
+  }
+}
+
+:is([data-microsite-version="v5"], [data-microsite-version="v6"]) .gallery-bento-cell:focus-visible {
+  outline: 2px solid var(--color-primary, #1f4870);
+  outline-offset: 3px;
+}
+
+:is([data-microsite-version="v5"], [data-microsite-version="v6"]) .gallery-bento-more-chip {
+  @apply absolute inset-0 z-10 flex items-center justify-center bg-black/40 text-sm font-semibold tracking-wide text-white;
+  pointer-events: none;
+}
+
+:is([data-microsite-version="v5"], [data-microsite-version="v6"]) .v5-site-plan-scrim {
+  background: linear-gradient(
+    180deg,
+    rgb(12 20 23 / 0.08) 0%,
+    rgb(12 20 23 / 0.18) 45%,
+    rgb(12 20 23 / 0.52) 100%
+  );
+}
+
+:is([data-microsite-version="v5"], [data-microsite-version="v6"]) .v5-site-plan-cta {
+  @apply border border-white/70 shadow-[var(--shadow-card)] transition-[transform,box-shadow,filter] duration-200;
+}
+
+:is([data-microsite-version="v5"], [data-microsite-version="v6"]) .v5-site-plan-cta:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.04);
+  box-shadow: var(--shadow-card-hover);
+}
+
+:is([data-microsite-version="v5"], [data-microsite-version="v6"]) .v5-site-plan-cta:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 3px;
+}
+
+:is([data-microsite-version="v5"], [data-microsite-version="v6"]) .v5-amenity-row {
+  @apply py-7 md:py-8;
+}
+
+:is([data-microsite-version="v5"], [data-microsite-version="v6"]) .v3-list-row {
+  @apply py-8 md:py-11;
+}
+
+:is([data-microsite-version="v5"], [data-microsite-version="v6"]) .visit-registration-inset {
+  box-shadow: var(--shadow-card);
+}
+
+:is([data-microsite-version="v5"], [data-microsite-version="v6"]) .v5-hero-meta {
+  text-shadow: 0 1px 12px rgb(0 0 0 / 0.25);
+}
+
+:is([data-microsite-version="v5"], [data-microsite-version="v6"]) header.sticky-nav-polish,
+:is([data-microsite-version="v5"], [data-microsite-version="v6"]) header {
+  transition:
+    box-shadow 320ms ease,
+    background-color 320ms ease,
+    border-color 320ms ease,
+    backdrop-filter 320ms ease;
+}
+
+/* ─── v6 design-principles system (v6 only — do not mirror to v5) ─── */
+[data-microsite-version="v6"] {
+  --color-muted: #75879d;
+  --color-label: #75879d;
+}
+
+[data-microsite-version="v6"] .headline-section-v3 {
+  font-size: clamp(2.125rem, 4.5vw, 3.5rem) !important;
+  line-height: 1.08;
+}
+
+[data-microsite-version="v6"] #testimonials .headline-section-v3,
+[data-microsite-version="v6"] #events .headline-section-v3,
+[data-microsite-version="v6"] #designCentre .headline-section-v3,
+[data-microsite-version="v6"] #faq .headline-section-v3,
+[data-microsite-version="v6"] #promotions .headline-section-v3,
+[data-microsite-version="v6"] #similarCommunities .headline-section-v3 {
+  font-size: clamp(1.625rem, 3.2vw, 2.5rem) !important;
+}
+
+[data-microsite-version="v6"] #sitePlan.section-padding,
+[data-microsite-version="v6"] #floorplans.section-padding,
+[data-microsite-version="v6"] #quickMoveIn.section-padding {
+  padding-top: clamp(3.5rem, 5vw, 4.5rem);
+  padding-bottom: clamp(3.5rem, 5vw, 4.5rem);
+}
+
+[data-microsite-version="v6"] .v3-section-label {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.75rem;
+  color: #75879d;
+}
+
+[data-microsite-version="v6"] .v5-overview-outline-facts .v5-overview-fact dt,
+[data-microsite-version="v6"] .v5-metrics-band-label {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #75879d;
+}
+
+[data-microsite-version="v6"] .v5-overview-prose--editorial .v5-overview-introduction {
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1.375;
+  color: var(--color-foreground);
+}
+
+[data-microsite-version="v6"] .visit-registration-inset {
+  box-shadow: var(--shadow-card-hover);
+  border-color: color-mix(in srgb, var(--color-primary, #1f4870) 18%, transparent);
+}
+
+/* v6: booking footer uses the same navy CTA gradient as primary buttons */
+[data-microsite-version="v6"] .community-footer {
+  background: linear-gradient(90deg, #062543 0%, #1f4870 55%, #1f4870 100%);
+}
+
+[data-microsite-version="v6"] .community-footer-booking {
+  position: relative;
+}
+
+[data-microsite-version="v6"] .community-footer-legal {
+  background: transparent;
+}
+
+[data-microsite-version="v6"] .community-footer-booking .headline-section-v3 {
+  color: #fff;
+}
+
+[data-microsite-version="v6"] .community-footer-form > form {
+  width: 100%;
+  max-width: none;
+}
+
+[data-microsite-version="v6"] .carousel-control {
+  background: transparent;
+}
+
+[data-microsite-version="v6"] .carousel-control:hover {
+  background: var(--color-primary-muted, #e8eef4);
+  color: var(--color-primary, #062543);
+}
+
+/* Soften hard clip where carousel cards leave the frame */
+[data-microsite-version="v6"] .v3-sticky-scroll-column {
+  position: relative;
+}
+
+[data-microsite-version="v6"] .v3-sticky-scroll-column::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 2.75rem;
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(
+    to right,
+    transparent,
+    var(--color-background, #ffffff)
+  );
+}
+
+[data-microsite-version="v6"] #testimonials .v3-sticky-scroll-column::after {
+  /* Match SectionShell muted = bg-card/40 */
+  background: linear-gradient(
+    to right,
+    transparent,
+    color-mix(in srgb, var(--color-card, #f4f7fb) 40%, #ffffff)
+  );
+}
+
+[data-microsite-version="v6"] .v5-amenity-row {
+  padding-top: 1.125rem;
+  padding-bottom: 1.125rem;
+}
+
+@media (min-width: 768px) {
+  [data-microsite-version="v6"] .v5-amenity-row {
+    padding-top: 1.25rem;
+    padding-bottom: 1.25rem;
+  }
+}
+

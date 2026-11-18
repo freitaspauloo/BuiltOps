@@ -6,13 +6,13 @@ import { getSectionIcon } from "@/lib/icons";
 
 export function VisionSection({
   data,
-  siteVersion = "v2",
+  siteVersion = "v3",
 }: {
   data: CommunityVision;
   siteVersion?: MicrositeVersionId;
 }) {
   return (
-    <SectionShell id="vision" siteVersion={siteVersion}>
+    <SectionShell id="vision" siteVersion={siteVersion} reveal={false}>
       <SectionHeaderSplit
         eyebrow="Vision"
         title={data.title}

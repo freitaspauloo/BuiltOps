@@ -1,9 +1,9 @@
-import type { Community } from "@/lib/types/community";
+﻿import type { Community } from "@/lib/types/community";
 import { SectionHeading, SectionShell } from "@/components/ui/section";
 import { Pill, PillGroup } from "@/components/ui/pill";
 import { AppIcon, getAmenityIcon } from "@/lib/icons";
 
-/** v1 — amenity pills plus description grid */
+/** v1 ÔÇö amenity pills plus description grid */
 export function AmenitiesSectionV1({ data }: { data: NonNullable<Community["amenities"]> }) {
   return (
     <SectionShell id="amenities" siteVersion="v1">

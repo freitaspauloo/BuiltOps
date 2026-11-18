@@ -6,7 +6,7 @@ import { getSnapshotIcon } from "@/lib/icons";
 
 export function QuickFactsSection({
   data,
-  siteVersion = "v2",
+  siteVersion = "v3",
 }: {
   data: QuickFacts;
   siteVersion?: MicrositeVersionId;

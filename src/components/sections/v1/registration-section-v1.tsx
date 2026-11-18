@@ -1,13 +1,13 @@
-import type { RegistrationForm } from "@/lib/types/community";
+﻿import type { RegistrationForm } from "@/lib/types/community";
 import { SectionShell } from "@/components/ui/section";
 
-/** v1 — registration stub without labels or submit wiring */
+/** v1 ÔÇö registration stub without labels or submit wiring */
 export function RegistrationSectionV1({ data }: { data: RegistrationForm }) {
   return (
     <SectionShell id="registration" siteVersion="v1">
       <div className="archun-card grid gap-12 p-8 md:p-12 lg:grid-cols-2 lg:gap-20 lg:p-16">
         <div>
-          <p className="card-label block">Register</p>
+          <p className="card-label mb-3 block">Register</p>
           <h2 className="headline-section">{data.title}</h2>
           {data.description && (
             <p className="mt-5 max-w-md text-base leading-relaxed text-muted">{data.description}</p>

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import { Instrument_Serif, Inter } from "next/font/google";
-import { PreviewNav } from "@/components/dev/preview-nav";
 import "./globals.css";
 
 const sans = Inter({
@@ -18,6 +18,10 @@ const display = Instrument_Serif({
 export const metadata: Metadata = {
   title: "Losani Homes — BuiltOps",
   description: "Modular community microsite platform for Losani Homes",
+  icons: {
+    icon: [{ url: "/favicon.png", sizes: "32x32", type: "image/png" }],
+    apple: [{ url: "/apple-icon.png", sizes: "180x180", type: "image/png" }],
+  },
 };
 
 export default function RootLayout({
@@ -28,7 +32,9 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${sans.variable} ${display.variable}`}>
       <body className="font-body antialiased">
-        {process.env.NEXT_PUBLIC_SHOW_PREVIEW_NAV !== "false" && <PreviewNav />}
+        <Script id="scroll-restoration" strategy="beforeInteractive">
+          {`if ("scrollRestoration" in history) history.scrollRestoration = "manual";`}
+        </Script>
         {children}
       </body>
     </html>

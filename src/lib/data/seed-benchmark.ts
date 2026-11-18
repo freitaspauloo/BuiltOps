@@ -1,16 +1,36 @@
 import type { Community } from "@/lib/types/community";
-
-const SITE_PLAN_BASE = "https://losani-connected-site-experience.replit.app";
+import {
+  benchmarkSitePlanLots,
+  benchmarkSitePlanPhases,
+} from "@/lib/data/benchmark-site-plan";
 
 export const benchmarkCommunity: Community = {
   slug: "benchmark",
   stage: "available",
-  micrositeVersion: "v2",
+  micrositeVersion: "v6",
+  /** Mirrors Sanity `sectionOrder` — editors will drag-reorder this in Studio. */
+  sectionOrder: [
+    "overview",
+    "sitePlan",
+    "floorplans",
+    "quickMoveIn",
+    "areaMap",
+    "amenities",
+    "promotions",
+    "gallery",
+    "designCentre",
+    "testimonials",
+    "events",
+    "faq",
+    "registration",
+    "features",
+    "similarCommunities",
+  ],
   hero: {
     communityName: "Benchmark Towns",
     statusBadge: "available",
     city: "Beamsville, ON",
-    priceFrom: "From $534,900",
+    priceFrom: "From $499,900",
     homeTypes: "Townhomes",
     heroImage:
       "https://www.losanihomes.com/wp-content/uploads/2025/06/Benchmark-feature-communities_desktop-1.webp",
@@ -18,29 +38,31 @@ export const benchmarkCommunity: Community = {
     secondaryCta: { label: "View Brochure", href: "#downloads" },
   },
   snapshot: [
-    { label: "Price Range", value: "$534,900 – $788,900" },
+    { label: "Price Range", value: "$499,900 – $788,900" },
     { label: "Home Types", value: "Townhomes" },
     { label: "Bedrooms", value: "3 Beds" },
     { label: "Area", value: "1,205 – 2,115 sqft" },
     { label: "Status", value: "Available Now" },
-    { label: "Models", value: "18 floorplans" },
+    { label: "Models", value: "16 floorplans" },
   ],
   overview: {
     title: "Discover a New Standard of Living in the Heart of Niagara's Wine Country",
     introduction:
-      "Benchmark by Losani Homes is more than a place to live — it is a celebration of lifestyle, architecture, and location.",
+      "Benchmark by Losani Homes is more than a place to live — it is a celebration of lifestyle, architecture, and location in the heart of wine country.",
     description:
-      "Modern townhomes in the Beamsville Bench wine country featuring 3-storey and 2-storey designs with customizable finishes, open-concept layouts, and gourmet kitchens. Phase 1 and Phase 2 collections available. Situated on the world-famous Beamsville Bench, this community is surrounded by rolling vineyards, scenic trails, award-winning wineries, and exceptional dining experiences.",
+      "Modern townhomes on the Beamsville Bench featuring 3-storey and 2-storey designs with customizable finishes, open-concept layouts, and gourmet kitchens. Walk to vineyards, farm-to-table dining, and scenic Niagara Escarpment trails. Phase 1 and Phase 2 collections available — surrounded by rolling vineyards, award-winning wineries, and the relaxed pace of wine-country living.",
+    layoutVariant: "a",
+    overviewSectionLayout: "bento-poster",
   },
   quickFacts: {
     title: "At a Glance",
     facts: [
       { label: "Homes", value: "Townhomes" },
-      { label: "Size", value: "1,205 – 2,115 sqft" },
+      { label: "Size (sqft)", value: "1,205 – 2,115" },
       { label: "Bedrooms", value: "3" },
       { label: "Bathrooms", value: "2.5 – 3.5" },
-      { label: "Starting Price", value: "$534,900" },
-      { label: "Collections", value: "Available now" },
+      { label: "Starting Price", value: "$499,900" },
+      { label: "Phases", value: "2" },
     ],
   },
   videoUrl: "https://www.youtube.com/embed/jiaI3HbDuGI?rel=0&modestbranding=1",
@@ -104,16 +126,37 @@ export const benchmarkCommunity: Community = {
   areaMap: {
     title: "Location & Lifestyle",
     points: [
-      { id: "community", label: "Benchmark Towns", category: "community", lat: 43.1595, lng: -79.4725 },
-      { id: "sales", label: "Sales Centre", category: "sales", lat: 43.1672, lng: -79.4761 },
-      { id: "school", label: "Beamsville District Secondary", category: "school", lat: 43.1697, lng: -79.4842 },
-      { id: "park", label: "Charles Daley Park", category: "park", lat: 43.1561, lng: -79.4574 },
-      { id: "shopping", label: "Downtown Beamsville", category: "shopping", lat: 43.1663, lng: -79.4768 },
-      { id: "transit", label: "QEW Access", category: "transit", lat: 43.1485, lng: -79.4945 },
+      { id: "community", label: "Benchmark Towns", category: "community", lat: 43.167, lng: -79.4632 },
+      { id: "sales", label: "Sales Centre", category: "sales", lat: 43.1672, lng: -79.4628 },
+      { id: "school", label: "Beamsville District Secondary", category: "school", lat: 43.1675, lng: -79.4724 },
+      { id: "park", label: "Charles Daley Park", category: "park", lat: 43.1805, lng: -79.3241 },
+      { id: "shopping", label: "Downtown Beamsville", category: "shopping", lat: 43.1665, lng: -79.4845 },
+      { id: "transit", label: "QEW Access", category: "transit", lat: 43.1889, lng: -79.4812 },
+      { id: "winery-cave-spring", label: "Cave Spring Cellars", category: "winery", lat: 43.1567, lng: -79.4696 },
+      { id: "winery-malivoire", label: "Malivoire Wine Company", category: "winery", lat: 43.159, lng: -79.505 },
+      { id: "park-balls-falls", label: "Ball's Falls Conservation", category: "park", lat: 43.1266, lng: -79.3766 },
+      { id: "shopping-jordan", label: "Jordan Village", category: "shopping", lat: 43.151, lng: -79.438 },
+      { id: "dining-good-earth", label: "The Good Earth Bistro", category: "dining", lat: 43.158, lng: -79.492 },
+      { id: "park-beamers", label: "Beamers Memorial Park", category: "park", lat: 43.172, lng: -79.478 },
     ],
   },
   amenities: {
     title: "Live Beautifully",
+    brochureUrl:
+      "https://www.losanihomes.com/wp-content/uploads/2025/12/Benchmark-amenities.pdf",
+    brochureLabel: "Open Brochure",
+    lifestyleImages: [
+      {
+        url: "https://www.losanihomes.com/wp-content/uploads/2025/07/Location_gallery_4.webp",
+        alt: "Hiking trails near Benchmark Towns",
+        caption: "Scenic trails",
+      },
+      {
+        url: "https://www.losanihomes.com/wp-content/uploads/2025/06/Benchmark_overview_location_1-1.webp",
+        alt: "Vineyard rows on the Beamsville Bench",
+        caption: "Wine country views",
+      },
+    ],
     items: [
       {
         title: "Wine Country Views",
@@ -123,46 +166,55 @@ export const benchmarkCommunity: Community = {
       {
         title: "Customizable Finishes",
         description: "Open-concept layouts with gourmet kitchens and personalized design selections.",
-        icon: "utensils",
+        icon: "palette",
       },
       {
         title: "Modern Design",
         description: "Clean-lined contemporary townhomes with 2- and 3-storey collections.",
-        icon: "trees",
+        icon: "home",
       },
       {
         title: "Transit Access",
         description: "Minutes from the QEW with Hamilton, Burlington, and Toronto within easy reach.",
-        icon: "school",
+        icon: "transit",
       },
     ],
   },
   features: {
-    title: "Why Build With Losani",
+    title: "Why build with Losani",
     items: [
-      { title: "Energy Efficiency", description: "Built to exceed Ontario Building Code standards for comfort and savings." },
-      { title: "Smart Home Ready", description: "Pre-wired for modern connected living." },
-      { title: "Construction Quality", description: "Four decades of craftsmanship across the GTA and Niagara." },
-      { title: "Tarion Warranty", description: "Full new home warranty protection for peace of mind." },
+      {
+        title: "Energy Efficiency",
+        description: "Built to exceed Ontario Building Code standards for comfort and savings.",
+      },
+      {
+        title: "Smart Home Ready",
+        description: "Pre-wired for modern connected living.",
+      },
+      {
+        title: "Construction Quality",
+        description: "Fifty years of craftsmanship across the GTA and Niagara.",
+      },
+      {
+        title: "Tarion Warranty",
+        description: "Full new home warranty protection for peace of mind.",
+      },
+      {
+        title: "Design Flexibility",
+        description: "Personalize layouts and finishes at the Losani Design Centre.",
+      },
+      {
+        title: "Customer Care",
+        description: "Dedicated support from contract signing through move-in day.",
+      },
     ],
   },
   sitePlan: {
-    title: "Explore the Site Plan",
-    imageUrl: `${SITE_PLAN_BASE}/Phase_1-Benchmark_site_plan-desktop_1774446959385.webp`,
-    lots: [
-      { id: "lot-1", lotNumber: "1", status: "available", x: 12.67, y: 2, width: 21.33, height: 19.2, floorplan: "Waldorf Enhanced End" },
-      { id: "lot-2", lotNumber: "2", status: "available", x: 34, y: 2, width: 21.33, height: 19.2, floorplan: "18' Esprit Enhanced End" },
-      { id: "lot-3", lotNumber: "3", status: "available", x: 55.33, y: 2, width: 21.33, height: 19.2, floorplan: "Whitehaven End" },
-      { id: "lot-4", lotNumber: "4", status: "available", x: 76.67, y: 2, width: 21.33, height: 19.2, floorplan: "16' Esprit Enhanced End" },
-      { id: "lot-5", lotNumber: "5", status: "available", x: 12.67, y: 40.4, width: 21.33, height: 19.2, floorplan: "Knighton Interior F2" },
-      { id: "lot-6", lotNumber: "6", status: "available", x: 34, y: 40.4, width: 21.33, height: 19.2, floorplan: "Esprit Interior F1" },
-      { id: "lot-7", lotNumber: "7", status: "available", x: 55.33, y: 40.4, width: 21.33, height: 19.2, floorplan: "Esprit Grande Interior F1" },
-      { id: "lot-8", lotNumber: "8", status: "available", x: 76.67, y: 40.4, width: 21.33, height: 19.2, floorplan: "Abbotsford Enhanced End" },
-      { id: "lot-9", lotNumber: "9", status: "available", x: 12.67, y: 78.8, width: 21.33, height: 19.2, floorplan: "Esprit Interior F2" },
-      { id: "lot-10", lotNumber: "10", status: "available", x: 34, y: 78.8, width: 21.33, height: 19.2, floorplan: "Esprit End" },
-      { id: "lot-11", lotNumber: "11", status: "available", x: 55.33, y: 78.8, width: 21.33, height: 19.2, floorplan: "Whitehaven Interior F3" },
-      { id: "lot-12", lotNumber: "12", status: "available", x: 76.67, y: 78.8, width: 21.33, height: 19.2, floorplan: "Esprit Grande Enhanced End" },
-    ],
+    title: "Browse Lots & Availability",
+    imageUrl: "/site-plans/benchmark/phase-1-desktop.webp",
+    aspectRatio: "16 / 9",
+    lots: benchmarkSitePlanLots,
+    phases: benchmarkSitePlanPhases,
   },
   floorplans: [
     {
@@ -171,7 +223,7 @@ export const benchmarkCommunity: Community = {
       beds: 3,
       baths: 3.5,
       sqft: 2115,
-      priceFrom: "$700,000",
+      priceFrom: "$788,900",
       image: "https://www.losanihomes.com/wp-content/uploads/2025/10/CE1806FE-WALDORF-ENH-END-768x757.webp",
       pdfUrl: "https://www.losanihomes.com/floorplans/waldorf-enhanced-end/",
       phase: "Phase 1",
@@ -182,7 +234,7 @@ export const benchmarkCommunity: Community = {
       beds: 3,
       baths: 2.5,
       sqft: 1535,
-      priceFrom: "$600,000",
+      priceFrom: "$650,900",
       image: "https://www.losanihomes.com/wp-content/uploads/2025/12/CE1501FE-37-RENDERING-WIDE-768x477.webp",
       pdfUrl: "https://www.losanihomes.com/floorplans/18-esprit-enhanced-end/",
       phase: "Phase 1",
@@ -193,7 +245,7 @@ export const benchmarkCommunity: Community = {
       beds: 3,
       baths: 2.5,
       sqft: 2080,
-      priceFrom: "$600,000",
+      priceFrom: "$664,900",
       image: "https://www.losanihomes.com/wp-content/uploads/2026/01/1803EF-WHITEHAVEN-END-768x477.webp",
       pdfUrl: "https://www.losanihomes.com/floorplans/whitehaven-end/",
       phase: "Phase 2",
@@ -204,7 +256,7 @@ export const benchmarkCommunity: Community = {
       beds: 3,
       baths: 2.5,
       sqft: 1344,
-      priceFrom: "$639,900",
+      priceFrom: "$538,900",
       image: "https://www.losanihomes.com/wp-content/uploads/2025/12/1502EF-ESPRIT-GRANDE-END-WIDE-1-768x477.webp",
       pdfUrl: "https://www.losanihomes.com/floorplans/16-esprit-enhanced-end/",
       phase: "Phase 2",
@@ -215,7 +267,7 @@ export const benchmarkCommunity: Community = {
       beds: 3,
       baths: 2.5,
       sqft: 1437,
-      priceFrom: "$600,000",
+      priceFrom: "$604,900",
       image: "https://www.losanihomes.com/wp-content/uploads/2025/10/1802F-KNIGHTON-FARMHOUSE-768x425.webp",
       pdfUrl: "https://www.losanihomes.com/floorplans/knighton-interior-f2/",
       phase: "Phase 1",
@@ -226,7 +278,7 @@ export const benchmarkCommunity: Community = {
       beds: 3,
       baths: 2.5,
       sqft: 1237,
-      priceFrom: "$534,900",
+      priceFrom: "$507,900",
       image: "https://www.losanihomes.com/wp-content/uploads/2025/12/1501EF-ESPRIT-F1-768x477.webp",
       pdfUrl: "https://www.losanihomes.com/floorplans/esprit-interior-f1/",
       phase: "Phase 2",
@@ -237,7 +289,7 @@ export const benchmarkCommunity: Community = {
       beds: 3,
       baths: 2.5,
       sqft: 1519,
-      priceFrom: "$569,900",
+      priceFrom: "$546,900",
       image: "https://www.losanihomes.com/wp-content/uploads/2025/12/1501EF-ESPRIT-F1-768x477.webp",
       pdfUrl: "https://www.losanihomes.com/floorplans/esprit-grande-interior-f1/",
       phase: "Phase 2",
@@ -259,7 +311,7 @@ export const benchmarkCommunity: Community = {
       beds: 3,
       baths: 2.5,
       sqft: 2016,
-      priceFrom: "$659,900",
+      priceFrom: "$628,900",
       image: "https://www.losanihomes.com/wp-content/uploads/2026/01/1803F2-WHITEHAVEN-INT-768x477.webp",
       pdfUrl: "https://www.losanihomes.com/floorplans/whitehaven-interior-f2/",
       phase: "Phase 2",
@@ -270,7 +322,7 @@ export const benchmarkCommunity: Community = {
       beds: 3,
       baths: 2.5,
       sqft: 2016,
-      priceFrom: "$679,900",
+      priceFrom: "$610,900",
       image: "https://www.losanihomes.com/wp-content/uploads/2026/01/1803F3-WHITEHAVEN-INT-768x477.webp",
       pdfUrl: "https://www.losanihomes.com/floorplans/whitehaven-interior-f3/",
       phase: "Phase 2",
@@ -281,7 +333,7 @@ export const benchmarkCommunity: Community = {
       beds: 3,
       baths: 2.5,
       sqft: 1694,
-      priceFrom: "$600,000",
+      priceFrom: "$614,900",
       image: "https://www.losanihomes.com/wp-content/uploads/2025/12/1502EF-ESPRIT-GRANDE-END-WIDE-1-768x477.webp",
       pdfUrl: "https://www.losanihomes.com/floorplans/16-esprit-grande-enhanced-end/",
       phase: "Phase 2",
@@ -303,10 +355,13 @@ export const benchmarkCommunity: Community = {
       beds: 3,
       baths: 2.5,
       sqft: 1281,
-      priceFrom: "$579,900",
+      priceFrom: "$546,900",
       image: "https://www.losanihomes.com/wp-content/uploads/2025/12/1502EF-ESPRIT-GRANDE-END-WIDE-1-768x477.webp",
       pdfUrl: "https://www.losanihomes.com/floorplans/esprit-end/",
       phase: "Phase 2",
+      modelSlug: "esprit-end",
+      subtitle: "Townhome end unit with multiple elevations",
+      lotLabel: "18' lot",
     },
     {
       id: "esprit-grande-enhanced-end",
@@ -314,7 +369,7 @@ export const benchmarkCommunity: Community = {
       beds: 3,
       baths: 2.5,
       sqft: 1583,
-      priceFrom: "$629,900",
+      priceFrom: "$588,900",
       image: "https://www.losanihomes.com/wp-content/uploads/2025/12/1502EF-ESPRIT-GRANDE-END-WIDE-1-768x477.webp",
       pdfUrl: "https://www.losanihomes.com/floorplans/esprit-grande-end/",
       phase: "Phase 2",
@@ -336,126 +391,328 @@ export const benchmarkCommunity: Community = {
       beds: 3,
       baths: 2.5,
       sqft: 1205,
-      priceFrom: "$534,900",
+      priceFrom: "$499,900",
       image: "https://www.losanihomes.com/wp-content/uploads/2025/12/1501EF-ESPRIT-F2-768x477.webp",
       pdfUrl: "https://www.losanihomes.com/floorplans/esprit-interior-f2/",
       phase: "Phase 2",
     },
   ],
-  quickMoveIn: [],
+  quickMoveIn: [
+    {
+      id: "qmi-lot-19",
+      address: "Lot 19, Mountain Street",
+      lot: "19",
+      price: "$499,900",
+      possessionDate: "30–60 days",
+      beds: 3,
+      baths: 2.5,
+      sqft: 1205,
+      image:
+        "https://www.losanihomes.com/wp-content/uploads/2025/12/1501EF-ESPRIT-F2-768x477.webp",
+    },
+    {
+      id: "qmi-lot-39",
+      address: "Lot 39, Mountain Street",
+      lot: "39",
+      price: "$499,900",
+      possessionDate: "30–60 days",
+      beds: 3,
+      baths: 2.5,
+      sqft: 1205,
+      image:
+        "https://www.losanihomes.com/wp-content/uploads/2025/12/1501EF-ESPRIT-F2-768x477.webp",
+    },
+    {
+      id: "qmi-lot-79",
+      address: "Lot 79, Mountain Street",
+      lot: "79",
+      price: "$650,900",
+      possessionDate: "Summer 2026",
+      beds: 3,
+      baths: 3.5,
+      sqft: 1535,
+      image:
+        "https://www.losanihomes.com/wp-content/uploads/2025/12/CE1501FE-37-RENDERING-WIDE-768x477.webp",
+    },
+    {
+      id: "qmi-lot-12",
+      address: "Lot 12, Mountain Street",
+      lot: "12",
+      price: "$507,900",
+      possessionDate: "Ready now",
+      beds: 3,
+      baths: 2.5,
+      sqft: 1237,
+      image:
+        "https://www.losanihomes.com/wp-content/uploads/2025/12/1501EF-ESPRIT-F1-768x477.webp",
+    },
+    {
+      id: "qmi-lot-24",
+      address: "Lot 24, Mountain Street",
+      lot: "24",
+      price: "$604,900",
+      possessionDate: "30–60 days",
+      beds: 3,
+      baths: 2.5,
+      sqft: 1437,
+      image:
+        "https://www.losanihomes.com/wp-content/uploads/2025/10/1802F-KNIGHTON-FARMHOUSE-768x425.webp",
+    },
+    {
+      id: "qmi-lot-45",
+      address: "Lot 45, Mountain Street",
+      lot: "45",
+      price: "$538,900",
+      possessionDate: "30–60 days",
+      beds: 3,
+      baths: 2.5,
+      sqft: 1344,
+      image:
+        "https://www.losanihomes.com/wp-content/uploads/2025/12/1502EF-ESPRIT-GRANDE-END-WIDE-1-768x477.webp",
+    },
+    {
+      id: "qmi-lot-56",
+      address: "Lot 56, Mountain Street",
+      lot: "56",
+      price: "$588,900",
+      possessionDate: "Summer 2026",
+      beds: 3,
+      baths: 2.5,
+      sqft: 1583,
+      image:
+        "https://www.losanihomes.com/wp-content/uploads/2025/12/1502EF-ESPRIT-GRANDE-END-WIDE-1-768x477.webp",
+    },
+    {
+      id: "qmi-lot-62",
+      address: "Lot 62, Mountain Street",
+      lot: "62",
+      price: "$664,900",
+      possessionDate: "Fall 2026",
+      beds: 3,
+      baths: 2.5,
+      sqft: 2080,
+      image:
+        "https://www.losanihomes.com/wp-content/uploads/2026/01/1803EF-WHITEHAVEN-END-768x477.webp",
+    },
+    {
+      id: "qmi-lot-88",
+      address: "Lot 88, Mountain Street",
+      lot: "88",
+      price: "$624,900",
+      possessionDate: "Summer 2026",
+      beds: 3,
+      baths: 2.5,
+      sqft: 1783,
+      image:
+        "https://www.losanihomes.com/wp-content/uploads/2026/01/1801EF-ABBOTSFORD-END-768x477.webp",
+    },
+    {
+      id: "qmi-lot-91",
+      address: "Lot 91, Mountain Street",
+      lot: "91",
+      price: "$546,900",
+      possessionDate: "30–60 days",
+      beds: 3,
+      baths: 2.5,
+      sqft: 1519,
+      image:
+        "https://www.losanihomes.com/wp-content/uploads/2025/12/1501EF-ESPRIT-F1-768x477.webp",
+    },
+    {
+      id: "qmi-lot-102",
+      address: "Lot 102, Mountain Street",
+      lot: "102",
+      price: "$628,900",
+      possessionDate: "Fall 2026",
+      beds: 3,
+      baths: 2.5,
+      sqft: 2016,
+      image:
+        "https://www.losanihomes.com/wp-content/uploads/2026/01/1803F2-WHITEHAVEN-INT-768x477.webp",
+    },
+    {
+      id: "qmi-lot-115",
+      address: "Lot 115, Mountain Street",
+      lot: "115",
+      price: "$788,900",
+      possessionDate: "Spring 2027",
+      beds: 3,
+      baths: 3.5,
+      sqft: 2115,
+      image:
+        "https://www.losanihomes.com/wp-content/uploads/2025/10/CE1806FE-WALDORF-ENH-END-768x757.webp",
+    },
+  ],
   downloads: [
     {
       title: "Main Brochure",
       type: "PDF",
       url: "https://www.losanihomes.com/wp-content/uploads/2025/12/Benchmark-main.pdf",
+      thumbnailUrl:
+        "https://www.losanihomes.com/wp-content/uploads/2025/06/Benchmark-feature-communities_desktop-1-768x620.webp",
     },
     {
       title: "Amenity Brochure",
       type: "PDF",
       url: "https://www.losanihomes.com/wp-content/uploads/2025/12/Benchmark-amenities.pdf",
+      thumbnailUrl:
+        "https://www.losanihomes.com/wp-content/uploads/2025/10/CE1806FE-WALDORF-ENH-END-768x757.webp",
     },
     {
       title: "Site Plan — Phase 1",
       type: "Image",
-      url: `${SITE_PLAN_BASE}/Phase_1-Benchmark_site_plan-desktop_1774446959385.webp`,
+      url: "/site-plans/benchmark/phase-1-desktop.webp",
+      thumbnailUrl: "/site-plans/benchmark/phase-1-desktop.webp",
     },
     {
       title: "Site Plan — Phase 2",
       type: "Image",
-      url: `${SITE_PLAN_BASE}/Phase_2-Benchmark_site_plan-desktop_1774446959385.webp`,
+      url: "/site-plans/benchmark/phase-2-desktop.webp",
+      thumbnailUrl: "/site-plans/benchmark/phase-2-desktop.webp",
     },
   ],
-  promotions: [],
+  promotions: [
+    {
+      badge: "Limited time",
+      title: "New home incentive support",
+      description:
+        "Schedule a private showing with a Losani new home advisor to review current incentive programs on select Benchmark Towns homes. Eligibility and amounts vary by plan, closing date, and lender requirements.",
+      expiresAt: "December 31, 2026",
+      imageUrl:
+        "https://www.losanihomes.com/wp-content/uploads/2025/06/Benchmark-feature-communities_desktop-1.webp",
+    },
+    {
+      badge: "Phase 2",
+      title: "Early release pricing",
+      description:
+        "Esprit and Whitehaven plans on Phase 2 lots from $499,900 while inventory lasts. Losani will confirm pricing and lot availability at your appointment — offers subject to change without notice.",
+      imageUrl:
+        "https://www.losanihomes.com/wp-content/uploads/2025/12/1502EF-ESPRIT-GRANDE-END-WIDE-1-768x477.webp",
+    },
+  ],
   salesOffice: {
-    title: "Visit Our Sales Centre",
+    title: "Plan your visit",
     address: "4008 Mountain Street, Beamsville, ON L0R 1B2",
     phone: "(905) 594-0541",
     email: "benchmark@losanihomes.com",
     hours: ["Mon–Wed: 1–7pm", "Sat–Sun: 12–5pm"],
     team: [
       {
-        name: "Sales Team",
+        name: "Benchmark Sales Team",
         role: "New Home Advisors",
         phone: "(905) 594-0541",
         email: "benchmark@losanihomes.com",
-        image: "https://www.losanihomes.com/wp-content/uploads/2025/06/Benchmark-feature-communities_desktop-1-768x620.webp",
+        image:
+          "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=640&q=80",
       },
     ],
   },
-  events: [],
+  events: [
+    {
+      date: "Saturdays & Sundays · 12–5pm",
+      title: "Sales centre open house",
+      description:
+        "Walk the community model, review Phase 1 and Phase 2 lot availability, and speak with a new home advisor — no appointment required on weekends.",
+      location: "4008 Mountain Street, Beamsville, ON",
+    },
+    {
+      date: "By appointment",
+      title: "Design centre selections session",
+      description:
+        "Finalize kitchen, flooring, and interior packages with a Losani designer at the Hamilton Design Centre.",
+      location: "Hamilton, ON",
+    },
+    {
+      date: "Monthly",
+      title: "Benchmark buyer information session",
+      description:
+        "Covers deposits, closing timelines, Tarion warranty coverage, and what to expect from contract to keys.",
+      location: "Sales centre or virtual",
+    },
+  ],
   designCentre: {
     title: "Losani Design Centre",
     description:
-      "Work with expert designers to personalize finishes, fixtures, and details for your new home.",
+      "Work with expert designers to personalize finishes, fixtures, and details for your new home. After you purchase, dedicated design appointments let you tailor flooring, cabinetry, countertops, and lighting to make every space your own.",
     address: "Hamilton, ON — by appointment",
     hours: ["Monday – Friday: 10am – 6pm", "Saturday: 11am – 5pm"],
-    image: "https://www.losanihomes.com/wp-content/uploads/2025/06/Benchmark-feature-communities_desktop-1-768x620.webp",
+    image: "https://www.losanihomes.com/wp-content/uploads/2025/06/Design_centre_features_3.webp",
     ctaLabel: "Book a design appointment",
   },
   testimonials: [
     {
       quote:
         "The location on the Beamsville Bench sold us immediately. Benchmark feels like a hidden gem in wine country.",
-      author: "Registered buyer",
-      role: "Benchmark Towns",
-      image: "https://www.losanihomes.com/wp-content/uploads/2025/06/Benchmark-feature-communities_desktop-1.webp",
+      author: "Sarah M.",
+      role: "Benchmark Towns buyer",
+      image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=640&q=80",
     },
     {
       quote:
         "Losani's design centre made choosing finishes straightforward. We walked out knowing exactly how our kitchen and flooring would look on move-in day.",
-      author: "Sarah & Mark T.",
+      author: "James T.",
       role: "Esprit Interior F1 — Phase 2",
-      image: "https://www.losanihomes.com/wp-content/uploads/2025/12/1501EF-ESPRIT-F1-768x477.webp",
+      image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=640&q=80",
     },
     {
       quote:
         "The sales team never rushed us. They walked every floorplan, explained phase timing, and helped us compare layouts for our family of four.",
-      author: "James L.",
-      role: "Registered buyer",
-      image: "https://www.losanihomes.com/wp-content/uploads/2025/10/1802F-KNIGHTON-FARMHOUSE-768x425.webp",
+      author: "Priya K.",
+      role: "Phase 1 buyer",
+      image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=640&q=80",
     },
     {
       quote:
         "We wanted modern townhome living without giving up green space. Benchmark delivers both — trails, wineries, and the QEW minutes away.",
-      author: "Priya & Daniel K.",
+      author: "Michael R.",
       role: "Whitehaven End — Phase 2",
-      image: "https://www.losanihomes.com/wp-content/uploads/2026/01/1803EF-WHITEHAVEN-END-768x477.webp",
+      image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=640&q=80",
     },
     {
       quote:
         "The 3-storey layout gives us room to work from home upstairs while keeping main-floor living open and bright. It feels much larger than we expected.",
-      author: "Homeowner",
+      author: "Elena V.",
       role: "Waldorf Enhanced End — Phase 1",
-      image: "https://www.losanihomes.com/wp-content/uploads/2025/10/CE1806FE-WALDORF-ENH-END-768x757.webp",
+      image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=640&q=80",
     },
     {
       quote:
         "From first visit to keys, the process was transparent. Tarion warranty coverage and Losani's build quality gave us confidence throughout.",
-      author: "Michael R.",
-      role: "Benchmark Towns",
-      image: "https://www.losanihomes.com/wp-content/uploads/2025/12/CE1501FE-37-RENDERING-WIDE-768x477.webp",
+      author: "David L.",
+      role: "Benchmark Towns homeowner",
+      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=640&q=80",
     },
   ],
   faq: [
     {
-      question: "What home types are available?",
+      question: "What home types are available at Benchmark?",
       answer:
-        "Benchmark offers contemporary 2- and 3-storey townhomes with 3 bedrooms and up to 3.5 bathrooms across Phase 1 and Phase 2 collections.",
+        "Losani Homes is building contemporary 2- and 3-storey townhomes at Benchmark — 3 bedrooms and up to 3.5 bathrooms across Phase 1 and Phase 2 collections on the Beamsville Bench.",
     },
     {
-      question: "How many floorplans are available?",
+      question: "How many floorplans can I choose from?",
       answer:
-        "There are 18 floorplan models available, ranging from 1,205 to 2,115 square feet with prices from $534,900 to $788,900.",
+        "There are 16 Losani floorplan models at Benchmark, from 1,205 to 2,115 square feet. Your advisor can walk you through layouts that fit your lot and lifestyle.",
     },
     {
-      question: "Where is the sales centre?",
+      question: "Where is the Benchmark sales centre?",
       answer:
-        "4008 Mountain Street, Beamsville — open Monday to Wednesday 1–7pm and Saturday & Sunday 12–5pm.",
+        "Visit us at 4008 Mountain Street, Beamsville. We are open Monday to Wednesday 1–7pm and Saturday & Sunday 12–5pm — no appointment required on weekends.",
     },
     {
-      question: "Do I need a realtor?",
+      question: "Do I need a realtor to buy with Losani?",
       answer:
-        "No — you are welcome to visit directly. If you are working with a realtor, let us know when you register.",
+        "No — you are welcome to register and visit directly. If you are working with a realtor, share their details when you register so we can coordinate.",
+    },
+    {
+      question: "Can I customize finishes with Losani?",
+      answer:
+        "Yes. Every Losani purchase includes Design Centre appointments in Hamilton, where you personalize flooring, cabinetry, countertops, fixtures, and more with our in-house designers.",
+    },
+    {
+      question: "When will my home be ready?",
+      answer:
+        "Closing dates depend on your phase and lot. Phase 1 homes are earlier; some Phase 2 releases are future-dated. A Losani advisor will confirm possession timing for the lot you select.",
     },
   ],
   registration: {
@@ -464,6 +721,93 @@ export const benchmarkCommunity: Community = {
       "Register to tour model homes, receive pricing updates, and connect with our sales team at the Beamsville sales centre.",
     submitLabel: "Book Appointment",
   },
+  similarCommunities: [
+    {
+      name: "Riverbend",
+      city: "Paris, ON",
+      stage: "available",
+      priceFrom: "From $860,000",
+      availabilitySummary: "8 Lots Available & 4 Pronto Homes",
+      collections: [
+        { label: "Pronto Homes", variant: "pronto" },
+        { label: "Losani Originals", variant: "originals" },
+      ],
+      description:
+        "Set along the gentle curves of the Nith River, Riverbend offers a rare blend of estate living and everyday convenience in Paris.",
+      homeTypes: "Singles, Semi Detached",
+      sizeRange: "2,982 – 4,115 sqft",
+      image:
+        "https://www.losanihomes.com/wp-content/uploads/2026/01/RBD-FRONT-LEFT-EXT-PANEL-PRINT-01-1024x683.webp",
+      href: "https://www.losanihomes.com/communities/riverbend/",
+    },
+    {
+      name: "Woodview",
+      city: "Beamsville, ON",
+      stage: "coming_soon",
+      priceFrom: "Coming soon",
+      availabilitySummary: "Registration open",
+      collections: [{ label: "Losani Originals", variant: "originals" }],
+      description:
+        "A new collection of homes in Beamsville with vineyard views and walkable village amenities.",
+      homeTypes: "Singles, Townhomes",
+      image:
+        "https://www.losanihomes.com/wp-content/uploads/2026/02/LOSH-HERO-COMM-VRW-1024x778.webp",
+      href: "https://www.losanihomes.com/communities/woodview/",
+    },
+    {
+      name: "Winona County West",
+      city: "Stoney Creek, ON",
+      stage: "coming_soon",
+      priceFrom: "Coming soon",
+      availabilitySummary: "Join the interest list",
+      collections: [{ label: "Losani Originals", variant: "originals" }],
+      description:
+        "Family-friendly community minutes from the escarpment with parks, schools, and quick access to Hamilton.",
+      homeTypes: "Singles, Townhomes",
+      image:
+        "https://www.losanihomes.com/wp-content/uploads/2026/01/LOSH-MENU-COMM-WCW-1024x983.png",
+      href: "https://www.losanihomes.com/communities/winona-count-west/",
+    },
+    {
+      name: "Sweetberry",
+      city: "Hamilton, ON",
+      stage: "coming_soon",
+      priceFrom: "Coming soon",
+      availabilitySummary: "Join the interest list",
+      description:
+        "Modern townhome living in Hamilton with thoughtful layouts and Losani's design centre experience.",
+      homeTypes: "Townhomes",
+      image:
+        "https://www.losanihomes.com/wp-content/uploads/2025/07/sweetberry-2-1024x709.webp",
+      href: "https://www.losanihomes.com/communities/sweetberry/",
+    },
+    {
+      name: "Waterstone",
+      city: "Stoney Creek, ON",
+      stage: "coming_soon",
+      priceFrom: "Coming soon",
+      availabilitySummary: "Join the interest list",
+      description:
+        "A Stoney Creek address with contemporary architecture and room to grow for young families.",
+      homeTypes: "Singles, Townhomes",
+      image:
+        "https://www.losanihomes.com/wp-content/uploads/2026/01/LOSH-HERO-COMM-WTS-1024x778.png",
+      href: "https://www.losanihomes.com/communities/waterstone/",
+    },
+    {
+      name: "Columbus Gate",
+      city: "Hamilton, ON",
+      stage: "future",
+      priceFrom: "From $723,000",
+      availabilitySummary: "Join the interest list",
+      description:
+        "Urban-inspired townhomes in Hamilton with transit access and vibrant neighbourhood amenities.",
+      homeTypes: "Townhomes",
+      image:
+        "https://www.losanihomes.com/wp-content/uploads/2026/04/LOSH-CLG-HST-TILE.jpg",
+      href: "https://www.losanihomes.com/communities/columbus-gate/",
+    },
+  ],
 };
 
 export const seedCommunities: Record<string, Community> = {

@@ -2,6 +2,8 @@ export const communityBySlugQuery = `
   *[_type == "community" && slug.current == $slug][0] {
     "slug": slug.current,
     stage,
+    micrositeVersion,
+    sectionOrder,
     hero {
       communityName,
       statusBadge,
@@ -47,4 +49,37 @@ export const allCommunitiesQuery = `
     "priceFrom": hero.priceFrom,
     "image": hero.heroImage
   }
+`;
+
+export const homeModelBySlugQuery = `
+  *[_type == "homeModel" && slug.current == $slug][0] {
+    "slug": slug.current,
+    name,
+    homeType,
+    collection,
+    beds,
+    baths,
+    sqft,
+    storeys,
+    garage,
+    priceFrom,
+    estimatedPayment,
+    paymentDisclaimer,
+    heroImage,
+    factSheetUrl,
+    intro,
+    description,
+    elevations,
+    floorLevels,
+    floorplanPdfUrl,
+    tourUrl,
+    brochures,
+    similarModels,
+    availableAt,
+    registration
+  }
+`;
+
+export const allHomeModelSlugsQuery = `
+  *[_type == "homeModel" && defined(slug.current)].slug.current
 `;

@@ -1,11 +1,10 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { cn } from "@/lib/utils/cn";
 import type { Community } from "@/lib/types/community";
 import { getNavStructure, type NavStructureItem } from "@/lib/sections/nav-groups";
-import { CommunityCtaButtons } from "@/components/ui/community-cta-buttons";
 import { LosaniLogo } from "@/components/ui/losani-logo";
 
 type OpenMenu = {
@@ -14,7 +13,7 @@ type OpenMenu = {
   anchor: DOMRect;
 };
 
-/** v1 — static top nav, desktop links, portal dropdowns, no mobile drawer or sticky */
+/** v1 ÔÇö static top nav, desktop links, portal dropdowns, no mobile drawer or sticky */
 export function StickyNavV1({ community }: { community: Community }) {
   const [active, setActive] = useState<string>("");
   const [openMenu, setOpenMenu] = useState<OpenMenu | null>(null);
@@ -137,7 +136,7 @@ export function StickyNavV1({ community }: { community: Community }) {
                     )}
                     aria-hidden
                   >
-                    ▾
+                    Ôû¥
                   </span>
                 </button>
               );
@@ -145,12 +144,12 @@ export function StickyNavV1({ community }: { community: Community }) {
           </div>
 
           <div className="flex shrink-0 items-center justify-end">
-            <CommunityCtaButtons
-              primaryCta={community.hero.primaryCta}
-              secondaryCta={community.hero.secondaryCta}
-              size="sm"
-              secondaryClassName="hidden lg:inline-flex"
-            />
+            <a
+              href="#registration"
+              className="bg-primary px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-primary-hover lg:px-5"
+            >
+              Register
+            </a>
           </div>
         </nav>
       </header>

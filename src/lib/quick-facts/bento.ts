@@ -7,7 +7,7 @@ export function normalizeFactKey(label: string) {
     .replace(/^_|_$/g, "");
 }
 
-const BENTO_ORDER = ["size", "bedrooms", "bathrooms", "homes", "starting_price", "collections"];
+const BENTO_ORDER = ["size_sqft", "size", "bedrooms", "bathrooms", "homes", "starting_price", "collections", "phases"];
 
 export function sortFactsForBento(facts: NonNullable<QuickFacts["facts"]>) {
   return [...facts].sort((a, b) => {
@@ -26,7 +26,7 @@ export function getFactByKey(
 
 export function getBentoSpan(label: string) {
   const key = normalizeFactKey(label);
-  if (key === "size" || key === "area" || key === "collections") {
+  if (key === "size" || key === "size_sqft" || key === "area" || key === "collections") {
     return "col-span-2";
   }
   return "";

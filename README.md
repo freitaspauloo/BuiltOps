@@ -6,34 +6,64 @@ Modular community microsite platform for Losani Homes.
 
 ```bash
 npm install
-npm run dev          # Next.js → http://localhost:3000
-npm run sanity:dev   # Sanity CMS → http://localhost:3333
+npm run dev          # → http://localhost:3000
+```
+
+**CMS (Payload — we own it):** http://localhost:3000/admin
+
+Seed demo content (dev server must be running):
+
+```bash
+npm run payload:seed
 ```
 
 ## Routes
 
 | Route | Purpose |
 |---|---|
-| `/design` | Design Hub — tokens, components, live preview |
-| `/communities/benchmark` | Full Available Now demo (Losani Benchmark) |
+| `/` | Redirects to `/communities/benchmark` |
+| `/communities/benchmark` | Production community microsite (v6, CMS-backed) |
+| `/communities/benchmark/future-community` | Presentation — Future Community stage |
+| `/communities/benchmark/coming-soon` | Presentation — Coming Soon stage |
+| `/communities/benchmark/available-now` | Presentation — Available Now stage |
+| `/models/marigold` | Detached model |
+| `/models/esprit-end` | Townhome model |
+| `/admin` | Payload CMS — projects, communities, models, versions |
+| `/api/preview` | Draft preview (from admin Preview button) |
+| `/old` | Version archive index |
+| `/old/communities/benchmark?version=v5` | Frozen version playground |
+| `/old/design` | Design Hub (lab) |
 
 ## CMS setup
 
-1. Create a project at [sanity.io/manage](https://sanity.io/manage)
-2. Copy `.env.example` → `.env.local` and add your project ID
-3. Run `npm run sanity:dev` to open the studio
-4. Create a **Community** document with slug `benchmark`
+1. Copy `.env.example` → `.env.local`
+2. Set a long random `PAYLOAD_SECRET`
+3. Local DB: `DATABASE_URL=file:./payload.db`
+4. Production: set `DATABASE_URL=postgresql://…` (Postgres adapter switches automatically)
+5. `npm run dev` → `/admin` → create first admin user
+6. `npm run payload:seed` to import Project + Benchmark + Marigold + Esprit
+7. Edit → **Save draft** → **Preview** / **Publish** → use **Versions** to restore
 
-Until Sanity is configured, the site uses seed data from `src/lib/data/seed-benchmark.ts`.
+### Architecture
+
+- **Payload owns:** copy, images, prices, links, section order, users, version history, **media library**
+- **Code owns:** layout, design, hide-if-empty, stage safety rails
+- **Database:** ours (SQLite local / Postgres prod)
+- **Files:** uploaded media stored under `public/media` (yours)
+
+### Media
+
+In `/admin` → **Media library**:
+- Upload photos, short videos (mp4/webm), PDFs
+- Organize with folders (Heroes, Galleries, Elevations, Floorplans, Videos…)
+- On communities/models, pick from the library (or still paste a URL)
+
+Published Payload docs override seed files. Seeds remain as fallback.
 
 ## Stack
 
-- Next.js 16 · Tailwind CSS 4 · Sanity CMS · TypeScript
-- 18 content modules with stage-based visibility (Future / Coming Soon / Available Now)
+Next.js 16 · Tailwind CSS 4 · Payload CMS · TypeScript
 
-## Phases
+## Docs
 
-- **Phase 1 (done):** Foundation — CMS schemas, all sections, Design Hub, seed data
-- **Phase 2 (Claude 4.8):** Visual design polish on Design Hub + community pages
-- **Phase 3:** Coming Soon + Future stage demos
-- **Phase 4:** Forms, analytics, CRM hooks
+Notion: **Payload CMS — Implementation Plan**

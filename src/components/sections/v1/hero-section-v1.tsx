@@ -1,7 +1,7 @@
-import Image from "next/image";
+﻿import Image from "next/image";
 import type { CommunityHero } from "@/lib/types/community";
 
-/** v1 — community name only over photography */
+/** v1 ÔÇö community name only over photography */
 export function HeroSectionV1({ data }: { data: CommunityHero }) {
   return (
     <section id="hero" className="bg-transparent">

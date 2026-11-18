@@ -1,4 +1,5 @@
 import type { MapPoint } from "@/lib/types/community";
+import { AREA_MARKER_COLORS } from "@/lib/maps/markers";
 
 export type MapBounds = {
   minLat: number;
@@ -67,11 +68,45 @@ export function buildGoogleMapsEmbedUrl(
   center: { lat: number; lng: number },
   zoom: number,
   label?: string,
+  options?: { showMarker?: boolean },
 ): string {
+  if (options?.showMarker === false) {
+    return `https://maps.google.com/maps?q=&ll=${center.lat},${center.lng}&z=${zoom}&output=embed`;
+  }
+
   const query = label
     ? encodeURIComponent(`${center.lat},${center.lng} (${label})`)
     : `${center.lat},${center.lng}`;
   return `https://maps.google.com/maps?q=${query}&hl=en&z=${zoom}&output=embed`;
+}
+
+export function buildGoogleStaticMapUrl(
+  points: MapPoint[],
+  focusedId: string | null,
+  apiKey: string,
+): string {
+  const showAll = focusedId === null;
+  const focusedPoint = points.find((point) => point.id === focusedId) ?? points[0];
+  const bounds = showAll ? boundsFromPoints(points) : boundsAroundPoint(focusedPoint);
+  const center = showAll ? centerFromPoints(points) : { lat: focusedPoint.lat, lng: focusedPoint.lng };
+  const zoom = zoomFromBounds(bounds);
+  const markerParams = points
+    .map((point) => {
+      const hex = AREA_MARKER_COLORS[point.category].replace("#", "");
+      return `markers=color:0x${hex}|${point.lat},${point.lng}`;
+    })
+    .join("&");
+
+  const params = new URLSearchParams({
+    center: `${center.lat},${center.lng}`,
+    zoom: String(zoom),
+    size: "640x640",
+    scale: "2",
+    maptype: "roadmap",
+    key: apiKey,
+  });
+
+  return `https://maps.googleapis.com/maps/api/staticmap?${params.toString()}&${markerParams}`;
 }
 
 export function googleMapsUrl(point: MapPoint): string {

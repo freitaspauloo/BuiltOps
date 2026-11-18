@@ -1,6 +1,12 @@
 "use client";
 
-import { useLayoutEffect } from "react";
+import { useEffect, useLayoutEffect } from "react";
+
+function scrollToTop() {
+  window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+  document.documentElement.scrollTop = 0;
+  document.body.scrollTop = 0;
+}
 
 /** Full reload / bfcache restore — always start at the hero (top of page). */
 export function ScrollToHeroOnLoad() {
@@ -8,19 +14,28 @@ export function ScrollToHeroOnLoad() {
     if ("scrollRestoration" in history) {
       history.scrollRestoration = "manual";
     }
+    scrollToTop();
+  }, []);
 
-    const scrollToHero = () => {
-      window.scrollTo(0, 0);
-    };
+  useEffect(() => {
+    scrollToTop();
 
-    scrollToHero();
+    let raf2 = 0;
+    const raf1 = requestAnimationFrame(() => {
+      scrollToTop();
+      raf2 = requestAnimationFrame(scrollToTop);
+    });
 
     const onPageShow = (event: PageTransitionEvent) => {
-      if (event.persisted) scrollToHero();
+      if (event.persisted) scrollToTop();
     };
 
     window.addEventListener("pageshow", onPageShow);
-    return () => window.removeEventListener("pageshow", onPageShow);
+    return () => {
+      cancelAnimationFrame(raf1);
+      cancelAnimationFrame(raf2);
+      window.removeEventListener("pageshow", onPageShow);
+    };
   }, []);
 
   return null;

@@ -19,7 +19,7 @@ type OverviewSectionProps = {
 const shellClass =
   "scroll-mt-16 scroll-pb-24 bg-background pb-14 pt-6 md:pb-20 md:pt-8 lg:pb-24 hero-frame-sides";
 
-/** v1 — paired cards with sans-serif card titles, placeholder contact photo */
+/** v1 ÔÇö paired cards with sans-serif card titles, placeholder contact photo */
 export function OverviewSectionV1({
   data,
   quickFacts,
@@ -97,11 +97,7 @@ export function OverviewSectionV1({
                       />
                     )}
                     <span className="absolute inset-0 flex items-center justify-center bg-foreground/20 transition-colors group-hover:bg-foreground/30">
-                      <AppIcon
-                        icon={UI_ICONS.play}
-                        size={28}
-                        className="fill-white text-white drop-shadow-sm"
-                      />
+                      <AppIcon icon={UI_ICONS.play} size={28} className="fill-white text-white drop-shadow-sm" />
                     </span>
                   </Link>
                 )}

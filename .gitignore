@@ -36,6 +36,12 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# sanity
+# payload
+/payload.db
+/payload.db-*
+/public/media/*
+!/public/media/.gitkeep
+
+# sanity (legacy)
 .sanity
 .vercel

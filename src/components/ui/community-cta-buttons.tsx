@@ -1,16 +1,15 @@
-import Link from "next/link";
+import type { DownloadAsset } from "@/lib/types/community";
+import { BrochureDropdown } from "@/components/ui/brochure-dropdown";
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils/cn";
 
 type CtaLink = { label: string; href: string };
 
-const sizeStyles = {
-  sm: "px-4 py-2.5 text-sm",
-  md: "px-6 py-3 text-sm",
-} as const;
-
 export function CommunityCtaButtons({
   primaryCta,
   secondaryCta,
+  downloads,
+  menuPlacement = "bottom",
   size = "md",
   tone = "light",
   className,
@@ -19,51 +18,50 @@ export function CommunityCtaButtons({
 }: {
   primaryCta: CtaLink;
   secondaryCta?: CtaLink;
-  size?: keyof typeof sizeStyles;
+  downloads?: DownloadAsset[];
+  menuPlacement?: "top" | "bottom";
+  size?: "sm" | "md";
   tone?: "light" | "onPrimary" | "onImage";
   className?: string;
   secondaryClassName?: string;
   onNavigate?: () => void;
 }) {
-  const pad = sizeStyles[size];
-
-  const primaryClass =
-    tone === "light"
-      ? cn(
-          "inline-flex items-center font-semibold transition-colors bg-primary text-white hover:bg-primary-hover",
-          pad,
-        )
-      : tone === "onImage"
-        ? cn(
-            "inline-flex items-center font-semibold transition-colors bg-white text-foreground hover:bg-white/90",
-            pad,
-          )
-        : cn(
-            "inline-flex items-center font-semibold transition-colors bg-white text-foreground hover:bg-white/90",
-            pad,
-          );
-
-  const secondaryBase =
-    tone === "light"
-      ? "inline-flex items-center font-semibold transition-colors border border-border bg-surface text-foreground hover:bg-fog"
-      : tone === "onImage"
-        ? "inline-flex items-center font-semibold transition-colors border border-white/70 bg-transparent text-white hover:border-white hover:text-white"
-        : "inline-flex items-center font-semibold transition-colors border border-white/70 bg-white text-foreground hover:bg-white/90";
+  const primaryVariant = tone === "light" ? "primary" : "hero";
+  const secondaryVariant =
+    tone === "light" ? "outline" : tone === "onImage" ? "outline-on-image" : "outline-on-image";
 
   return (
     <div className={cn("flex flex-wrap items-center gap-3", className)}>
-      <Link href={primaryCta.href} onClick={onNavigate} className={primaryClass}>
+      <Button
+        href={primaryCta.href}
+        variant={primaryVariant}
+        size={size}
+        onClick={onNavigate}
+      >
         {primaryCta.label}
-      </Link>
-      {secondaryCta && (
-        <Link
-          href={secondaryCta.href}
-          onClick={onNavigate}
-          className={cn(secondaryBase, pad, secondaryClassName)}
-        >
-          {secondaryCta.label}
-        </Link>
-      )}
+      </Button>
+      {secondaryCta &&
+        (downloads && downloads.length > 0 ? (
+          <BrochureDropdown
+            label={secondaryCta.label}
+            downloads={downloads}
+            tone={tone}
+            size={size}
+            menuPlacement={menuPlacement}
+            className={secondaryClassName}
+            onNavigate={onNavigate}
+          />
+        ) : (
+          <Button
+            href={secondaryCta.href}
+            variant={secondaryVariant}
+            size={size}
+            className={secondaryClassName}
+            onClick={onNavigate}
+          >
+            {secondaryCta.label}
+          </Button>
+        ))}
     </div>
   );
 }

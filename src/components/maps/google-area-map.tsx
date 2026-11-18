@@ -8,10 +8,8 @@ import {
   useMap,
 } from "@vis.gl/react-google-maps";
 import type { MapPoint } from "@/lib/types/community";
-import { AppIcon, getAreaCategoryPillIcon } from "@/lib/icons";
+import { AreaMapMarkerPin } from "@/components/maps/area-map-marker-pin";
 import { centerFromPoints, googleMapsUrl } from "@/lib/maps/embed";
-import { AREA_MARKER_COLORS } from "@/lib/maps/markers";
-import { cn } from "@/lib/utils/cn";
 
 type GoogleAreaMapProps = {
   points: MapPoint[];
@@ -26,10 +24,14 @@ function MapViewport({ points, focusedPoint, showAll }: Pick<GoogleAreaMapProps,
   useEffect(() => {
     if (!map || points.length === 0) return;
 
-    const targetPoints = showAll ? points : [focusedPoint];
     const bounds = new google.maps.LatLngBounds();
-    targetPoints.forEach((point) => bounds.extend({ lat: point.lat, lng: point.lng }));
-    map.fitBounds(bounds, showAll ? 56 : 72);
+    points.forEach((point) => bounds.extend({ lat: point.lat, lng: point.lng }));
+    map.fitBounds(bounds, 56);
+
+    if (!showAll) {
+      map.panTo({ lat: focusedPoint.lat, lng: focusedPoint.lng });
+      map.setZoom(14);
+    }
   }, [focusedPoint, map, points, showAll]);
 
   return null;
@@ -44,8 +46,6 @@ function AreaMapMarker({
   isFocused: boolean;
   onSelect: () => void;
 }) {
-  const color = AREA_MARKER_COLORS[point.category];
-
   return (
     <AdvancedMarker
       position={{ lat: point.lat, lng: point.lng }}
@@ -53,22 +53,15 @@ function AreaMapMarker({
       onClick={onSelect}
       zIndex={isFocused ? 30 : 10}
     >
-      <button
-        type="button"
-        aria-label={point.label}
-        aria-pressed={isFocused}
+      <AreaMapMarkerPin
+        category={point.category}
+        label={point.label}
+        isFocused={isFocused}
         onClick={(event) => {
           event.stopPropagation();
           onSelect();
         }}
-        className={cn(
-          "flex h-10 w-10 items-center justify-center border-2 border-white shadow-[0_8px_24px_rgba(12,20,23,0.22)] transition-transform",
-          isFocused ? "scale-110 ring-2 ring-white/90" : "hover:scale-105",
-        )}
-        style={{ backgroundColor: color }}
-      >
-        <AppIcon icon={getAreaCategoryPillIcon(point.category)} size={18} className="text-white" />
-      </button>
+      />
     </AdvancedMarker>
   );
 }
@@ -85,11 +78,11 @@ export function GoogleAreaMap({
 
   if (!apiKey) {
     return (
-      <div className="flex h-full flex-col items-center justify-center gap-3 bg-card px-6 text-center">
-        <p className="text-sm font-medium text-foreground">Google Maps preview unavailable</p>
-        <p className="max-w-xs text-sm text-muted">
-          Add <code className="text-xs">NEXT_PUBLIC_GOOGLE_MAPS_API_KEY</code> to your{" "}
-          <code className="text-xs">.env.local</code> file to enable the live map.
+      <div className="flex h-full flex-col items-center justify-center gap-4 bg-primary/10 px-6 text-center">
+        <p className="text-sm font-medium text-foreground">Google Maps requires an API key</p>
+        <p className="max-w-sm text-sm text-muted">
+          Add <code className="text-xs">NEXT_PUBLIC_GOOGLE_MAPS_API_KEY</code> to{" "}
+          <code className="text-xs">.env.local</code> (enable Maps JavaScript API + Map Tiles), then restart the dev server.
         </p>
         <a
           href={googleMapsUrl(focusedPoint)}
@@ -97,14 +90,14 @@ export function GoogleAreaMap({
           rel="noopener noreferrer"
           className="text-sm font-semibold text-primary underline-offset-4 hover:underline"
         >
-          Open in Google Maps
+          Open area in Google Maps
         </a>
       </div>
     );
   }
 
   return (
-    <APIProvider apiKey={apiKey}>
+    <APIProvider apiKey={apiKey} libraries={["marker"]}>
       <Map
         defaultCenter={defaultCenter}
         defaultZoom={13}

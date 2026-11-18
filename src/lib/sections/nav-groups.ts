@@ -1,6 +1,7 @@
 import type { AppIconType } from "@/lib/icons";
 import { HelpCircle, Images, Layers, MapPin, ShoppingBag } from "lucide-react";
 import type { Community, CommunityStage, SectionId } from "@/lib/types/community";
+import { NAV_SECTION_DESCRIPTIONS } from "@/lib/sections/nav-group-meta";
 import { getNavSections } from "@/lib/sections/visibility";
 
 export type NavLinkItem = {
@@ -14,7 +15,7 @@ export type NavGroupItem = {
   id: string;
   label: string;
   icon: AppIconType;
-  items: { id: SectionId; label: string }[];
+  items: { id: SectionId; label: string; description?: string }[];
 };
 
 export type NavStructureItem = NavLinkItem | NavGroupItem;
@@ -38,8 +39,9 @@ const STAGE_NAV_TEMPLATES: Record<CommunityStage, NavTemplate[]> = {
       id: "community",
       label: "Community",
       icon: MapPin,
-      sectionIds: ["areaMap", "amenities", "features"],
+      sectionIds: ["gallery", "areaMap", "amenities", "features"],
     },
+    { type: "link", id: "designCentre" },
     {
       type: "group",
       id: "help",
@@ -62,8 +64,9 @@ const STAGE_NAV_TEMPLATES: Record<CommunityStage, NavTemplate[]> = {
       id: "plan",
       label: "Plan",
       icon: MapPin,
-      sectionIds: ["areaMap", "timeline", "downloads"],
+      sectionIds: ["areaMap", "amenities", "timeline", "features", "downloads"],
     },
+    { type: "link", id: "designCentre" },
     {
       type: "group",
       id: "help",
@@ -71,7 +74,6 @@ const STAGE_NAV_TEMPLATES: Record<CommunityStage, NavTemplate[]> = {
       icon: HelpCircle,
       sectionIds: ["faq"],
     },
-    { type: "link", id: "salesOffice" },
   ],
   available: [
     { type: "link", id: "overview" },
@@ -94,18 +96,91 @@ const STAGE_NAV_TEMPLATES: Record<CommunityStage, NavTemplate[]> = {
       id: "explore",
       label: "Explore",
       icon: Images,
-      sectionIds: ["video", "gallery", "areaMap", "amenities", "features", "designCentre", "downloads"],
+      sectionIds: ["gallery", "areaMap", "amenities", "features", "designCentre", "video", "downloads"],
     },
     {
       type: "group",
       id: "help",
       label: "Help",
       icon: HelpCircle,
-      sectionIds: ["events", "faq"],
+      sectionIds: ["testimonials", "events", "faq"],
     },
     { type: "link", id: "salesOffice" },
   ],
 };
+
+/**
+ * v4 audit nav — Buy and Homes are merged into a single "Buy" group so the
+ * primary purchase path (floorplans, move-in ready, live site plan, promotions)
+ * lives under one menu. Brochures live in the navbar CTA dropdown on v4.
+ */
+const V4_AVAILABLE_NAV_TEMPLATE: NavTemplate[] = [
+  { type: "link", id: "overview" },
+  {
+    type: "group",
+    id: "buy",
+    label: "Buy",
+    icon: ShoppingBag,
+    sectionIds: ["floorplans", "quickMoveIn", "sitePlan", "promotions"],
+  },
+  {
+    type: "group",
+    id: "explore",
+    label: "Explore",
+    icon: Images,
+    sectionIds: ["gallery", "areaMap", "amenities", "features", "designCentre", "video"],
+  },
+  {
+    type: "group",
+    id: "help",
+    label: "Help",
+    icon: HelpCircle,
+    sectionIds: ["testimonials", "events", "faq"],
+  },
+  { type: "link", id: "salesOffice" },
+];
+
+/** v5 — buy path, then location/lifestyle directly after move-in ready. */
+const V5_AVAILABLE_NAV_TEMPLATE: NavTemplate[] = [
+  { type: "link", id: "overview" },
+  {
+    type: "group",
+    id: "buy",
+    label: "Buy",
+    icon: ShoppingBag,
+    sectionIds: ["sitePlan", "floorplans", "quickMoveIn", "areaMap", "amenities", "promotions"],
+  },
+  {
+    type: "group",
+    id: "explore",
+    label: "Explore",
+    icon: Images,
+    sectionIds: ["gallery", "features", "designCentre", "video"],
+  },
+  {
+    type: "group",
+    id: "help",
+    label: "Help",
+    icon: HelpCircle,
+    sectionIds: ["testimonials", "events", "faq"],
+  },
+  { type: "link", id: "salesOffice" },
+];
+
+function getNavTemplate(community: Community): NavTemplate[] {
+  if (
+    (community.micrositeVersion === "v5" ||
+      community.micrositeVersion === "v6" ||
+      community.micrositeVersion === "v6b") &&
+    community.stage === "available"
+  ) {
+    return V5_AVAILABLE_NAV_TEMPLATE;
+  }
+  if (community.micrositeVersion === "v4" && community.stage === "available") {
+    return V4_AVAILABLE_NAV_TEMPLATE;
+  }
+  return STAGE_NAV_TEMPLATES[community.stage];
+}
 
 function toNavItem(
   template: NavTemplate,
@@ -119,7 +194,11 @@ function toNavItem(
 
   const items = template.sectionIds
     .filter((id) => visible.has(id))
-    .map((id) => ({ id, label: visible.get(id)! }));
+    .map((id) => ({
+      id,
+      label: visible.get(id)!,
+      description: NAV_SECTION_DESCRIPTIONS[id],
+    }));
 
   if (items.length === 0) return null;
   if (items.length === 1) {
@@ -143,7 +222,7 @@ export function getNavStructure(community: Community): NavStructureItem[] {
       .map(({ id, label }) => [id, label]),
   );
 
-  return STAGE_NAV_TEMPLATES[community.stage]
+  return getNavTemplate(community)
     .map((template) => toNavItem(template, visible))
     .filter((item): item is NavStructureItem => item !== null);
 }

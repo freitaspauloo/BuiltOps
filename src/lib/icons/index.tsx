@@ -9,6 +9,8 @@ import {
   ChevronLeft,
   ChevronRight,
   Clock,
+  Menu,
+  X,
   Download,
   Droplet,
   Facebook,
@@ -39,10 +41,12 @@ import {
   Store,
   Tag,
   Trees,
+  User,
   UtensilsCrossed,
   Video,
   Wifi,
   Wine,
+  Heart,
 } from "lucide-react";
 import { cn } from "@/lib/utils/cn";
 import type { SectionId } from "@/lib/types/community";
@@ -93,6 +97,7 @@ const SNAPSHOT_ICONS: Record<string, AppIconType> = {
   bathrooms: Droplet,
   area: Ruler,
   size: Ruler,
+  size_sqft: Ruler,
   status: CheckCircle2,
   sales_hours: Clock,
   opening: Calendar,
@@ -141,6 +146,9 @@ const AMENITY_ICONS: Record<string, AppIconType> = {
   trees: Trees,
   school: GraduationCap,
   utensils: UtensilsCrossed,
+  palette: Palette,
+  home: Home,
+  transit: Bus,
 };
 
 export function getAmenityIcon(key?: string): AppIconType {
@@ -159,6 +167,8 @@ const AREA_CATEGORY_ICONS: Record<string, AppIconType> = {
   park: Trees,
   shopping: ShoppingBag,
   transit: Bus,
+  winery: Wine,
+  dining: UtensilsCrossed,
 };
 
 export function getAreaCategoryPillIcon(category: string): AppIconType {
@@ -170,6 +180,8 @@ const FEATURE_ICONS: Record<string, AppIconType> = {
   smart_home_ready: Wifi,
   construction_quality: Layers,
   tarion_warranty: ShieldCheck,
+  design_flexibility: Palette,
+  customer_care: Heart,
 };
 
 export function getFeaturePillIcon(title: string): AppIconType {
@@ -191,6 +203,8 @@ export function getSpecPillIcons() {
 }
 
 export const UI_ICONS = {
+  menu: Menu,
+  close: X,
   chevronDown: ChevronDown,
   chevronLeft: ChevronLeft,
   chevronRight: ChevronRight,
@@ -204,6 +218,9 @@ export const UI_ICONS = {
   calendarCheck: CalendarCheck,
   play: Play,
   star: Star,
+  user: User,
+  home: Home,
+  list: Menu,
 } as const;
 
 export const SOCIAL_ICONS = {
